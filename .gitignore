@@ -42,7 +42,7 @@ build/
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
-.idea
+.idea/
 SolvdLabaBlock2.iml
 
 ### Custom ##
