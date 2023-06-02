@@ -114,7 +114,7 @@ CREATE TABLE IF NOT EXISTS `bankdb`.`credit_cards` (
   `Expiry_Date` DATE NULL DEFAULT NULL,
   `Credit_Limit` DECIMAL(10,2) NULL DEFAULT NULL,
   `Outstanding_Balance` DECIMAL(10,2) NULL DEFAULT NULL,
-  PRIMARY KEY (`Card_card_ID`),
+  PRIMARY KEY (`Credit_card_ID`),
   INDEX `Customer_ID` (`Customer_ID` ASC) VISIBLE,
   CONSTRAINT `credit_cards_ibfk_1`
     FOREIGN KEY (`Customer_ID`)
