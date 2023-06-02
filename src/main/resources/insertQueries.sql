@@ -73,4 +73,4 @@ VALUES
 -- Sample data for Transfers table
 INSERT INTO Transfers (Transaction_ID, Source_Account_ID, Destination_Account_ID, Amount, Transfer_Date)
 VALUES
-  (3, 1, 2, 200.00, '2023-05-28');
+  (3, 3, 2, 200.00, '2023-05-28');
