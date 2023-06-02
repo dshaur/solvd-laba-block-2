@@ -114,7 +114,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- Table `bankdb`.`credit_cards`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `bankdb`.`credit_cards` (
-  `Card_card_ID` INT NOT NULL AUTO_INCREMENT,
+  `Credit_card_ID` INT NOT NULL AUTO_INCREMENT,
   `Customer_ID` INT NULL DEFAULT NULL,
   `credit_card_number` VARCHAR(45) NULL DEFAULT NULL,
   `Expiry_Date` DATE NULL DEFAULT NULL,
