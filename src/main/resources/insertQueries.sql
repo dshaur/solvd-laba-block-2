@@ -68,7 +68,7 @@ VALUES
 -- Sample data for Withdrawals table
 INSERT INTO Withdrawals (Transaction_ID, Amount, Withdrawal_Date)
 VALUES
-  (3, 200.00, '2023-05-28');
+  (2, 200.00, '2023-05-28');
 
 -- Sample data for Transfers table
 INSERT INTO Transfers (Transaction_ID, Source_Account_ID, Destination_Account_ID, Amount, Transfer_Date)
