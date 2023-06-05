@@ -54,7 +54,7 @@ SolvdLabaBlock2.iml
 logs
 debug
 target
-db.properties
+src/main/resources/db.properties
 
 ### Eclipse ###
 
