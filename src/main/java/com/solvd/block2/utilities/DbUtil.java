@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-public class DBUtil {
+public class DbUtil {
     private static final String PROPERTIES_FILE = "db.properties";
     private static final int MAX_CONNECTIONS = 12;
 
@@ -42,7 +42,7 @@ public class DBUtil {
 
     private static Properties loadProperties() {
         Properties properties = new Properties();
-        try (InputStream inputStream = DBUtil.class.getClassLoader().getResourceAsStream(PROPERTIES_FILE)) {
+        try (InputStream inputStream = DbUtil.class.getClassLoader().getResourceAsStream(PROPERTIES_FILE)) {
             if (inputStream != null) {
                 properties.load(inputStream);
                 return properties;

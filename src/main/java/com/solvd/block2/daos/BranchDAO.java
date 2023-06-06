@@ -2,7 +2,9 @@ package com.solvd.block2.daos;
 
 import com.solvd.block2.interfaces.IBranchDAO;
 import com.solvd.block2.models.Branch;
-import com.solvd.block2.utilities.DBUtil;
+import com.solvd.block2.utilities.DbUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,6 +15,7 @@ import java.util.List;
 
 public class BranchDAO extends AbstractDAO<Branch> implements IBranchDAO {
 
+    private static final Logger LOGGER = LogManager.getLogger(BranchDAO.class);
 
     @Override
     protected Branch createFromResultSet(ResultSet resultSet) throws SQLException {
@@ -71,7 +74,7 @@ public class BranchDAO extends AbstractDAO<Branch> implements IBranchDAO {
     public List<Branch> findByLocation(String location) {
         List<Branch> branches = new ArrayList<>();
 
-        try (Connection connection = DBUtil.getConnection();
+        try (Connection connection = DbUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement("SELECT * FROM branches WHERE Location = ?")) {
             statement.setString(1, location);
             ResultSet resultSet = statement.executeQuery();
@@ -89,7 +92,7 @@ public class BranchDAO extends AbstractDAO<Branch> implements IBranchDAO {
 
     public List<Branch> findByBranchName(String branchName) {
         List<Branch> branches = new ArrayList<>();
-        try (Connection connection = DBUtil.getConnection();
+        try (Connection connection = DbUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement("SELECT * FROM branches WHERE Branch_Name = ?")) {
             statement.setString(1, branchName);
             ResultSet resultSet = statement.executeQuery();
@@ -103,6 +106,7 @@ public class BranchDAO extends AbstractDAO<Branch> implements IBranchDAO {
         return branches;
     }
 
-
-    // Implement other methods if needed
 }
+
+
+

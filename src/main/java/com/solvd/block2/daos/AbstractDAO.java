@@ -1,7 +1,7 @@
 package com.solvd.block2.daos;
 
 import com.solvd.block2.interfaces.GenDAO;
-import com.solvd.block2.utilities.DBUtil;
+import com.solvd.block2.utilities.DbUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,7 +17,7 @@ public abstract class AbstractDAO<T> implements GenDAO<T> {
 
     @Override
     public T findById(int id) {
-        try (Connection connection = DBUtil.getConnection();
+        try (Connection connection = DbUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(getFindByIdQuery())) {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
@@ -33,7 +33,7 @@ public abstract class AbstractDAO<T> implements GenDAO<T> {
     @Override
     public List<T> findAll() {
         List<T> entities = new ArrayList<>();
-        try (Connection connection = DBUtil.getConnection();
+        try (Connection connection = DbUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(getFindAllQuery())) {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -48,7 +48,7 @@ public abstract class AbstractDAO<T> implements GenDAO<T> {
 
     @Override
     public void create(T entity) {
-        try (Connection connection = DBUtil.getConnection();
+        try (Connection connection = DbUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(getCreateQuery())) {
             setCreateStatementParameters(statement, entity);
             statement.executeUpdate();
@@ -59,7 +59,7 @@ public abstract class AbstractDAO<T> implements GenDAO<T> {
 
     @Override
     public void update(T entity) {
-        try (Connection connection = DBUtil.getConnection();
+        try (Connection connection = DbUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(getUpdateQuery())) {
             setUpdateStatementParameters(statement, entity);
             statement.executeUpdate();
@@ -70,7 +70,7 @@ public abstract class AbstractDAO<T> implements GenDAO<T> {
 
     @Override
     public void delete(T entity) {
-        try (Connection connection = DBUtil.getConnection();
+        try (Connection connection = DbUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(getDeleteQuery())) {
             setDeleteStatementParameters(statement, entity);
             statement.executeUpdate();
