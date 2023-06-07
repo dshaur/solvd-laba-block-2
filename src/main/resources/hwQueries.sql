@@ -96,18 +96,16 @@ DROP COLUMN loan_type;
 
 /*********************** BIG JOIN Statement ***********************/
 SELECT *
-FROM customers
-LEFT JOIN account_holders ON account_holders.Customer_ID = customers.Customer_ID
-LEFT JOIN accounts ON accounts.Account_ID = account_holders.Account_ID
-LEFT JOIN branches ON branches.Branch_ID = accounts.Branch_ID
-LEFT JOIN branch_employees ON branch_employees.Branch_ID = branches.Branch_ID
-LEFT JOIN credit_cards ON credit_cards.Customer_ID = customers.Customer_ID
-LEFT JOIN debit_cards ON debit_cards.Customer_ID = customers.Customer_ID
-LEFT JOIN transactions ON transactions.Account_ID = accounts.Account_ID
-LEFT JOIN deposits ON deposits.Transaction_ID = transactions.Transaction_ID
-LEFT JOIN loans ON loans.Customer_ID = customers.Customer_ID
-LEFT JOIN transfers ON transfers.Transaction_ID = transactions.Transaction_ID
-LEFT JOIN withdrawals ON withdrawals.Transaction_ID = transactions.Transaction_ID;
+FROM Customers
+LEFT JOIN Account_Holders ON Account_Holders.Customer_ID = Customers.Customer_ID
+LEFT JOIN Accounts ON Accounts.Account_ID = Account_Holders.Account_ID
+LEFT JOIN Branches ON Branches.Branch_ID = Accounts.Branch_ID
+LEFT JOIN Branch_Employees ON Branch_Employees.Branch_ID = Branches.Branch_ID
+LEFT JOIN Credit_Cards ON Credit_Cards.Customer_ID = Customers.Customer_ID
+LEFT JOIN Debit_Cards ON Debit_Cards.Customer_ID = Customers.Customer_ID
+LEFT JOIN Transactions ON Transactions.Account_ID = Accounts.Account_ID
+LEFT JOIN Transaction_Type ON Transaction_Type.Transaction_Type_ID = Transactions.Transaction_Type_ID
+LEFT JOIN Loans ON Loans.Customer_ID = Customers.Customer_ID;
 
 /*********************** JOINS Statements ***********************/
 

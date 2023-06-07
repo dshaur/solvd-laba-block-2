@@ -4,7 +4,6 @@ import com.solvd.block2.daos.BranchDAO;
 import com.solvd.block2.daos.BranchEmployeeDAO;
 import com.solvd.block2.models.Branch;
 import com.solvd.block2.models.BranchEmployee;
-import com.solvd.block2.services.BranchEmployeeService;
 import com.solvd.block2.services.BranchService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,10 +18,10 @@ public class Main {
 
         // Create instances of DAO and Service
         BranchDAO branchDAO = new BranchDAO();
-        BranchService branchService = new BranchService(branchDAO);
-
         BranchEmployeeDAO branchEmployeeDAO = new BranchEmployeeDAO();
-        BranchEmployeeService branchEmployeeService = new BranchEmployeeService(branchEmployeeDAO);
+        BranchService branchService = new BranchService(branchDAO, branchEmployeeDAO);
+
+
 
         /* ********************* Test display operations ********************* */
 
@@ -53,20 +52,21 @@ public class Main {
         }
 
         // Get all branch employees for a specific branch ID
-        int EmployeeBranchId = 1; // Change the branch ID as per schema data
+        int employeeBranchId = 3; // Change the branch ID as per schema data
         try {
-            List<BranchEmployee> branchEmployeesByBranchId = branchEmployeeService.getBranchEmployeesByBranchId(EmployeeBranchId);
+            List<BranchEmployee> branchEmployeesByBranchId = branchDAO.getBranchEmployeesByBranchId(employeeBranchId);
             if (!branchEmployeesByBranchId.isEmpty()) {
-                LOGGER.info("Branch Employees found for branch ID " + EmployeeBranchId + ": " + branchEmployeesByBranchId);
+                LOGGER.info("Branch Employees found for branch ID " + employeeBranchId + ": " + branchEmployeesByBranchId);
             } else {
-                LOGGER.info("No Branch Employees found for branch ID: " + EmployeeBranchId);
+                LOGGER.info("No Branch Employees found for branch ID: " + employeeBranchId);
             }
         } catch (Exception e) {
-            LOGGER.info("Error retrieving Branch Employees by branch ID: " + EmployeeBranchId + ". " + e.getMessage());
+            LOGGER.info("Error retrieving Branch Employees by branch ID: " + employeeBranchId + ". " + e.getMessage());
         }
 
     }
 
 }
+
 
 

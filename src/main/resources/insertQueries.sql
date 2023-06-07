@@ -39,12 +39,23 @@ VALUES
   (1, 'Home Loan', 200000.00, 4.5, '2020-02-01', '2040-02-01'),
   (3, 'Car Loan', 30000.00, 3.25, '2021-05-01', '2026-05-01');
 
--- Sample data for Transactions table
-INSERT INTO Transactions (Account_ID, Transaction_Type, Amount, Transaction_Date)
+-- Sample data for Transaction_Type table
+INSERT INTO Transaction_Type (transaction_type_id, type_name)
 VALUES
-  (1, 'Deposit', 1000.00, '2023-05-30'),
-  (2, 'Withdrawal', 200.00, '2023-05-29'),
-  (3, 'Transfer', 200.00, '2023-05-28');
+  (1, 'Deposit'),
+  (2, 'Withdrawal'),
+  (3, 'Transfer');
+
+-- Sample data for Transactions table
+INSERT INTO Transactions (transaction_type_id, Account_ID, Amount, Transaction_Date, Source_account_ID, Destination_account_ID)
+VALUES
+  (1, 1, 1000.00, '2023-06-01', NULL, NULL),
+  (2, 2, 500.00, '2023-06-02', NULL, NULL),
+  (3, 3, 200.00, '2023-06-03', 1, 2),
+  (1, 1, 500.00, '2023-06-04', NULL, NULL),
+  (2, 2, 200.00, '2023-06-05', NULL, NULL),
+  (3, 3, 100.00, '2023-06-06', 2, 1);
+
 
 -- Sample data for Account_Holders table
 INSERT INTO Account_Holders (account_holder_ID, Account_ID, Customer_ID)
@@ -60,17 +71,8 @@ VALUES
   (2, 'Emily', 'Wilson', 'Teller'),
   (3, 'James', 'Thompson', 'Teller');
 
--- Sample data for Deposits table
-INSERT INTO Deposits (Transaction_ID, Amount, Deposit_Date)
-VALUES
-  (1, 1000.00, '2023-05-30');
 
--- Sample data for Withdrawals table
-INSERT INTO Withdrawals (Transaction_ID, Amount, Withdrawal_Date)
-VALUES
-  (2, 200.00, '2023-05-28');
 
--- Sample data for Transfers table
-INSERT INTO Transfers (Transaction_ID, Source_Account_ID, Destination_Account_ID, Amount, Transfer_Date)
-VALUES
-  (3, 3, 2, 200.00, '2023-05-28');
+
+
+

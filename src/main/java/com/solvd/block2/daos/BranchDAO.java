@@ -2,6 +2,7 @@ package com.solvd.block2.daos;
 
 import com.solvd.block2.interfaces.IBranchDAO;
 import com.solvd.block2.models.Branch;
+import com.solvd.block2.models.BranchEmployee;
 import com.solvd.block2.utilities.DbUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,7 +24,9 @@ public class BranchDAO extends AbstractDAO<Branch> implements IBranchDAO {
         String branchName = resultSet.getString("Branch_Name");
         String location = resultSet.getString("Location");
 
-        return new Branch(branchId, branchName, location);
+        List<BranchEmployee> branchEmployees = getBranchEmployeesByBranchId(branchId);
+
+        return new Branch(branchId, branchName, location, branchEmployees);
     }
 
     @Override
@@ -104,6 +107,27 @@ public class BranchDAO extends AbstractDAO<Branch> implements IBranchDAO {
             e.printStackTrace();
         }
         return branches;
+    }
+
+    public List<BranchEmployee> getBranchEmployeesByBranchId(int branchId) {
+        List<BranchEmployee> branchEmployees = new ArrayList<>();
+        try (Connection connection = DbUtil.getConnection();
+             PreparedStatement statement = connection.prepareStatement("SELECT * FROM branch_employees WHERE Branch_ID = ?")) {
+            statement.setInt(1, branchId);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                int employeeId = resultSet.getInt("employee_id");
+                String firstName = resultSet.getString("first_name");
+                String lastName = resultSet.getString("last_name");
+                String position = resultSet.getString("position");
+
+                BranchEmployee branchEmployee = new BranchEmployee(employeeId, firstName, lastName, branchId, position);
+                branchEmployees.add(branchEmployee);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return branchEmployees;
     }
 
 }

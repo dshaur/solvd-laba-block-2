@@ -4,12 +4,18 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+-- -----------------------------------------------------
+-- Schema bankdb
+-- -----------------------------------------------------
 
 -- -----------------------------------------------------
 -- Schema bankdb
 -- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `bankdb` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
-USE `bankdb`;
+USE `bankdb` ;
 
 -- -----------------------------------------------------
 -- Table `bankdb`.`branches`
@@ -80,6 +86,7 @@ CREATE TABLE IF NOT EXISTS `bankdb`.`account_holders` (
     FOREIGN KEY (`Customer_ID`)
     REFERENCES `bankdb`.`customers` (`Customer_ID`))
 ENGINE = InnoDB
+AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -145,45 +152,6 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `bankdb`.`transactions`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `bankdb`.`transactions` (
-  `Transaction_ID` INT NOT NULL AUTO_INCREMENT,
-  `Account_ID` INT NULL DEFAULT NULL,
-  `Transaction_Type` VARCHAR(50) NULL DEFAULT NULL,
-  `Amount` DECIMAL(10,2) NULL DEFAULT NULL,
-  `Transaction_Date` DATE NULL DEFAULT NULL,
-  PRIMARY KEY (`Transaction_ID`),
-  INDEX `Account_ID` (`Account_ID` ASC) VISIBLE,
-  CONSTRAINT `transactions_ibfk_1`
-    FOREIGN KEY (`Account_ID`)
-    REFERENCES `bankdb`.`accounts` (`Account_ID`))
-ENGINE = InnoDB
-AUTO_INCREMENT = 1
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
-
-
--- -----------------------------------------------------
--- Table `bankdb`.`deposits`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `bankdb`.`deposits` (
-  `Deposit_ID` INT NOT NULL AUTO_INCREMENT,
-  `Transaction_ID` INT NULL DEFAULT NULL,
-  `Amount` DECIMAL(10,2) NULL DEFAULT NULL,
-  `Deposit_Date` DATE NULL DEFAULT NULL,
-  PRIMARY KEY (`Deposit_ID`),
-  INDEX `Transaction_ID` (`Transaction_ID` ASC) VISIBLE,
-  CONSTRAINT `deposits_ibfk_1`
-    FOREIGN KEY (`Transaction_ID`)
-    REFERENCES `bankdb`.`transactions` (`Transaction_ID`))
-ENGINE = InnoDB
-AUTO_INCREMENT = 1
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
-
-
--- -----------------------------------------------------
 -- Table `bankdb`.`loans`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `bankdb`.`loans` (
@@ -206,47 +174,37 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `bankdb`.`transfers`
+-- Table `bankdb`.`transaction_type`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `bankdb`.`transfers` (
-  `Transfer_ID` INT NOT NULL AUTO_INCREMENT,
-  `Transaction_ID` INT NULL DEFAULT NULL,
-  `Source_Account_ID` INT NULL DEFAULT NULL,
-  `Destination_Account_ID` INT NULL DEFAULT NULL,
+CREATE TABLE IF NOT EXISTS `bankdb`.`transaction_type` (
+  `transaction_type_id` INT NOT NULL,
+  `type_name` VARCHAR(45) NULL,
+  PRIMARY KEY (`transaction_type_id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `bankdb`.`transactions`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bankdb`.`transactions` (
+  `Transaction_ID` INT NOT NULL AUTO_INCREMENT,
+  `transaction_type_id` INT NULL,
+  `Account_ID` INT NULL DEFAULT NULL,
   `Amount` DECIMAL(10,2) NULL DEFAULT NULL,
-  `Transfer_Date` DATE NULL DEFAULT NULL,
-  PRIMARY KEY (`Transfer_ID`),
-  INDEX `Transaction_ID` (`Transaction_ID` ASC) VISIBLE,
-  INDEX `Source_Account_ID` (`Source_Account_ID` ASC) VISIBLE,
-  INDEX `Destination_Account_ID` (`Destination_Account_ID` ASC) VISIBLE,
-  CONSTRAINT `transfers_ibfk_1`
-    FOREIGN KEY (`Transaction_ID`)
-    REFERENCES `bankdb`.`transactions` (`Transaction_ID`),
-  CONSTRAINT `transfers_ibfk_2`
-    FOREIGN KEY (`Source_Account_ID`)
+  `Transaction_Date` DATE NULL DEFAULT NULL,
+  `Source_account_ID` INT NULL,
+  `Destination_account_ID` INT NULL,
+  PRIMARY KEY (`Transaction_ID`),
+  INDEX `Account_ID` (`Account_ID` ASC) VISIBLE,
+  INDEX `fk_transactions_transaction_type1_idx` (`transaction_type_id` ASC) VISIBLE,
+  CONSTRAINT `transactions_ibfk_1`
+    FOREIGN KEY (`Account_ID`)
     REFERENCES `bankdb`.`accounts` (`Account_ID`),
-  CONSTRAINT `transfers_ibfk_3`
-    FOREIGN KEY (`Destination_Account_ID`)
-    REFERENCES `bankdb`.`accounts` (`Account_ID`))
-ENGINE = InnoDB
-AUTO_INCREMENT = 1
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
-
-
--- -----------------------------------------------------
--- Table `bankdb`.`withdrawals`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `bankdb`.`withdrawals` (
-  `Withdrawal_ID` INT NOT NULL AUTO_INCREMENT,
-  `Transaction_ID` INT NULL DEFAULT NULL,
-  `Amount` DECIMAL(10,2) NULL DEFAULT NULL,
-  `Withdrawal_Date` DATE NULL DEFAULT NULL,
-  PRIMARY KEY (`Withdrawal_ID`),
-  INDEX `Transaction_ID` (`Transaction_ID` ASC) VISIBLE,
-  CONSTRAINT `withdrawals_ibfk_1`
-    FOREIGN KEY (`Transaction_ID`)
-    REFERENCES `bankdb`.`transactions` (`Transaction_ID`))
+  CONSTRAINT `fk_transactions_transaction_type1`
+    FOREIGN KEY (`transaction_type_id`)
+    REFERENCES `bankdb`.`transaction_type` (`transaction_type_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB
 AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = utf8mb4

@@ -1,15 +1,19 @@
 package com.solvd.block2.services;
 
 import com.solvd.block2.daos.BranchDAO;
+import com.solvd.block2.daos.BranchEmployeeDAO;
 import com.solvd.block2.models.Branch;
+import com.solvd.block2.models.BranchEmployee;
 
 import java.util.List;
 
 public class BranchService {
+    private BranchEmployeeDAO branchEmployeeDAO;
     private BranchDAO branchDAO;
 
-    public BranchService(BranchDAO branchDAO) {
+    public BranchService(BranchDAO branchDAO, BranchEmployeeDAO branchEmployeeDAO) {
         this.branchDAO = branchDAO;
+        this.branchEmployeeDAO = branchEmployeeDAO;
     }
 
     public Branch getBranchById(int id) {
@@ -40,8 +44,24 @@ public class BranchService {
         return branchDAO.findByBranchName(branchName);
     }
 
+    public List<BranchEmployee> getBranchEmployeesByBranchId(int branchId) {
+        return branchDAO.getBranchEmployeesByBranchId(branchId);
+    }
+
+    public void saveBranchEmployee(BranchEmployee branchEmployee) {
+        branchEmployeeDAO.create(branchEmployee);
+    }
+
+    public void updateBranchEmployee(BranchEmployee branchEmployee) {
+        branchEmployeeDAO.update(branchEmployee);
+    }
+
+    public void deleteBranchEmployee(BranchEmployee branchEmployee) {
+        branchEmployeeDAO.delete(branchEmployee);
+    }
 
     // Add other methods as needed
 }
+
 
 
