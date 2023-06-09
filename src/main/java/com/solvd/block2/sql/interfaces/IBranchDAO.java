@@ -1,6 +1,6 @@
-package com.solvd.block2.interfaces;
+package com.solvd.block2.sql.interfaces;
 
-import com.solvd.block2.models.Branch;
+import com.solvd.block2.sql.models.Branch;
 
 import java.util.List;
 

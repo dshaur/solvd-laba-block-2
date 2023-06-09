@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="bankDB">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="customer" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="customerId" type="xs:int"/>
+                            <xs:element name="firstName" type="xs:string"/>
+                            <xs:element name="lastName" type="xs:string"/>
+                            <xs:element name="address" type="xs:string"/>
+                            <xs:element name="phoneNumber" type="xs:string"/>
+                            <xs:element name="email" type="xs:string"/>
+                            <xs:element name="creditCards">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="creditCard" maxOccurs="unbounded">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="creditCardId" type="xs:int"/>
+                                                    <xs:element name="customerId" type="xs:int"/>
+                                                    <xs:element name="creditCardNumber" type="xs:string"/>
+                                                    <xs:element name="expiryDate" type="xs:date"/>
+                                                    <xs:element name="creditLimit" type="xs:double"/>
+                                                    <xs:element name="outstandingBalance" type="xs:double"/>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="debitCards">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="debitCard" maxOccurs="unbounded">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="cardId" type="xs:int"/>
+                                                    <xs:element name="customerId" type="xs:int"/>
+                                                    <xs:element name="cardNumber" type="xs:string"/>
+                                                    <xs:element name="expirationDate" type="xs:date"/>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="loans">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="loan" maxOccurs="unbounded">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="loanId" type="xs:int"/>
+                                                    <xs:element name="customerId" type="xs:int"/>
+                                                    <xs:element name="loanType" type="xs:string"/>
+                                                    <xs:element name="loanAmount" type="xs:double"/>
+                                                    <xs:element name="interestRate" type="xs:double"/>
+                                                    <xs:element name="startDate" type="xs:date"/>
+                                                    <xs:element name="endDate" type="xs:date"/>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="transaction" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="transactionId" type="xs:int"/>
+                            <xs:element name="transactionTypes">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="transactionType" maxOccurs="unbounded">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="typeId" type="xs:int"/>
+                                                    <xs:element name="typeName" type="xs:string"/>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="accountId" type="xs:int"/>
+                            <xs:element name="amount" type="xs:double"/>
+                            <xs:element name="transactionDate" type="xs:date"/>
+                            <xs:element name="sourceAccountId" type="xs:int"/>
+                            <xs:element name="destinationAccountId" type="xs:int"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="branch" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="branchId" type="xs:int"/>
+                            <xs:element name="branchName" type="xs:string"/>
+                            <xs:element name="location" type="xs:string"/>
+                            <xs:element name="branchEmployees">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="branchEmployee" maxOccurs="unbounded">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="employeeId" type="xs:int"/>
+                                                    <xs:element name="firstName" type="xs:string"/>
+                                                    <xs:element name="lastName" type="xs:string"/>
+                                                    <xs:element name="branchId" type="xs:int"/>
+                                                    <xs:element name="position" type="xs:string"/>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

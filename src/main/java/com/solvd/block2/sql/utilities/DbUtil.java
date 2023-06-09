@@ -1,4 +1,4 @@
-package com.solvd.block2.utilities;
+package com.solvd.block2.sql.utilities;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,7 +11,7 @@ import java.util.Properties;
 
 public class DbUtil {
     private static final String PROPERTIES_FILE = "db.properties";
-    private static final int MAX_CONNECTIONS = 12;
+    private static final int MAX_CONNECTIONS = 100;
 
     private static List<Connection> connectionPool = new ArrayList<>();
 

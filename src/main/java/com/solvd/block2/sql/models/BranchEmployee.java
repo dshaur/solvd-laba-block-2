@@ -1,4 +1,4 @@
-package com.solvd.block2.models;
+package com.solvd.block2.sql.models;
 
 public class BranchEmployee {
 

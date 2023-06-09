@@ -49,11 +49,11 @@ VALUES
 -- Sample data for Transactions table
 INSERT INTO Transactions (transaction_type_id, Account_ID, Amount, Transaction_Date, Source_account_ID, Destination_account_ID)
 VALUES
-  (1, 1, 1000.00, '2023-06-01', NULL, NULL),
-  (2, 2, 500.00, '2023-06-02', NULL, NULL),
+  (1, 1, 1000.00, '2023-06-01', 1, 1),
+  (2, 2, 500.00, '2023-06-02', 2, 2),
   (3, 3, 200.00, '2023-06-03', 1, 2),
-  (1, 1, 500.00, '2023-06-04', NULL, NULL),
-  (2, 2, 200.00, '2023-06-05', NULL, NULL),
+  (1, 1, 500.00, '2023-06-04', 1, 1),
+  (2, 2, 200.00, '2023-06-05', 2, 2),
   (3, 3, 100.00, '2023-06-06', 2, 1);
 
 

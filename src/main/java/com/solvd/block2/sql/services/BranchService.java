@@ -1,9 +1,9 @@
-package com.solvd.block2.services;
+package com.solvd.block2.sql.services;
 
-import com.solvd.block2.daos.BranchDAO;
-import com.solvd.block2.daos.BranchEmployeeDAO;
-import com.solvd.block2.models.Branch;
-import com.solvd.block2.models.BranchEmployee;
+import com.solvd.block2.sql.daos.BranchDAO;
+import com.solvd.block2.sql.daos.BranchEmployeeDAO;
+import com.solvd.block2.sql.models.Branch;
+import com.solvd.block2.sql.models.BranchEmployee;
 
 import java.util.List;
 

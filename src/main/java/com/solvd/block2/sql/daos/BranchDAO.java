@@ -1,9 +1,9 @@
-package com.solvd.block2.daos;
+package com.solvd.block2.sql.daos;
 
-import com.solvd.block2.interfaces.IBranchDAO;
-import com.solvd.block2.models.Branch;
-import com.solvd.block2.models.BranchEmployee;
-import com.solvd.block2.utilities.DbUtil;
+import com.solvd.block2.sql.interfaces.IBranchDAO;
+import com.solvd.block2.sql.models.Branch;
+import com.solvd.block2.sql.models.BranchEmployee;
+import com.solvd.block2.sql.utilities.DbUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

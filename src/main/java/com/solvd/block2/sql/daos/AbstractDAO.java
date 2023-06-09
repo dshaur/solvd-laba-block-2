@@ -1,7 +1,7 @@
-package com.solvd.block2.daos;
+package com.solvd.block2.sql.daos;
 
-import com.solvd.block2.interfaces.GenDAO;
-import com.solvd.block2.utilities.DbUtil;
+import com.solvd.block2.sql.interfaces.GenDAO;
+import com.solvd.block2.sql.utilities.DbUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
