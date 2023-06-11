@@ -4,20 +4,19 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-public class BankContentHandler extends DefaultHandler {
+import java.util.List;
+
+class BankContentHandler extends DefaultHandler {
     private StringBuilder dataBuffer;
     private boolean isParsingValue;
+    private List<String> validatedElements;
+
+    public BankContentHandler(List<String> validatedElements) {
+        this.validatedElements = validatedElements;
+    }
 
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-        if (qName.equalsIgnoreCase("customer") ||
-                qName.equalsIgnoreCase("creditCard") ||
-                qName.equalsIgnoreCase("debitCard") ||
-                qName.equalsIgnoreCase("loan") ||
-                qName.equalsIgnoreCase("transactionType") ||
-                qName.equalsIgnoreCase("branchEmployee")) {
-            System.out.println(qName + ":");
-        }
         dataBuffer = new StringBuilder();
         isParsingValue = true;
     }
@@ -27,7 +26,7 @@ public class BankContentHandler extends DefaultHandler {
         if (isParsingValue) {
             String value = dataBuffer.toString().trim();
             if (!value.isEmpty()) {
-                System.out.println(qName + ": " + value);
+                validatedElements.add(qName + ": " + value);
             }
             isParsingValue = false;
         }
@@ -40,4 +39,6 @@ public class BankContentHandler extends DefaultHandler {
         }
     }
 }
+
+
 

@@ -8,8 +8,8 @@ import com.solvd.block2.sql.models.BranchEmployee;
 import java.util.List;
 
 public class BranchService {
-    private BranchEmployeeDAO branchEmployeeDAO;
     private BranchDAO branchDAO;
+    private BranchEmployeeDAO branchEmployeeDAO;
 
     public BranchService(BranchDAO branchDAO, BranchEmployeeDAO branchEmployeeDAO) {
         this.branchDAO = branchDAO;
@@ -17,7 +17,9 @@ public class BranchService {
     }
 
     public Branch getBranchById(int id) {
-        return branchDAO.findById(id);
+        Branch branch = branchDAO.findById(id);
+        branch.setBranchEmployees(branchEmployeeDAO.findByBranchId(id));
+        return branch;
     }
 
     public List<Branch> getAllBranches() {
@@ -45,7 +47,7 @@ public class BranchService {
     }
 
     public List<BranchEmployee> getBranchEmployeesByBranchId(int branchId) {
-        return branchDAO.getBranchEmployeesByBranchId(branchId);
+        return branchEmployeeDAO.findByBranchId(branchId);
     }
 
     public void saveBranchEmployee(BranchEmployee branchEmployee) {
@@ -62,6 +64,7 @@ public class BranchService {
 
     // Add other methods as needed
 }
+
 
 
 

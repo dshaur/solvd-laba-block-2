@@ -116,7 +116,6 @@ public class Main {
             LOGGER.info("Error retrieving customer with ID: " + customerId + ". " + e.getMessage());
         }
 
-
         // Get debit cards by customer ID
         int debitCardCustomerId = 1; // Change the customer ID as per schema data
         try {
@@ -130,7 +129,6 @@ public class Main {
             LOGGER.info("Error retrieving Debit Cards by customer ID: " + debitCardCustomerId + ". " + e.getMessage());
         }
 
-
         // Get credit cards by customer ID
         int creditCardCustomerId = 1; // Change the customer ID as per schema data
         try {
@@ -143,7 +141,6 @@ public class Main {
         } catch (Exception e) {
             LOGGER.info("Error retrieving Credit Cards by customer ID: " + creditCardCustomerId + ". " + e.getMessage());
         }
-
 
         // Get loans by customer ID
         int loanCustomerId = 1; // Change the customer ID as per schema data
@@ -160,6 +157,9 @@ public class Main {
 
     }
 }
+
+
+
 
 
 

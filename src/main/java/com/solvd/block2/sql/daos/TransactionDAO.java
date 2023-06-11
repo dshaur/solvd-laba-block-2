@@ -28,9 +28,10 @@ public class TransactionDAO extends AbstractDAO<Transaction> implements ITransac
         int sourceAccountId = resultSet.getInt("source_account_id");
         int destinationAccountId = resultSet.getInt("destination_account_id");
 
-        List<TransactionType> transactionTypes = getTransactionTypesByTransactionId(transactionId);
+        TransactionType transactionType = getTransactionTypeByTransactionId(transactionId);
 
-        return new Transaction(transactionId, transactionTypes, accountId, amount, transactionDate, sourceAccountId, destinationAccountId);
+
+        return new Transaction(transactionId, transactionType, accountId, amount, transactionDate, sourceAccountId, destinationAccountId);
     }
 
     @Override
@@ -101,23 +102,22 @@ public class TransactionDAO extends AbstractDAO<Transaction> implements ITransac
         return transactions;
     }
 
-    public List<TransactionType> getTransactionTypesByTransactionId(int transactionId) {
-        List<TransactionType> transactionTypes = new ArrayList<>();
+    public TransactionType getTransactionTypeByTransactionId(int transactionId) {
         try (Connection connection = DbUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement("SELECT * FROM transaction_type WHERE transaction_type_id = ?")) {
             statement.setInt(1, transactionId);
             ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
+            if (resultSet.next()) {
                 int transactionTypeId = resultSet.getInt("transaction_type_id");
                 String transactionTypeName = resultSet.getString("type_name");
-                TransactionType transactionType = new TransactionType(transactionTypeId, transactionTypeName);
-                transactionTypes.add(transactionType);
+                return new TransactionType(transactionTypeId, transactionTypeName);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return transactionTypes;
+        return null;
     }
+
 
     public List<Transaction> findByTransactionTypeId(int transactionTypeId) {
         List<Transaction> transactions = new ArrayList<>();

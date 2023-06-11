@@ -5,21 +5,12 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 
 public class DbUtil {
     private static final String PROPERTIES_FILE = "db.properties";
-    private static final int MAX_CONNECTIONS = 100;
 
-    private static List<Connection> connectionPool = new ArrayList<>();
-
-    static {
-        initializeConnectionPool();
-    }
-
-    private static void initializeConnectionPool() {
+    private static Connection createConnection() {
         Properties properties = loadProperties();
         if (properties != null) {
             String jdbcUrl = properties.getProperty("jdbc.url");
@@ -27,13 +18,9 @@ public class DbUtil {
             String password = properties.getProperty("jdbc.password");
 
             try {
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                for (int i = 0; i < MAX_CONNECTIONS; i++) {
-                    Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
-                    connectionPool.add(connection);
-                }
-            } catch (ClassNotFoundException | SQLException e) {
-                e.printStackTrace();
+                return DriverManager.getConnection(jdbcUrl, username, password);
+            } catch (SQLException e) {
+                throw new RuntimeException("Failed to create a new database connection.", e);
             }
         } else {
             throw new RuntimeException("Failed to load DB properties.");
@@ -55,14 +42,12 @@ public class DbUtil {
         return null;
     }
 
-    public static Connection getConnection() throws SQLException {
-        if (connectionPool.isEmpty()) {
-            throw new SQLException("Connection pool exhausted!");
-        }
-        return connectionPool.remove(connectionPool.size() - 1);
+    public static Connection getConnection() {
+        return createConnection();
     }
 
     public static void releaseConnection(Connection connection) {
-        connectionPool.add(connection);
+        // Do nothing, let the connection be reused by the next client
     }
 }
+

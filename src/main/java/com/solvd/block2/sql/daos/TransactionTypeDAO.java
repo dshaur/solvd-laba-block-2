@@ -9,8 +9,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.solvd.block2.sql.utilities.DbUtil.getConnection;
 
@@ -69,12 +67,13 @@ public class TransactionTypeDAO extends AbstractDAO<TransactionType> implements 
     }
 
     @Override
-    public List<TransactionType> findByTransactionId(int transactionId) {
-        List<TransactionType> transactionTypes = new ArrayList<>();
+    public TransactionType findByTransactionId(int transactionId) {
+        TransactionType transactionType = null;
 
-        String query = "SELECT tt.Type_ID, tt.Type_Name FROM transaction_type tt " +
-                "INNER JOIN transaction tr ON tt.Type_ID = tr.Type_ID " +
-                "WHERE tr.Transaction_ID = ?";
+        String query = "SELECT tt.transaction_type_id, tt.type_name " +
+                "FROM transaction_type tt " +
+                "INNER JOIN transactions tr ON tt.transaction_type_id = tr.transaction_type_id " +
+                "WHERE tr.transaction_id = ?";
 
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
@@ -82,18 +81,17 @@ public class TransactionTypeDAO extends AbstractDAO<TransactionType> implements 
             statement.setInt(1, transactionId);
 
             try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    int typeId = resultSet.getInt("Type_ID");
-                    String typeName = resultSet.getString("Type_Name");
-                    TransactionType transactionType = new TransactionType(typeId, typeName);
-                    transactionTypes.add(transactionType);
+                if (resultSet.next()) {
+                    int typeId = resultSet.getInt("transaction_type_id");
+                    String typeName = resultSet.getString("type_name");
+                    transactionType = new TransactionType(typeId, typeName);
                 }
             }
         } catch (SQLException e) {
-            LOGGER.error("Error retrieving transaction types by transaction ID: " + transactionId, e);
+            LOGGER.error("Error retrieving transaction type by transaction ID: " + transactionId, e);
         }
 
-        return transactionTypes;
+        return transactionType;
     }
 
 

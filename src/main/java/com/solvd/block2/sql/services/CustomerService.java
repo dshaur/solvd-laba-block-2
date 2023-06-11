@@ -24,9 +24,12 @@ public class CustomerService {
         this.loanDAO = loanDAO;
     }
 
-    // Customer methods
     public Customer getCustomerById(int customerId) {
-        return customerDAO.getById(customerId);
+        Customer customer = customerDAO.getById(customerId);
+        customer.setDebitCards(debitCardDAO.getByCustomerId(customerId));
+        customer.setCreditCards(creditCardDAO.getByCustomerId(customerId));
+        customer.setLoans(loanDAO.getByCustomerId(customerId));
+        return customer;
     }
 
     public List<Customer> getAllCustomers() {
@@ -45,79 +48,20 @@ public class CustomerService {
         customerDAO.delete(customer);
     }
 
-    // DebitCard methods
-    public DebitCard getDebitCardById(int debitCardId) {
-        return debitCardDAO.getById(debitCardId);
+    public List<Loan> getLoansByCustomerId(int loanCustomerId) {
+        return loanDAO.getByCustomerId(loanCustomerId);
     }
 
-    public List<DebitCard> getDebitCardsByCustomerId(int customerId) {
-        return debitCardDAO.getByCustomerId(customerId);
+    public List<CreditCard> getCreditCardsByCustomerId(int creditCardCustomerId) {
+        return creditCardDAO.getByCustomerId(creditCardCustomerId);
     }
 
-    public List<DebitCard> getAllDebitCards() {
-        return debitCardDAO.getAll();
+    public List<DebitCard> getDebitCardsByCustomerId(int debitCardCustomerId) {
+        return debitCardDAO.getByCustomerId(debitCardCustomerId);
     }
 
-    public void createDebitCard(DebitCard debitCard) {
-        debitCardDAO.create(debitCard);
-    }
-
-    public void updateDebitCard(DebitCard debitCard) {
-        debitCardDAO.update(debitCard);
-    }
-
-    public void deleteDebitCard(DebitCard debitCard) {
-        debitCardDAO.delete(debitCard);
-    }
-
-    // CreditCard methods
-    public CreditCard getCreditCardById(int creditCardId) {
-        return creditCardDAO.getById(creditCardId);
-    }
-
-    public List<CreditCard> getCreditCardsByCustomerId(int customerId) {
-        return creditCardDAO.getByCustomerId(customerId);
-    }
-
-    public List<CreditCard> getAllCreditCards() {
-        return creditCardDAO.getAll();
-    }
-
-    public void createCreditCard(CreditCard creditCard) {
-        creditCardDAO.create(creditCard);
-    }
-
-    public void updateCreditCard(CreditCard creditCard) {
-        creditCardDAO.update(creditCard);
-    }
-
-    public void deleteCreditCard(CreditCard creditCard) {
-        creditCardDAO.delete(creditCard);
-    }
-
-    // Loan methods
-    public Loan getLoanById(int loanId) {
-        return loanDAO.getById(loanId);
-    }
-
-    public List<Loan> getLoansByCustomerId(int customerId) {
-        return loanDAO.getByCustomerId(customerId);
-    }
-
-    public List<Loan> getAllLoans() {
-        return loanDAO.getAll();
-    }
-
-    public void createLoan(Loan loan) {
-        loanDAO.create(loan);
-    }
-
-    public void updateLoan(Loan loan) {
-        loanDAO.update(loan);
-    }
-
-    public void deleteLoan(Loan loan) {
-        loanDAO.delete(loan);
-    }
+    // Other methods
 }
+
+
 

@@ -17,7 +17,9 @@ public class TransactionService {
     }
 
     public Transaction getTransactionById(int transactionId) {
-        return transactionDAO.findById(transactionId);
+        Transaction transaction = transactionDAO.findById(transactionId);
+        transaction.setTransactionTypes((TransactionType) transactionTypeDAO.findByTransactionId(transactionId));
+        return transaction;
     }
 
     public List<Transaction> getAllTransactions() {
@@ -30,37 +32,21 @@ public class TransactionService {
 
     public void deleteTransaction(Transaction transaction) {
         transactionDAO.delete(transaction);
-        List<TransactionType> transactionTypes = transaction.getTransactionTypes();
-        for (TransactionType transactionType : transactionTypes) {
-            transactionTypeDAO.delete(transactionType);
-        }
     }
 
     public List<Transaction> getTransactionsByAccountId(int accountId) {
         return transactionDAO.findByAccountId(accountId);
     }
 
-    // Additional methods if needed
-
     public List<Transaction> getTransactionsByTransactionTypeId(int transactionTypeId) {
         return transactionDAO.findByTransactionTypeId(transactionTypeId);
     }
-
+    
     public List<TransactionType> getAllTransactionTypes() {
         return transactionTypeDAO.findAll();
     }
-
-    public void createTransactionType(TransactionType transactionType) {
-        transactionTypeDAO.create(transactionType);
-    }
-
-    public void updateTransactionType(TransactionType transactionType) {
-        transactionTypeDAO.update(transactionType);
-    }
-
-    public void deleteTransactionType(TransactionType transactionType) {
-        transactionTypeDAO.delete(transactionType);
-    }
 }
+
+
 
 

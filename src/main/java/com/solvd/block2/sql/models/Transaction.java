@@ -1,18 +1,17 @@
 package com.solvd.block2.sql.models;
 
 import java.util.Date;
-import java.util.List;
 
 public class Transaction {
     private int transactionId;
-    private List<TransactionType> transactionTypes;
+    private TransactionType transactionTypes;
     private int accountId;
     private double amount;
     private Date transactionDate;
     private int sourceAccountId;
     private int destinationAccountId;
 
-    public Transaction(int transactionId, List<TransactionType> transactionTypes, int accountId, double amount, Date transactionDate, int sourceAccountId, int destinationAccountId) {
+    public Transaction(int transactionId, TransactionType transactionTypes, int accountId, double amount, Date transactionDate, int sourceAccountId, int destinationAccountId) {
         this.transactionId = transactionId;
         this.transactionTypes = transactionTypes;
         this.accountId = accountId;
@@ -32,11 +31,11 @@ public class Transaction {
         this.transactionId = transactionId;
     }
 
-    public List<TransactionType> getTransactionTypes() {
+    public TransactionType getTransactionTypes() {
         return transactionTypes;
     }
 
-    public void setTransactionTypes(List<TransactionType> transactionTypes) {
+    public void setTransactionTypes(TransactionType transactionTypes) {
         this.transactionTypes = transactionTypes;
     }
 

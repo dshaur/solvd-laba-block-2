@@ -12,12 +12,16 @@ import javax.xml.parsers.SAXParserFactory;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BankXMLParser {
 
     private static final Logger LOGGER = LogManager.getLogger(BankXMLParser.class);
 
-    static void validateXML(String xmlFilePath, String xsdFilePath) throws SAXException {
+    static List<String> validateXML(String xmlFilePath, String xsdFilePath) throws SAXException {
+        List<String> validatedElements = new ArrayList<>();
+
         try {
             SAXParserFactory factory = SAXParserFactory.newInstance();
             factory.setNamespaceAware(true);
@@ -30,43 +34,41 @@ public class BankXMLParser {
 
             SAXParser parser = factory.newSAXParser();
             XMLReader reader = parser.getXMLReader();
-            reader.setErrorHandler(new SimpleErrorHandler());
+
+            List<String> validationErrors = new ArrayList<>();
+            reader.setErrorHandler(new SimpleErrorHandler(validationErrors));
+
+            BankContentHandler contentHandler = new BankContentHandler(validatedElements);
+            reader.setContentHandler(contentHandler);
 
             reader.parse(xmlFilePath);
 
-            System.out.println("XML validation successful.");
+            if (!validationErrors.isEmpty()) {
+                throw new SAXException("XML validation failed.");
+            }
 
+            LOGGER.info("XML validation successful.");
+
+            return validatedElements;
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
             throw new SAXException("Parser configuration error: " + e.getMessage());
+        } catch (SAXException e) {
+            e.printStackTrace();
+            throw e;
         } catch (Exception e) {
             e.printStackTrace();
             throw new SAXException("XML validation failed. Error: " + e.getMessage());
         }
     }
 
-    static void parseXML(String xmlFilePath) throws SAXException {
-        try {
-            SAXParserFactory factory = SAXParserFactory.newInstance();
-            factory.setNamespaceAware(true);
-
-            SAXParser parser = factory.newSAXParser();
-            XMLReader reader = parser.getXMLReader();
-            reader.setContentHandler(new BankContentHandler());
-
-            reader.parse(xmlFilePath);
-
-            System.out.println("XML parsing completed.");
-
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-            throw new SAXException("Parser configuration error: " + e.getMessage());
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new SAXException("XML parsing failed. Error: " + e.getMessage());
+    static void logValidatedElements(List<String> validatedElements) {
+        for (String element : validatedElements) {
+            LOGGER.info(element);
         }
     }
 }
+
 
 
 
