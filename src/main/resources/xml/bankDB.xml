@@ -9,7 +9,7 @@
     <email>johndoe@example.com</email>
     <creditCards>
         <creditCard>
-            <creditCardId>ASD</creditCardId>
+            <creditCardId>1</creditCardId>
             <customerId>1</customerId>
             <creditCardNumber>1234567890123456</creditCardNumber>
             <expiryDate>2023-06-30</expiryDate>
