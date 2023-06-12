@@ -46,8 +46,5 @@ public class DbUtil {
         return createConnection();
     }
 
-    public static void releaseConnection(Connection connection) {
-        // Do nothing, let the connection be reused by the next client
-    }
 }
 

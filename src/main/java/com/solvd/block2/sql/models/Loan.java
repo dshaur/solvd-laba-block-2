@@ -1,15 +1,43 @@
 package com.solvd.block2.sql.models;
 
+import com.solvd.block2.xml.DateAdapter;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Date;
 
+@XmlRootElement(name = "loan")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Loan {
+    @XmlElement(name = "loanId")
     private int loanId;
+
+    @XmlElement(name = "customerId")
     private int customerId;
+
+    @XmlElement(name = "loanType")
     private String loanType;
+
+    @XmlElement(name = "loanAmount")
     private double loanAmount;
+
+    @XmlElement(name = "interestRate")
     private double interestRate;
+
+    @XmlElement(name = "startDate")
+    @XmlJavaTypeAdapter(DateAdapter.class)
     private Date startDate;
+
+    @XmlElement(name = "endDate")
+    @XmlJavaTypeAdapter(DateAdapter.class)
     private Date endDate;
+
+    public Loan() {
+        // No-arg default constructor
+    }
 
     public Loan(int loanId, int customerId, String loanType, double loanAmount, double interestRate, Date startDate, Date endDate) {
         this.loanId = loanId;

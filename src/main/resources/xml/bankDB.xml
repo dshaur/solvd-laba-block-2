@@ -1,43 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bankDB xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="bankDB.xsd">
-    <customer>
-        <customerId>1</customerId>
-        <firstName>John</firstName>
-        <lastName>Doe</lastName>
-        <address>123 Main St</address>
-        <phoneNumber>123-456-7890</phoneNumber>
-        <email>johndoe@example.com</email>
-        <creditCards>
-            <creditCard>
-                <creditCardId>1</creditCardId>
-                <customerId>1</customerId>
-                <creditCardNumber>1234567890123456</creditCardNumber>
-                <expiryDate>2023-06-30</expiryDate>
-                <creditLimit>5000.0</creditLimit>
-                <outstandingBalance>2500.0</outstandingBalance>
-            </creditCard>
-        </creditCards>
-        <debitCards>
-            <debitCard>
-                <cardId>1</cardId>
-                <customerId>1</customerId>
-                <cardNumber>9876543210987654</cardNumber>
-                <expirationDate>2023-06-30</expirationDate>
-            </debitCard>
-        </debitCards>
-        <loans>
-            <loan>
-                <loanId>1</loanId>
-                <customerId>1</customerId>
-                <loanType>Home Loan</loanType>
-                <loanAmount>200000.0</loanAmount>
-                <interestRate>4.5</interestRate>
-                <startDate>2023-06-01</startDate>
-                <endDate>2043-06-01</endDate>
-            </loan>
-        </loans>
-    </customer>
+<customer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="bankDB.xsd">
+    <customerId>1</customerId>
+    <firstName>John</firstName>
+    <lastName>Doe</lastName>
+    <address>123 Main St</address>
+    <phoneNumber>123-456-7890</phoneNumber>
+    <email>johndoe@example.com</email>
+    <creditCards>
+        <creditCard>
+            <creditCardId>ASD</creditCardId>
+            <customerId>1</customerId>
+            <creditCardNumber>1234567890123456</creditCardNumber>
+            <expiryDate>2023-06-30</expiryDate>
+            <creditLimit>5000.0</creditLimit>
+            <outstandingBalance>2500.0</outstandingBalance>
+        </creditCard>
+    </creditCards>
+    <debitCards>
+        <debitCard>
+            <cardId>1</cardId>
+            <customerId>1</customerId>
+            <cardNumber>9876543210987654</cardNumber>
+            <expirationDate>2023-06-30</expirationDate>
+        </debitCard>
+    </debitCards>
+    <loans>
+        <loan>
+            <loanId>1</loanId>
+            <customerId>1</customerId>
+            <loanType>Home Loan</loanType>
+            <loanAmount>200000.0</loanAmount>
+            <interestRate>4.5</interestRate>
+            <startDate>2023-06-01</startDate>
+            <endDate>2043-06-01</endDate>
+        </loan>
+    </loans>
     <transaction>
         <transactionId>1</transactionId>
         <transactionTypes>
@@ -66,4 +64,4 @@
             </branchEmployee>
         </branchEmployees>
     </branch>
-</bankDB>
+</customer>

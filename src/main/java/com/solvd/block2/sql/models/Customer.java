@@ -1,17 +1,44 @@
 package com.solvd.block2.sql.models;
 
+import javax.xml.bind.annotation.*;
 import java.util.List;
 
+@XmlRootElement(name = "customer")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Customer {
+    @XmlElement(name = "customerId")
     private int customerId;
+
+    @XmlElement(name = "firstName")
     private String firstName;
+
+    @XmlElement(name = "lastName")
     private String lastName;
+
+    @XmlElement(name = "address")
     private String address;
+
+    @XmlElement(name = "phoneNumber")
     private String phoneNumber;
+
+    @XmlElement(name = "email")
     private String email;
+
+    @XmlElementWrapper(name = "creditCards")
+    @XmlElement(name = "creditCard")
     private List<CreditCard> creditCards;
+
+    @XmlElementWrapper(name = "debitCards")
+    @XmlElement(name = "debitCard")
     private List<DebitCard> debitCards;
+
+    @XmlElementWrapper(name = "loans")
+    @XmlElement(name = "loan")
     private List<Loan> loans;
+
+    public Customer() {
+        // No-arg default constructor
+    }
 
     public Customer(int customerId, String firstName, String lastName, String address, String phoneNumber, String email, List<CreditCard> creditCards, List<DebitCard> debitCards, List<Loan> loans) {
         this.customerId = customerId;
