@@ -1,9 +1,19 @@
 package com.solvd.block2.sql.models;
 
-public class TransactionType {
-    private int typeId;
-    private String typeName;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
+@XmlRootElement(name = "transactionType")
+@XmlAccessorType(XmlAccessType.FIELD)
+public class TransactionType {
+    @XmlElement(name = "typeId")
+    private int typeId;
+
+    @XmlElement(name = "typeName")
+    private String typeName;
+    
     public TransactionType(int typeId, String typeName) {
         this.typeId = typeId;
         this.typeName = typeName;

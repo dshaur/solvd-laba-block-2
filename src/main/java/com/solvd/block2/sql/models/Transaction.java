@@ -1,14 +1,37 @@
 package com.solvd.block2.sql.models;
 
+import com.solvd.block2.xml.DateAdapter;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Date;
 
+@XmlRootElement(name = "transaction")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Transaction {
+    @XmlElement(name = "transactionId")
     private int transactionId;
+
+    @XmlElement(name = "transactionTypes")
     private TransactionType transactionTypes;
+
+    @XmlElement(name = "accountId")
     private int accountId;
+
+    @XmlElement(name = "amount")
     private double amount;
+
+    @XmlElement(name = "transactionDate")
+    @XmlJavaTypeAdapter(DateAdapter.class)
     private Date transactionDate;
+
+    @XmlElement(name = "sourceAccountId")
     private int sourceAccountId;
+
+    @XmlElement(name = "destinationAccountId")
     private int destinationAccountId;
 
     public Transaction(int transactionId, TransactionType transactionTypes, int accountId, double amount, Date transactionDate, int sourceAccountId, int destinationAccountId) {

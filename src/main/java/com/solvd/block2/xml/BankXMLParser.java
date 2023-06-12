@@ -1,11 +1,15 @@
 package com.solvd.block2.xml;
 
+import com.solvd.block2.sql.models.Customer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
 import javax.xml.XMLConstants;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -47,7 +51,7 @@ public class BankXMLParser {
                 throw new SAXException("XML validation failed.");
             }
 
-            LOGGER.info("XML validation successful.");
+            LOGGER.info("JAX validation and parsing successful.");
 
             return validatedElements;
         } catch (ParserConfigurationException e) {
@@ -67,6 +71,36 @@ public class BankXMLParser {
             LOGGER.info(element);
         }
     }
+
+    public static Customer parseBankDB(String xmlFilePath) throws JAXBException {
+        try {
+            JAXBContext jaxbContext = JAXBContext.newInstance(Customer.class);
+            Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+            Customer customer = (Customer) unmarshaller.unmarshal(new File(xmlFilePath));
+            LOGGER.info("JAXB parsing successful.");
+            logParsedCustomer(customer); // Log the customer object
+
+            return customer;
+        } catch (JAXBException e) {
+            LOGGER.error("XML parsing failed: " + e.getMessage());
+            throw e;
+        }
+    }
+
+    private static void logParsedCustomer(Customer customer) {
+        LOGGER.info("Unmarshalled XML:");
+        LOGGER.info("  Customer ID: " + customer.getCustomerId());
+        LOGGER.info("  First Name: " + customer.getFirstName());
+        LOGGER.info("  Last Name: " + customer.getLastName());
+        LOGGER.info("  Address: " + customer.getAddress());
+        LOGGER.info("  Phone Number: " + customer.getPhoneNumber());
+        LOGGER.info("  Email: " + customer.getEmail());
+        LOGGER.info("  Credit Cards: " + customer.getCreditCards());
+        LOGGER.info("  Debit Cards: " + customer.getDebitCards());
+        LOGGER.info("  Loans: " + customer.getLoans());
+    }
+
+
 }
 
 

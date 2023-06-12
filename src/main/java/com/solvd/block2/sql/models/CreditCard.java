@@ -1,14 +1,39 @@
 package com.solvd.block2.sql.models;
 
+import com.solvd.block2.xml.DateAdapter;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Date;
 
+@XmlRootElement(name = "creditCard")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class CreditCard {
+    @XmlElement(name = "creditCardId")
     private int creditCardId;
+
+    @XmlElement(name = "customerId")
     private int customerId;
+
+    @XmlElement(name = "creditCardNumber")
     private String creditCardNumber;
+
+    @XmlElement(name = "expiryDate")
+    @XmlJavaTypeAdapter(DateAdapter.class)
     private Date expiryDate;
+
+    @XmlElement(name = "creditLimit")
     private double creditLimit;
+
+    @XmlElement(name = "outstandingBalance")
     private double outstandingBalance;
+
+    public CreditCard() {
+        // No-arg default constructor
+    }
 
     public CreditCard(int creditCardId, int customerId, String creditCardNumber, Date expiryDate, double creditLimit, double outstandingBalance) {
         this.creditCardId = creditCardId;
