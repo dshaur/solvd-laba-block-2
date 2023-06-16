@@ -33,7 +33,7 @@
                             <xs:element name="debitCard">
                                 <xs:complexType>
                                     <xs:sequence>
-                                        <xs:element type="xs:int" name="cardId"/>
+                                        <xs:element type="xs:int" name="debitCardId"/>
                                         <xs:element type="xs:int" name="customerId"/>
                                         <xs:element type="xs:string" name="cardNumber"/>
                                         <xs:element type="xs:date" name="expirationDate"/>
@@ -56,58 +56,6 @@
                                         <xs:element type="xs:double" name="interestRate"/>
                                         <xs:element type="xs:date" name="startDate"/>
                                         <xs:element type="xs:date" name="endDate"/>
-                                    </xs:sequence>
-                                </xs:complexType>
-                            </xs:element>
-                        </xs:sequence>
-                    </xs:complexType>
-                </xs:element>
-                <xs:element name="transaction">
-                    <xs:complexType>
-                        <xs:sequence>
-                            <xs:element type="xs:int" name="transactionId"/>
-                            <xs:element name="transactionTypes">
-                                <xs:complexType>
-                                    <xs:sequence>
-                                        <xs:element name="transactionType">
-                                            <xs:complexType>
-                                                <xs:sequence>
-                                                    <xs:element type="xs:int" name="typeId"/>
-                                                    <xs:element type="xs:string" name="typeName"/>
-                                                </xs:sequence>
-                                            </xs:complexType>
-                                        </xs:element>
-                                    </xs:sequence>
-                                </xs:complexType>
-                            </xs:element>
-                            <xs:element type="xs:int" name="accountId"/>
-                            <xs:element type="xs:double" name="amount"/>
-                            <xs:element type="xs:date" name="transactionDate"/>
-                            <xs:element type="xs:int" name="sourceAccountId"/>
-                            <xs:element type="xs:int" name="destinationAccountId"/>
-                        </xs:sequence>
-                    </xs:complexType>
-                </xs:element>
-                <xs:element name="branch">
-                    <xs:complexType>
-                        <xs:sequence>
-                            <xs:element type="xs:int" name="branchId"/>
-                            <xs:element type="xs:string" name="branchName"/>
-                            <xs:element type="xs:string" name="location"/>
-                            <xs:element name="branchEmployees">
-                                <xs:complexType>
-                                    <xs:sequence>
-                                        <xs:element name="branchEmployee">
-                                            <xs:complexType>
-                                                <xs:sequence>
-                                                    <xs:element type="xs:int" name="employeeId"/>
-                                                    <xs:element type="xs:string" name="firstName"/>
-                                                    <xs:element type="xs:string" name="lastName"/>
-                                                    <xs:element type="xs:int" name="branchId"/>
-                                                    <xs:element type="xs:string" name="position"/>
-                                                </xs:sequence>
-                                            </xs:complexType>
-                                        </xs:element>
                                     </xs:sequence>
                                 </xs:complexType>
                             </xs:element>

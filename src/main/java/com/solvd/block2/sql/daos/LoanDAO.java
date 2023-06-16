@@ -5,14 +5,12 @@ import com.solvd.block2.sql.models.Loan;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.solvd.block2.sql.utilities.DbUtil.getConnection;
+import static com.solvd.block2.sql.utilities.DbUtil.releaseConnection;
 
 public class LoanDAO extends AbstractDAO<Loan> implements ILoanDAO {
 
@@ -87,14 +85,22 @@ public class LoanDAO extends AbstractDAO<Loan> implements ILoanDAO {
     @Override
     public Loan getById(int loanId) {
         LOGGER.info("Getting loan with ID: {}", loanId);
-        try (PreparedStatement statement = getConnection().prepareStatement(getFindByIdQuery())) {
+        Connection connection = null;
+
+        try {
+            connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement(getFindByIdQuery());
             statement.setInt(1, loanId);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 return createFromResultSet(resultSet);
             }
-        } catch (SQLException e) {
+        } catch (SQLException | InterruptedException e) {
             LOGGER.error("Error getting loan with ID: {}", loanId, e);
+        } finally {
+            if (connection != null) {
+                releaseConnection(connection);
+            }
         }
         return null;
     }
@@ -103,14 +109,22 @@ public class LoanDAO extends AbstractDAO<Loan> implements ILoanDAO {
     public List<Loan> getByCustomerId(int customerId) {
         LOGGER.info("Getting loans for customer with ID: {}", customerId);
         List<Loan> loans = new ArrayList<>();
-        try (PreparedStatement statement = getConnection().prepareStatement(getFindAllQuery())) {
+        Connection connection = null;
+
+        try {
+            connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement(getFindAllQuery());
             statement.setInt(1, customerId);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 loans.add(createFromResultSet(resultSet));
             }
-        } catch (SQLException e) {
+        } catch (SQLException | InterruptedException e) {
             LOGGER.error("Error getting loans for customer with ID: {}", customerId, e);
+        } finally {
+            if (connection != null) {
+                releaseConnection(connection);
+            }
         }
         return loans;
     }
@@ -119,13 +133,21 @@ public class LoanDAO extends AbstractDAO<Loan> implements ILoanDAO {
     public List<Loan> getAll() {
         LOGGER.info("Getting all loans");
         List<Loan> loans = new ArrayList<>();
-        try (PreparedStatement statement = getConnection().prepareStatement(getFindAllQuery())) {
+        Connection connection = null;
+
+        try {
+            connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement(getFindAllQuery());
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 loans.add(createFromResultSet(resultSet));
             }
-        } catch (SQLException e) {
+        } catch (SQLException | InterruptedException e) {
             LOGGER.error("Error getting all loans", e);
+        } finally {
+            if (connection != null) {
+                releaseConnection(connection);
+            }
         }
         return loans;
     }

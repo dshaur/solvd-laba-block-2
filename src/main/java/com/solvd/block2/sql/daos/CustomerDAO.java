@@ -8,6 +8,7 @@ import com.solvd.block2.sql.models.Loan;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.solvd.block2.sql.utilities.DbUtil.getConnection;
+import static com.solvd.block2.sql.utilities.DbUtil.releaseConnection;
 
 public class CustomerDAO extends AbstractDAO<Customer> implements ICustomerDAO {
 
@@ -111,15 +113,24 @@ public class CustomerDAO extends AbstractDAO<Customer> implements ICustomerDAO {
     @Override
     public Customer getById(int customerId) {
         LOGGER.info("Getting customer with ID: {}", customerId);
-        try (PreparedStatement statement = getConnection().prepareStatement(getFindByIdQuery())) {
+        Connection connection = null;
+
+        try {
+            connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement(getFindByIdQuery());
             statement.setInt(1, customerId);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 return createFromResultSet(resultSet);
             }
-        } catch (SQLException e) {
+        } catch (SQLException | InterruptedException e) {
             LOGGER.error("Error getting customer with ID: {}", customerId, e);
+        } finally {
+            if (connection != null) {
+                releaseConnection(connection);
+            }
         }
+
         return null;
     }
 
@@ -127,13 +138,21 @@ public class CustomerDAO extends AbstractDAO<Customer> implements ICustomerDAO {
     public List<Customer> getAll() {
         LOGGER.info("Getting all customers");
         List<Customer> customers = new ArrayList<>();
-        try (PreparedStatement statement = getConnection().prepareStatement(getFindAllQuery())) {
+        Connection connection = null;
+
+        try {
+            connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement(getFindAllQuery());
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 customers.add(createFromResultSet(resultSet));
             }
-        } catch (SQLException e) {
+        } catch (SQLException | InterruptedException e) {
             LOGGER.error("Error getting all customers", e);
+        } finally {
+            if (connection != null) {
+                releaseConnection(connection);
+            }
         }
         return customers;
     }

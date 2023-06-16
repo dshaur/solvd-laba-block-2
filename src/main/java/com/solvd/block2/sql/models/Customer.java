@@ -1,37 +1,49 @@
 package com.solvd.block2.sql.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.xml.bind.annotation.*;
 import java.util.List;
 
 @XmlRootElement(name = "customer")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Customer {
+
+    @JsonProperty("customerId")
     @XmlElement(name = "customerId")
     private int customerId;
 
+    @JsonProperty("firstName")
     @XmlElement(name = "firstName")
     private String firstName;
 
+    @JsonProperty("lastName")
     @XmlElement(name = "lastName")
     private String lastName;
 
+    @JsonProperty("address")
     @XmlElement(name = "address")
     private String address;
 
+    @JsonProperty("phoneNumber")
     @XmlElement(name = "phoneNumber")
     private String phoneNumber;
 
+    @JsonProperty("email")
     @XmlElement(name = "email")
     private String email;
 
+    @JsonProperty("creditCards")
     @XmlElementWrapper(name = "creditCards")
     @XmlElement(name = "creditCard")
     private List<CreditCard> creditCards;
 
+    @JsonProperty("debitCards")
     @XmlElementWrapper(name = "debitCards")
     @XmlElement(name = "debitCard")
     private List<DebitCard> debitCards;
 
+    @JsonProperty("loans")
     @XmlElementWrapper(name = "loans")
     @XmlElement(name = "loan")
     private List<Loan> loans;
@@ -120,6 +132,18 @@ public class Customer {
 
     public List<Loan> getLoans() {
         return loans;
+    }
+
+    public void addCreditCard(CreditCard creditCard) {
+        creditCards.add(creditCard);
+    }
+
+    public void addDebitCard(DebitCard debitCard) {
+        debitCards.add(debitCard);
+    }
+
+    public void addLoan(Loan loan) {
+        loans.add(loan);
     }
 
     public void setLoans(List<Loan> loans) {

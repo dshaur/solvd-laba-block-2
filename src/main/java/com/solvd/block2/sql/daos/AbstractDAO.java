@@ -17,65 +17,102 @@ public abstract class AbstractDAO<T> implements GenDAO<T> {
 
     @Override
     public T findById(int id) {
-        try (Connection connection = DbUtil.getConnection();
-             PreparedStatement statement = connection.prepareStatement(getFindByIdQuery())) {
+        Connection connection = null;
+
+        try {
+            connection = DbUtil.getConnection();
+            PreparedStatement statement = connection.prepareStatement(getFindByIdQuery());
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 return createFromResultSet(resultSet);
             }
-        } catch (SQLException e) {
+        } catch (SQLException | InterruptedException e) {
             e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                DbUtil.releaseConnection(connection);
+            }
         }
+
         return null;
     }
 
     @Override
     public List<T> findAll() {
         List<T> entities = new ArrayList<>();
-        try (Connection connection = DbUtil.getConnection();
-             PreparedStatement statement = connection.prepareStatement(getFindAllQuery())) {
+        Connection connection = null;
+
+        try {
+            connection = DbUtil.getConnection();
+            PreparedStatement statement = connection.prepareStatement(getFindAllQuery());
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 T entity = createFromResultSet(resultSet);
                 entities.add(entity);
             }
-        } catch (SQLException e) {
+        } catch (SQLException | InterruptedException e) {
             e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                DbUtil.releaseConnection(connection);
+            }
         }
+
         return entities;
     }
 
     @Override
     public void create(T entity) {
-        try (Connection connection = DbUtil.getConnection();
-             PreparedStatement statement = connection.prepareStatement(getCreateQuery())) {
+        Connection connection = null;
+
+        try {
+            connection = DbUtil.getConnection();
+            PreparedStatement statement = connection.prepareStatement(getCreateQuery());
             setCreateStatementParameters(statement, entity);
             statement.executeUpdate();
-        } catch (SQLException e) {
+        } catch (SQLException | InterruptedException e) {
             e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                DbUtil.releaseConnection(connection);
+            }
         }
     }
 
     @Override
     public void update(T entity) {
-        try (Connection connection = DbUtil.getConnection();
-             PreparedStatement statement = connection.prepareStatement(getUpdateQuery())) {
+        Connection connection = null;
+
+        try {
+            connection = DbUtil.getConnection();
+            PreparedStatement statement = connection.prepareStatement(getUpdateQuery());
             setUpdateStatementParameters(statement, entity);
             statement.executeUpdate();
-        } catch (SQLException e) {
+        } catch (SQLException | InterruptedException e) {
             e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                DbUtil.releaseConnection(connection);
+            }
         }
     }
 
     @Override
     public void delete(T entity) {
-        try (Connection connection = DbUtil.getConnection();
-             PreparedStatement statement = connection.prepareStatement(getDeleteQuery())) {
+        Connection connection = null;
+
+        try {
+            connection = DbUtil.getConnection();
+            PreparedStatement statement = connection.prepareStatement(getDeleteQuery());
             setDeleteStatementParameters(statement, entity);
             statement.executeUpdate();
-        } catch (SQLException e) {
+        } catch (SQLException | InterruptedException e) {
             e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                DbUtil.releaseConnection(connection);
+            }
         }
     }
 

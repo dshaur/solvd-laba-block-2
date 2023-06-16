@@ -1,5 +1,7 @@
 package com.solvd.block2.sql.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.solvd.block2.xml.DateAdapter;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -12,27 +14,36 @@ import java.util.Date;
 @XmlRootElement(name = "loan")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Loan {
+    @JsonProperty("loanId")
     @XmlElement(name = "loanId")
     private int loanId;
 
+    @JsonProperty("customerId")
     @XmlElement(name = "customerId")
     private int customerId;
 
+    @JsonProperty("loanType")
     @XmlElement(name = "loanType")
     private String loanType;
 
+    @JsonProperty("loanAmount")
     @XmlElement(name = "loanAmount")
     private double loanAmount;
 
+    @JsonProperty("interestRate")
     @XmlElement(name = "interestRate")
     private double interestRate;
 
+    @JsonProperty("startDate")
     @XmlElement(name = "startDate")
     @XmlJavaTypeAdapter(DateAdapter.class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date startDate;
 
+    @JsonProperty("endDate")
     @XmlElement(name = "endDate")
     @XmlJavaTypeAdapter(DateAdapter.class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date endDate;
 
     public Loan() {
@@ -107,14 +118,14 @@ public class Loan {
 
     @Override
     public String toString() {
-        return "Loan{" +
-                "loanId=" + loanId +
-                ", customerId=" + customerId +
-                ", loanType='" + loanType + '\'' +
-                ", loanAmount=" + loanAmount +
-                ", interestRate=" + interestRate +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
+        return "Loan { " +
+                "loanId : " + loanId +
+                ", customerId : " + customerId +
+                ", loanType : '" + loanType + '\'' +
+                ", loanAmount : " + loanAmount +
+                ", interestRate : " + interestRate +
+                ", startDate : " + startDate +
+                ", endDate : " + endDate +
                 '}';
     }
 }

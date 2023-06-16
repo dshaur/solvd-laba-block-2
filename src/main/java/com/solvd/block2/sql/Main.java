@@ -154,7 +154,6 @@ public class Main {
         } catch (Exception e) {
             LOGGER.info("Error retrieving Loans by customer ID: " + loanCustomerId + ". " + e.getMessage());
         }
-
     }
 }
 

@@ -19,7 +19,7 @@
     </creditCards>
     <debitCards>
         <debitCard>
-            <cardId>1</cardId>
+            <debitCardId>1</debitCardId>
             <customerId>1</customerId>
             <cardNumber>9876543210987654</cardNumber>
             <expirationDate>2023-06-30</expirationDate>
@@ -36,32 +36,4 @@
             <endDate>2043-06-01</endDate>
         </loan>
     </loans>
-    <transaction>
-        <transactionId>1</transactionId>
-        <transactionTypes>
-            <transactionType>
-                <typeId>1</typeId>
-                <typeName>Deposit</typeName>
-            </transactionType>
-        </transactionTypes>
-        <accountId>1</accountId>
-        <amount>1000.0</amount>
-        <transactionDate>2023-06-01</transactionDate>
-        <sourceAccountId>0</sourceAccountId>
-        <destinationAccountId>1</destinationAccountId>
-    </transaction>
-    <branch>
-        <branchId>1</branchId>
-        <branchName>Main Branch</branchName>
-        <location>123 Main St</location>
-        <branchEmployees>
-            <branchEmployee>
-                <employeeId>1</employeeId>
-                <firstName>Jane</firstName>
-                <lastName>Smith</lastName>
-                <branchId>1</branchId>
-                <position>Teller</position>
-            </branchEmployee>
-        </branchEmployees>
-    </branch>
 </customer>

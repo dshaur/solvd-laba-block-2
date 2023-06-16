@@ -1,22 +1,21 @@
 package com.solvd.block2.sql.models;
 
-import javax.xml.bind.annotation.*;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import java.util.List;
 
-@XmlRootElement(name = "branch")
-@XmlAccessorType(XmlAccessType.FIELD)
 public class Branch {
-    @XmlElement(name = "branchId")
     private int branchId;
-
-    @XmlElement(name = "branchName")
     private String branchName;
-
-    @XmlElement(name = "location")
     private String location;
 
+    @JsonProperty("branchEmployees")
     @XmlElementWrapper(name = "branchEmployees")
     @XmlElement(name = "branchEmployee")
+    @JsonManagedReference
     private List<BranchEmployee> branchEmployees;
 
     public Branch(int branchId, String branchName, String location, List<BranchEmployee> branchEmployees) {

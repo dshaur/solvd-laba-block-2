@@ -5,7 +5,7 @@ import com.solvd.block2.sql.models.DebitCard;
 import java.util.List;
 
 public interface IDebitCardDAO extends GenDAO<DebitCard> {
-    DebitCard getById(int cardId);
+    DebitCard getById(int debitCardId);
 
     List<DebitCard> getByCustomerId(int customerId);
 

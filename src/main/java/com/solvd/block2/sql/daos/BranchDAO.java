@@ -76,17 +76,23 @@ public class BranchDAO extends AbstractDAO<Branch> implements IBranchDAO {
     @Override
     public List<Branch> findByLocation(String location) {
         List<Branch> branches = new ArrayList<>();
+        Connection connection = null;
 
-        try (Connection connection = DbUtil.getConnection();
-             PreparedStatement statement = connection.prepareStatement("SELECT * FROM branches WHERE Location = ?")) {
+        try {
+            connection = DbUtil.getConnection();
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM branches WHERE Location = ?");
             statement.setString(1, location);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 Branch branch = createFromResultSet(resultSet);
                 branches.add(branch);
             }
-        } catch (SQLException e) {
+        } catch (SQLException | InterruptedException e) {
             e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                DbUtil.releaseConnection(connection);
+            }
         }
 
         return branches;
@@ -95,24 +101,36 @@ public class BranchDAO extends AbstractDAO<Branch> implements IBranchDAO {
 
     public List<Branch> findByBranchName(String branchName) {
         List<Branch> branches = new ArrayList<>();
-        try (Connection connection = DbUtil.getConnection();
-             PreparedStatement statement = connection.prepareStatement("SELECT * FROM branches WHERE Branch_Name = ?")) {
+        Connection connection = null; // Declare connection outside the try-with-resources block
+
+        try {
+            connection = DbUtil.getConnection(); // Get a connection from the connection pool
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM branches WHERE Branch_Name = ?");
             statement.setString(1, branchName);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 Branch branch = createFromResultSet(resultSet);
                 branches.add(branch);
             }
-        } catch (SQLException e) {
+        } catch (SQLException | InterruptedException e) { // Handle InterruptedException when calling getConnection
             e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                DbUtil.releaseConnection(connection); // Release the connection back to the pool
+            }
         }
+
         return branches;
     }
 
+
     public List<BranchEmployee> getBranchEmployeesByBranchId(int branchId) {
         List<BranchEmployee> branchEmployees = new ArrayList<>();
-        try (Connection connection = DbUtil.getConnection();
-             PreparedStatement statement = connection.prepareStatement("SELECT * FROM branch_employees WHERE Branch_ID = ?")) {
+        Connection connection = null;
+
+        try {
+            connection = DbUtil.getConnection();
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM branch_employees WHERE Branch_ID = ?");
             statement.setInt(1, branchId);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -124,9 +142,14 @@ public class BranchDAO extends AbstractDAO<Branch> implements IBranchDAO {
                 BranchEmployee branchEmployee = new BranchEmployee(employeeId, firstName, lastName, branchId, position);
                 branchEmployees.add(branchEmployee);
             }
-        } catch (SQLException e) {
+        } catch (SQLException | InterruptedException e) {
             e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                DbUtil.releaseConnection(connection);
+            }
         }
+
         return branchEmployees;
     }
 

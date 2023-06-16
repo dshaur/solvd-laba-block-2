@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import static com.solvd.block2.sql.utilities.DbUtil.getConnection;
+import static com.solvd.block2.sql.utilities.DbUtil.releaseConnection;
 
 public class TransactionTypeDAO extends AbstractDAO<TransactionType> implements ITransactionTypeDAO {
 
@@ -69,15 +70,15 @@ public class TransactionTypeDAO extends AbstractDAO<TransactionType> implements 
     @Override
     public TransactionType findByTransactionId(int transactionId) {
         TransactionType transactionType = null;
-
         String query = "SELECT tt.transaction_type_id, tt.type_name " +
                 "FROM transaction_type tt " +
                 "INNER JOIN transactions tr ON tt.transaction_type_id = tr.transaction_type_id " +
                 "WHERE tr.transaction_id = ?";
 
-        try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
-
+        Connection connection = null;
+        try {
+            connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, transactionId);
 
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -87,14 +88,14 @@ public class TransactionTypeDAO extends AbstractDAO<TransactionType> implements 
                     transactionType = new TransactionType(typeId, typeName);
                 }
             }
-        } catch (SQLException e) {
+        } catch (SQLException | InterruptedException e) {
             LOGGER.error("Error retrieving transaction type by transaction ID: " + transactionId, e);
+        } finally {
+            if (connection != null) {
+                releaseConnection(connection);
+            }
         }
-
         return transactionType;
     }
-
-
-    // Add other specific methods related to the 'transaction_type' table
 }
 

@@ -78,21 +78,28 @@ public class BranchEmployeeDAO extends AbstractDAO<BranchEmployee> implements IB
 
     public List<BranchEmployee> findByBranchId(int branchId) {
         List<BranchEmployee> branchEmployees = new ArrayList<>();
+        Connection connection = null;
 
-        try (Connection connection = DbUtil.getConnection();
-             PreparedStatement statement = connection.prepareStatement("SELECT * FROM branch_employees WHERE branch_id = ?")) {
+        try {
+            connection = DbUtil.getConnection();
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM branch_employees WHERE branch_id = ?");
             statement.setInt(1, branchId);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 BranchEmployee branchEmployee = createFromResultSet(resultSet);
                 branchEmployees.add(branchEmployee);
             }
-        } catch (SQLException e) {
+        } catch (SQLException | InterruptedException e) {
             e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                DbUtil.releaseConnection(connection);
+            }
         }
 
         return branchEmployees;
     }
+
 
     // Add other specific methods related to the 'branch_employees' table if needed
 }
