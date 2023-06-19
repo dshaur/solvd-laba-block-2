@@ -1,26 +1,11 @@
 package com.solvd.block2.sql.models;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-
-@XmlRootElement(name = "branchEmployee")
-@XmlAccessorType(XmlAccessType.FIELD)
 public class BranchEmployee {
-    @XmlElement(name = "employeeId")
+
     private int employeeId;
-
-    @XmlElement(name = "firstName")
     private String firstName;
-
-    @XmlElement(name = "lastName")
     private String lastName;
-
-    @XmlElement(name = "branchId")
     private int branchId;
-
-    @XmlElement(name = "position")
     private String position;
 
     public BranchEmployee(int employeeId, String firstName, String lastName, int branchId, String position) {

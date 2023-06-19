@@ -1,5 +1,7 @@
 package com.solvd.block2.sql.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.solvd.block2.xml.DateAdapter;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -12,22 +14,29 @@ import java.util.Date;
 @XmlRootElement(name = "creditCard")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class CreditCard {
+    @JsonProperty("creditCardId")
     @XmlElement(name = "creditCardId")
     private int creditCardId;
 
+    @JsonProperty("customerId")
     @XmlElement(name = "customerId")
     private int customerId;
 
+    @JsonProperty("creditCardNumber")
     @XmlElement(name = "creditCardNumber")
     private String creditCardNumber;
 
+    @JsonProperty("expiryDate")
     @XmlElement(name = "expiryDate")
     @XmlJavaTypeAdapter(DateAdapter.class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date expiryDate;
 
+    @JsonProperty("creditLimit")
     @XmlElement(name = "creditLimit")
     private double creditLimit;
 
+    @JsonProperty("outstandingBalance")
     @XmlElement(name = "outstandingBalance")
     private double outstandingBalance;
 

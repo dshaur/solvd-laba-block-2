@@ -3,7 +3,6 @@ package com.solvd.block2.sql.daos;
 import com.solvd.block2.sql.interfaces.ITransactionDAO;
 import com.solvd.block2.sql.models.Transaction;
 import com.solvd.block2.sql.models.TransactionType;
-import com.solvd.block2.sql.utilities.DbUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -14,6 +13,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import static com.solvd.block2.sql.utilities.DbUtil.getConnection;
+import static com.solvd.block2.sql.utilities.DbUtil.releaseConnection;
 
 public class TransactionDAO extends AbstractDAO<Transaction> implements ITransactionDAO {
 
@@ -86,25 +88,33 @@ public class TransactionDAO extends AbstractDAO<Transaction> implements ITransac
 
     public List<Transaction> findByAccountId(int accountId) {
         List<Transaction> transactions = new ArrayList<>();
+        Connection connection = null;
 
-        try (Connection connection = DbUtil.getConnection();
-             PreparedStatement statement = connection.prepareStatement("SELECT * FROM transactions WHERE account_id = ?")) {
+        try {
+            connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM transactions WHERE account_id = ?");
             statement.setInt(1, accountId);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 Transaction transaction = createFromResultSet(resultSet);
                 transactions.add(transaction);
             }
-        } catch (SQLException e) {
+        } catch (SQLException | InterruptedException e) {
             e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                releaseConnection(connection);
+            }
         }
-
         return transactions;
     }
 
     public TransactionType getTransactionTypeByTransactionId(int transactionId) {
-        try (Connection connection = DbUtil.getConnection();
-             PreparedStatement statement = connection.prepareStatement("SELECT * FROM transaction_type WHERE transaction_type_id = ?")) {
+        Connection connection = null;
+        
+        try {
+            connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM transaction_type WHERE transaction_type_id = ?");
             statement.setInt(1, transactionId);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
@@ -112,8 +122,12 @@ public class TransactionDAO extends AbstractDAO<Transaction> implements ITransac
                 String transactionTypeName = resultSet.getString("type_name");
                 return new TransactionType(transactionTypeId, transactionTypeName);
             }
-        } catch (SQLException e) {
+        } catch (SQLException | InterruptedException e) {
             e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                releaseConnection(connection);
+            }
         }
         return null;
     }
@@ -121,21 +135,24 @@ public class TransactionDAO extends AbstractDAO<Transaction> implements ITransac
 
     public List<Transaction> findByTransactionTypeId(int transactionTypeId) {
         List<Transaction> transactions = new ArrayList<>();
+        Connection connection = null;
 
-        try (Connection connection = DbUtil.getConnection();
-             PreparedStatement statement = connection.prepareStatement(
-                     "SELECT * FROM transactions JOIN transaction_type ON transactions.transaction_id = transaction_type.transaction_id WHERE transaction_type.transaction_type_id = ?"
-             )) {
+        try {
+            connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM transactions JOIN transaction_type ON transactions.transaction_id = transaction_type.transaction_id WHERE transaction_type.transaction_type_id = ?");
             statement.setInt(1, transactionTypeId);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 Transaction transaction = createFromResultSet(resultSet);
                 transactions.add(transaction);
             }
-        } catch (SQLException e) {
+        } catch (SQLException | InterruptedException e) {
             e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                releaseConnection(connection);
+            }
         }
-
         return transactions;
     }
 }

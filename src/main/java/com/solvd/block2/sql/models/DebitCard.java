@@ -1,5 +1,7 @@
 package com.solvd.block2.sql.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.solvd.block2.xml.DateAdapter;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -12,33 +14,41 @@ import java.util.Date;
 @XmlRootElement(name = "debitCard")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class DebitCard {
-    @XmlElement(name = "cardId")
-    private int cardId;
+    @JsonProperty("debitCardId")
+    @XmlElement(name = "debitCardId")
+    private int debitCardId;
+
+    @JsonProperty("customerId")
     @XmlElement(name = "customerId")
     private int customerId;
+
+    @JsonProperty("cardNumber")
     @XmlElement(name = "cardNumber")
     private String cardNumber;
+
+    @JsonProperty("expirationDate")
     @XmlElement(name = "expirationDate")
     @XmlJavaTypeAdapter(DateAdapter.class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date expirationDate;
 
     public DebitCard() {
         // No-arg default constructor
     }
 
-    public DebitCard(int cardId, int customerId, String cardNumber, Date expirationDate) {
-        this.cardId = cardId;
+    public DebitCard(int debitCardId, int customerId, String cardNumber, Date expirationDate) {
+        this.debitCardId = debitCardId;
         this.customerId = customerId;
         this.cardNumber = cardNumber;
         this.expirationDate = expirationDate;
     }
 
     public int getCardId() {
-        return cardId;
+        return debitCardId;
     }
 
-    public void setCardId(int cardId) {
-        this.cardId = cardId;
+    public void setCardId(int debitCardId) {
+        this.debitCardId = debitCardId;
     }
 
     public int getCustomerId() {
@@ -67,11 +77,11 @@ public class DebitCard {
 
     @Override
     public String toString() {
-        return "DebitCard{" +
-                "cardId=" + cardId +
-                ", customerId=" + customerId +
-                ", cardNumber='" + cardNumber + '\'' +
-                ", expirationDate=" + expirationDate +
+        return "DebitCard { " +
+                "debitCardId : " + debitCardId +
+                ", customerId : " + customerId +
+                ", cardNumber : '" + cardNumber + '\'' +
+                ", expirationDate : " + expirationDate +
                 '}';
     }
 }

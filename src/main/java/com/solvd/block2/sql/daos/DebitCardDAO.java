@@ -5,6 +5,7 @@ import com.solvd.block2.sql.models.DebitCard;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,6 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 import static com.solvd.block2.sql.utilities.DbUtil.getConnection;
+import static com.solvd.block2.sql.utilities.DbUtil.releaseConnection;
 
 public class DebitCardDAO extends AbstractDAO<DebitCard> implements IDebitCardDAO {
 
@@ -20,12 +22,12 @@ public class DebitCardDAO extends AbstractDAO<DebitCard> implements IDebitCardDA
 
     @Override
     protected DebitCard createFromResultSet(ResultSet resultSet) throws SQLException {
-        int cardId = resultSet.getInt("Debit_Card_ID");
+        int debitCardId = resultSet.getInt("Debit_Card_ID");
         int customerId = resultSet.getInt("Customer_ID");
         String cardNumber = resultSet.getString("Debit_Card_Number");
         Date expirationDate = resultSet.getDate("Expiry_Date");
 
-        return new DebitCard(cardId, customerId, cardNumber, expirationDate);
+        return new DebitCard(debitCardId, customerId, cardNumber, expirationDate);
     }
 
     @Override
@@ -75,16 +77,24 @@ public class DebitCardDAO extends AbstractDAO<DebitCard> implements IDebitCardDA
     }
 
     @Override
-    public DebitCard getById(int cardId) {
-        LOGGER.info("Getting debit card with ID: {}", cardId);
-        try (PreparedStatement statement = getConnection().prepareStatement(getFindByIdQuery())) {
-            statement.setInt(1, cardId);
+    public DebitCard getById(int debitCardId) {
+        LOGGER.info("Getting debit card with ID: {}", debitCardId);
+        Connection connection = null;
+
+        try {
+            connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement(getFindByIdQuery());
+            statement.setInt(1, debitCardId);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 return createFromResultSet(resultSet);
             }
-        } catch (SQLException e) {
-            LOGGER.error("Error getting debit card with ID: {}", cardId, e);
+        } catch (SQLException | InterruptedException e) {
+            LOGGER.error("Error getting debit card with ID: {}", debitCardId, e);
+        } finally {
+            if (connection != null) {
+                releaseConnection(connection);
+            }
         }
         return null;
     }
@@ -93,15 +103,24 @@ public class DebitCardDAO extends AbstractDAO<DebitCard> implements IDebitCardDA
     public List<DebitCard> getByCustomerId(int customerId) {
         LOGGER.info("Getting debit cards for customer with ID: {}", customerId);
         List<DebitCard> debitCards = new ArrayList<>();
-        try (PreparedStatement statement = getConnection().prepareStatement("SELECT * FROM debit_cards WHERE Customer_ID = ?")) {
+        Connection connection = null;
+
+        try {
+            connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM debit_cards WHERE Customer_ID = ?");
             statement.setInt(1, customerId);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 debitCards.add(createFromResultSet(resultSet));
             }
-        } catch (SQLException e) {
+        } catch (SQLException | InterruptedException e) {
             LOGGER.error("Error getting debit cards for customer with ID: {}", customerId, e);
+        } finally {
+            if (connection != null) {
+                releaseConnection(connection);
+            }
         }
+
         return debitCards;
     }
 
@@ -109,14 +128,23 @@ public class DebitCardDAO extends AbstractDAO<DebitCard> implements IDebitCardDA
     public List<DebitCard> getAll() {
         LOGGER.info("Getting all debit cards");
         List<DebitCard> debitCards = new ArrayList<>();
-        try (PreparedStatement statement = getConnection().prepareStatement(getFindAllQuery())) {
+        Connection connection = null;
+
+        try {
+            connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement(getFindAllQuery());
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 debitCards.add(createFromResultSet(resultSet));
             }
-        } catch (SQLException e) {
+        } catch (SQLException | InterruptedException e) {
             LOGGER.error("Error getting all debit cards", e);
+        } finally {
+            if (connection != null) {
+                releaseConnection(connection);
+            }
         }
+
         return debitCards;
     }
 }
