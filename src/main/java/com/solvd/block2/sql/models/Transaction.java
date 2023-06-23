@@ -13,6 +13,10 @@ public class Transaction {
     private int sourceAccountId;
     private int destinationAccountId;
 
+    public Transaction() {
+        // No-arg default constructor
+    }
+
     public Transaction(int transactionId, TransactionType transactionTypes, int accountId, double amount, Date transactionDate, int sourceAccountId, int destinationAccountId) {
         this.transactionId = transactionId;
         this.transactionTypes = transactionTypes;

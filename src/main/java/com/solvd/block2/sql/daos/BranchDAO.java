@@ -74,7 +74,7 @@ public class BranchDAO extends AbstractDAO<Branch> implements IBranchDAO {
     }
 
     @Override
-    public List<Branch> findByLocation(String location) {
+    public List<Branch> findByLocation(String location) throws SQLException {
         List<Branch> branches = new ArrayList<>();
         Connection connection = null;
 
@@ -87,7 +87,7 @@ public class BranchDAO extends AbstractDAO<Branch> implements IBranchDAO {
                 Branch branch = createFromResultSet(resultSet);
                 branches.add(branch);
             }
-        } catch (SQLException | InterruptedException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             if (connection != null) {
@@ -99,7 +99,7 @@ public class BranchDAO extends AbstractDAO<Branch> implements IBranchDAO {
     }
 
 
-    public List<Branch> findByBranchName(String branchName) {
+    public List<Branch> findByBranchName(String branchName) throws SQLException {
         List<Branch> branches = new ArrayList<>();
         Connection connection = null; // Declare connection outside the try-with-resources block
 
@@ -112,7 +112,7 @@ public class BranchDAO extends AbstractDAO<Branch> implements IBranchDAO {
                 Branch branch = createFromResultSet(resultSet);
                 branches.add(branch);
             }
-        } catch (SQLException | InterruptedException e) { // Handle InterruptedException when calling getConnection
+        } catch (SQLException e) { // Handle InterruptedException when calling getConnection
             e.printStackTrace();
         } finally {
             if (connection != null) {
@@ -124,7 +124,7 @@ public class BranchDAO extends AbstractDAO<Branch> implements IBranchDAO {
     }
 
 
-    public List<BranchEmployee> getBranchEmployeesByBranchId(int branchId) {
+    public List<BranchEmployee> getBranchEmployeesByBranchId(int branchId) throws SQLException {
         List<BranchEmployee> branchEmployees = new ArrayList<>();
         Connection connection = null;
 
@@ -142,7 +142,7 @@ public class BranchDAO extends AbstractDAO<Branch> implements IBranchDAO {
                 BranchEmployee branchEmployee = new BranchEmployee(employeeId, firstName, lastName, branchId, position);
                 branchEmployees.add(branchEmployee);
             }
-        } catch (SQLException | InterruptedException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             if (connection != null) {

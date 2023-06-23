@@ -16,7 +16,7 @@ public abstract class AbstractDAO<T> implements GenDAO<T> {
     protected abstract T createFromResultSet(ResultSet resultSet) throws SQLException;
 
     @Override
-    public T findById(int id) {
+    public T findById(int id) throws SQLException {
         Connection connection = null;
 
         try {
@@ -27,7 +27,7 @@ public abstract class AbstractDAO<T> implements GenDAO<T> {
             if (resultSet.next()) {
                 return createFromResultSet(resultSet);
             }
-        } catch (SQLException | InterruptedException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             if (connection != null) {
@@ -39,7 +39,7 @@ public abstract class AbstractDAO<T> implements GenDAO<T> {
     }
 
     @Override
-    public List<T> findAll() {
+    public List<T> findAll() throws SQLException {
         List<T> entities = new ArrayList<>();
         Connection connection = null;
 
@@ -51,7 +51,7 @@ public abstract class AbstractDAO<T> implements GenDAO<T> {
                 T entity = createFromResultSet(resultSet);
                 entities.add(entity);
             }
-        } catch (SQLException | InterruptedException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             if (connection != null) {
@@ -63,7 +63,7 @@ public abstract class AbstractDAO<T> implements GenDAO<T> {
     }
 
     @Override
-    public void create(T entity) {
+    public void create(T entity) throws SQLException {
         Connection connection = null;
 
         try {
@@ -71,7 +71,7 @@ public abstract class AbstractDAO<T> implements GenDAO<T> {
             PreparedStatement statement = connection.prepareStatement(getCreateQuery());
             setCreateStatementParameters(statement, entity);
             statement.executeUpdate();
-        } catch (SQLException | InterruptedException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             if (connection != null) {
@@ -81,7 +81,7 @@ public abstract class AbstractDAO<T> implements GenDAO<T> {
     }
 
     @Override
-    public void update(T entity) {
+    public void update(T entity) throws SQLException {
         Connection connection = null;
 
         try {
@@ -89,7 +89,7 @@ public abstract class AbstractDAO<T> implements GenDAO<T> {
             PreparedStatement statement = connection.prepareStatement(getUpdateQuery());
             setUpdateStatementParameters(statement, entity);
             statement.executeUpdate();
-        } catch (SQLException | InterruptedException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             if (connection != null) {
@@ -99,7 +99,7 @@ public abstract class AbstractDAO<T> implements GenDAO<T> {
     }
 
     @Override
-    public void delete(T entity) {
+    public void delete(T entity) throws SQLException {
         Connection connection = null;
 
         try {
@@ -107,7 +107,7 @@ public abstract class AbstractDAO<T> implements GenDAO<T> {
             PreparedStatement statement = connection.prepareStatement(getDeleteQuery());
             setDeleteStatementParameters(statement, entity);
             statement.executeUpdate();
-        } catch (SQLException | InterruptedException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             if (connection != null) {

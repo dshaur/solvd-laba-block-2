@@ -86,7 +86,7 @@ public class TransactionDAO extends AbstractDAO<Transaction> implements ITransac
         return "DELETE FROM transactions WHERE transaction_id = ?";
     }
 
-    public List<Transaction> findByAccountId(int accountId) {
+    public List<Transaction> findByAccountId(int accountId) throws SQLException {
         List<Transaction> transactions = new ArrayList<>();
         Connection connection = null;
 
@@ -99,7 +99,7 @@ public class TransactionDAO extends AbstractDAO<Transaction> implements ITransac
                 Transaction transaction = createFromResultSet(resultSet);
                 transactions.add(transaction);
             }
-        } catch (SQLException | InterruptedException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             if (connection != null) {
@@ -109,9 +109,9 @@ public class TransactionDAO extends AbstractDAO<Transaction> implements ITransac
         return transactions;
     }
 
-    public TransactionType getTransactionTypeByTransactionId(int transactionId) {
+    public TransactionType getTransactionTypeByTransactionId(int transactionId) throws SQLException {
         Connection connection = null;
-        
+
         try {
             connection = getConnection();
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM transaction_type WHERE transaction_type_id = ?");
@@ -122,7 +122,7 @@ public class TransactionDAO extends AbstractDAO<Transaction> implements ITransac
                 String transactionTypeName = resultSet.getString("type_name");
                 return new TransactionType(transactionTypeId, transactionTypeName);
             }
-        } catch (SQLException | InterruptedException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             if (connection != null) {
@@ -133,7 +133,7 @@ public class TransactionDAO extends AbstractDAO<Transaction> implements ITransac
     }
 
 
-    public List<Transaction> findByTransactionTypeId(int transactionTypeId) {
+    public List<Transaction> findByTransactionTypeId(int transactionTypeId) throws SQLException {
         List<Transaction> transactions = new ArrayList<>();
         Connection connection = null;
 
@@ -146,7 +146,7 @@ public class TransactionDAO extends AbstractDAO<Transaction> implements ITransac
                 Transaction transaction = createFromResultSet(resultSet);
                 transactions.add(transaction);
             }
-        } catch (SQLException | InterruptedException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             if (connection != null) {

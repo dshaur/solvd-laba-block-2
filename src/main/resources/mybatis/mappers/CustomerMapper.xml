@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.solvd.block2.mappers.CustomerMapper">
+
+    <resultMap id="customerResultMap" type="com.solvd.block2.sql.models.Customer" autoMapping="false">
+        <id property="customerId" column="customer_ID"/>
+        <result property="firstName" column="first_Name"/>
+        <result property="lastName" column="last_Name"/>
+        <result property="address" column="address"/>
+        <result property="phoneNumber" column="phone_number"/>
+        <result property="email" column="email"/>
+
+        <!-- Include the creditCards collection property -->
+        <collection property="creditCards" ofType="com.solvd.block2.sql.models.CreditCard">
+            <id property="creditCardId" column="credit_card_id"/>
+            <result property="customerId" column="customer_id"/>
+            <result property="creditCardNumber" column="credit_card_number"/>
+            <result property="expiryDate" column="credit_expiry_date" jdbcType="DATE" javaType="java.sql.Date"/>
+            <result property="creditLimit" column="credit_limit"/>
+            <result property="outstandingBalance" column="outstanding_balance"/>
+        </collection>
+
+        <!-- Include the debitCards property -->
+        <collection property="debitCards" ofType="com.solvd.block2.sql.models.DebitCard">
+            <id property="debitCardId" column="debit_card_id"/>
+            <result property="customerId" column="customer_id"/>
+            <result property="cardNumber" column="debit_card_number"/>
+            <result property="expirationDate" column="debit_expiry_date" jdbcType="DATE" javaType="java.sql.Date"/>
+        </collection>
+
+        <!-- Include the loans property -->
+        <collection property="loans" ofType="com.solvd.block2.sql.models.Loan">
+            <id property="loanId" column="loan_id"/>
+            <result property="customerId" column="customer_id"/>
+            <result property="loanType" column="loan_type"/>
+            <result property="loanAmount" column="loan_amount"/>
+            <result property="interestRate" column="interest_rate"/>
+            <result property="startDate" column="start_date" jdbcType="DATE" javaType="java.sql.Date"/>
+            <result property="endDate" column="end_date" jdbcType="DATE" javaType="java.sql.Date"/>
+        </collection>
+    </resultMap>
+
+    <select id="getCustomerById" resultMap="customerResultMap" parameterType="int">
+        SELECT c.customer_ID, c.first_name, c.last_name, c.address, c.phone_number, c.email,
+        cc.credit_card_id, cc.customer_id, cc.credit_card_number, cc.expiry_date AS credit_expiry_date, cc.credit_limit,
+        cc.outstanding_balance,
+        dc.debit_card_id, dc.customer_id, dc.debit_card_number, dc.expiry_date AS debit_expiry_date,
+        l.loan_id, l.customer_id, l.loan_type, l.loan_amount, l.interest_rate, l.start_date, l.end_date
+        FROM customers c
+        LEFT JOIN credit_cards cc ON c.customer_ID = cc.customer_id
+        LEFT JOIN debit_cards dc ON c.customer_ID = dc.customer_id
+        LEFT JOIN loans l ON c.customer_ID = l.customer_id
+        WHERE c.customer_ID = #{customerId}
+    </select>
+
+    <select id="getAllCustomers" resultMap="customerResultMap">
+        SELECT c.customer_ID, c.first_name, c.last_name, c.address, c.phone_number, c.email,
+        cc.credit_card_id, cc.customer_id, cc.credit_card_number, cc.expiry_date AS credit_expiry_date, cc.credit_limit,
+        cc.outstanding_balance,
+        dc.debit_card_id, dc.customer_id, dc.debit_card_number, dc.expiry_date AS debit_expiry_date,
+        l.loan_id, l.customer_id, l.loan_type, l.loan_amount, l.interest_rate, l.start_date, l.end_date
+        FROM customers c
+        LEFT JOIN credit_cards cc ON c.customer_ID = cc.customer_id
+        LEFT JOIN debit_cards dc ON c.customer_ID = dc.customer_id
+        LEFT JOIN loans l ON c.customer_ID = l.customer_id
+    </select>
+
+    <insert id="insertCustomer" parameterType="com.solvd.block2.sql.models.Customer">
+        INSERT INTO customers (customer_ID, first_name, last_Name, address, phone_number, email)
+        VALUES (#{customerId}, #{firstName}, #{lastName}, #{address}, #{phoneNumber}, #{email})
+    </insert>
+
+    <update id="updateCustomer" parameterType="com.solvd.block2.sql.models.Customer">
+        UPDATE customers
+        SET first_name = #{firstName}, last_name = #{lastName}, address = #{address},
+        phone_number = #{phoneNumber}, email = #{email}
+        WHERE customer_ID = #{customerId}
+    </update>
+
+    <delete id="deleteCustomer" parameterType="int">
+        DELETE FROM customers WHERE customer_ID = #{customerId}
+    </delete>
+
+
+</mapper>

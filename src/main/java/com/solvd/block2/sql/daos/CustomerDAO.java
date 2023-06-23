@@ -98,20 +98,20 @@ public class CustomerDAO extends AbstractDAO<Customer> implements ICustomerDAO {
         return "DELETE FROM customers WHERE Customer_ID = ?";
     }
 
-    private List<CreditCard> getCreditCardsByCustomerId(int customerId) {
+    private List<CreditCard> getCreditCardsByCustomerId(int customerId) throws SQLException {
         return creditCardDAO.getByCustomerId(customerId);
     }
 
-    private List<DebitCard> getDebitCardsByCustomerId(int customerId) {
+    private List<DebitCard> getDebitCardsByCustomerId(int customerId) throws SQLException {
         return debitCardDAO.getByCustomerId(customerId);
     }
 
-    private List<Loan> getLoansByCustomerId(int customerId) {
+    private List<Loan> getLoansByCustomerId(int customerId) throws SQLException {
         return loanDAO.getByCustomerId(customerId);
     }
 
     @Override
-    public Customer getById(int customerId) {
+    public Customer getById(int customerId) throws SQLException {
         LOGGER.info("Getting customer with ID: {}", customerId);
         Connection connection = null;
 
@@ -123,7 +123,7 @@ public class CustomerDAO extends AbstractDAO<Customer> implements ICustomerDAO {
             if (resultSet.next()) {
                 return createFromResultSet(resultSet);
             }
-        } catch (SQLException | InterruptedException e) {
+        } catch (SQLException e) {
             LOGGER.error("Error getting customer with ID: {}", customerId, e);
         } finally {
             if (connection != null) {
@@ -135,7 +135,7 @@ public class CustomerDAO extends AbstractDAO<Customer> implements ICustomerDAO {
     }
 
     @Override
-    public List<Customer> getAll() {
+    public List<Customer> getAll() throws SQLException {
         LOGGER.info("Getting all customers");
         List<Customer> customers = new ArrayList<>();
         Connection connection = null;
@@ -147,7 +147,7 @@ public class CustomerDAO extends AbstractDAO<Customer> implements ICustomerDAO {
             while (resultSet.next()) {
                 customers.add(createFromResultSet(resultSet));
             }
-        } catch (SQLException | InterruptedException e) {
+        } catch (SQLException e) {
             LOGGER.error("Error getting all customers", e);
         } finally {
             if (connection != null) {

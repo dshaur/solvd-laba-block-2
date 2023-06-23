@@ -83,7 +83,7 @@ public class LoanDAO extends AbstractDAO<Loan> implements ILoanDAO {
     }
 
     @Override
-    public Loan getById(int loanId) {
+    public Loan getById(int loanId) throws SQLException {
         LOGGER.info("Getting loan with ID: {}", loanId);
         Connection connection = null;
 
@@ -95,7 +95,7 @@ public class LoanDAO extends AbstractDAO<Loan> implements ILoanDAO {
             if (resultSet.next()) {
                 return createFromResultSet(resultSet);
             }
-        } catch (SQLException | InterruptedException e) {
+        } catch (SQLException e) {
             LOGGER.error("Error getting loan with ID: {}", loanId, e);
         } finally {
             if (connection != null) {
@@ -106,7 +106,7 @@ public class LoanDAO extends AbstractDAO<Loan> implements ILoanDAO {
     }
 
     @Override
-    public List<Loan> getByCustomerId(int customerId) {
+    public List<Loan> getByCustomerId(int customerId) throws SQLException {
         LOGGER.info("Getting loans for customer with ID: {}", customerId);
         List<Loan> loans = new ArrayList<>();
         Connection connection = null;
@@ -119,7 +119,7 @@ public class LoanDAO extends AbstractDAO<Loan> implements ILoanDAO {
             while (resultSet.next()) {
                 loans.add(createFromResultSet(resultSet));
             }
-        } catch (SQLException | InterruptedException e) {
+        } catch (SQLException e) {
             LOGGER.error("Error getting loans for customer with ID: {}", customerId, e);
         } finally {
             if (connection != null) {
@@ -130,7 +130,7 @@ public class LoanDAO extends AbstractDAO<Loan> implements ILoanDAO {
     }
 
     @Override
-    public List<Loan> getAll() {
+    public List<Loan> getAll() throws SQLException {
         LOGGER.info("Getting all loans");
         List<Loan> loans = new ArrayList<>();
         Connection connection = null;
@@ -142,7 +142,7 @@ public class LoanDAO extends AbstractDAO<Loan> implements ILoanDAO {
             while (resultSet.next()) {
                 loans.add(createFromResultSet(resultSet));
             }
-        } catch (SQLException | InterruptedException e) {
+        } catch (SQLException e) {
             LOGGER.error("Error getting all loans", e);
         } finally {
             if (connection != null) {

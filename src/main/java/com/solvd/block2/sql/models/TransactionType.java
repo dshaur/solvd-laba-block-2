@@ -5,6 +5,10 @@ public class TransactionType {
     private int typeId;
     private String typeName;
 
+    public TransactionType() {
+        // No argument constructor
+    }
+
     public TransactionType(int typeId, String typeName) {
         this.typeId = typeId;
         this.typeName = typeName;

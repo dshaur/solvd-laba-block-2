@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.solvd.block2.mappers.LoanMapper">
+
+    <resultMap id="loanResultMap" type="com.solvd.block2.sql.models.Loan" autoMapping="false">
+        <id property="loanId" column="loan_id"/>
+        <result property="customerId" column="customer_id"/>
+        <result property="loanType" column="loan_type"/>
+        <result property="loanAmount" column="loan_amount"/>
+        <result property="interestRate" column="interest_rate"/>
+        <result property="startDate" column="start_date" jdbcType="DATE" javaType="java.sql.Date"/>
+        <result property="endDate" column="end_date" jdbcType="DATE" javaType="java.sql.Date"/>
+    </resultMap>
+
+    <select id="getLoanById" resultMap="loanResultMap" parameterType="int">
+        SELECT loan_id, customer_id, loan_type, loan_amount, interest_rate, start_date, end_date
+        FROM loans
+        WHERE loan_id = #{loanId}
+    </select>
+
+    <select id="getLoansByCustomerId" resultMap="loanResultMap" parameterType="int">
+        SELECT loan_id, customer_id, loan_type, loan_amount, interest_rate, start_date, end_date
+        FROM loans
+        WHERE customer_id = #{customerId}
+    </select>
+
+    <insert id="insertLoan" parameterType="com.solvd.block2.sql.models.Loan">
+        INSERT INTO loans (loan_id, customer_id, loan_type, loan_amount, interest_rate, start_date, end_date)
+        VALUES (#{loanId}, #{customerId}, #{loanType}, #{loanAmount}, #{interestRate}, #{startDate}, #{endDate})
+    </insert>
+
+    <update id="updateLoan" parameterType="com.solvd.block2.sql.models.Loan">
+        UPDATE loans
+        SET customer_id = #{customerId}, loan_type = #{loanType}, loan_amount = #{loanAmount},
+        interest_rate = #{interestRate}, start_date = #{startDate}, end_date = #{endDate}
+        WHERE loan_id = #{loanId}
+    </update>
+
+    <delete id="deleteLoan" parameterType="int">
+        DELETE FROM loans WHERE loan_id = #{loanId}
+    </delete>
+</mapper>

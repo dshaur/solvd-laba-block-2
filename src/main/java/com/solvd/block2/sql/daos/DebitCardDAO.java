@@ -77,7 +77,7 @@ public class DebitCardDAO extends AbstractDAO<DebitCard> implements IDebitCardDA
     }
 
     @Override
-    public DebitCard getById(int debitCardId) {
+    public DebitCard getById(int debitCardId) throws SQLException {
         LOGGER.info("Getting debit card with ID: {}", debitCardId);
         Connection connection = null;
 
@@ -89,7 +89,7 @@ public class DebitCardDAO extends AbstractDAO<DebitCard> implements IDebitCardDA
             if (resultSet.next()) {
                 return createFromResultSet(resultSet);
             }
-        } catch (SQLException | InterruptedException e) {
+        } catch (SQLException e) {
             LOGGER.error("Error getting debit card with ID: {}", debitCardId, e);
         } finally {
             if (connection != null) {
@@ -100,7 +100,7 @@ public class DebitCardDAO extends AbstractDAO<DebitCard> implements IDebitCardDA
     }
 
     @Override
-    public List<DebitCard> getByCustomerId(int customerId) {
+    public List<DebitCard> getByCustomerId(int customerId) throws SQLException {
         LOGGER.info("Getting debit cards for customer with ID: {}", customerId);
         List<DebitCard> debitCards = new ArrayList<>();
         Connection connection = null;
@@ -113,7 +113,7 @@ public class DebitCardDAO extends AbstractDAO<DebitCard> implements IDebitCardDA
             while (resultSet.next()) {
                 debitCards.add(createFromResultSet(resultSet));
             }
-        } catch (SQLException | InterruptedException e) {
+        } catch (SQLException e) {
             LOGGER.error("Error getting debit cards for customer with ID: {}", customerId, e);
         } finally {
             if (connection != null) {
@@ -125,7 +125,7 @@ public class DebitCardDAO extends AbstractDAO<DebitCard> implements IDebitCardDA
     }
 
     @Override
-    public List<DebitCard> getAll() {
+    public List<DebitCard> getAll() throws SQLException {
         LOGGER.info("Getting all debit cards");
         List<DebitCard> debitCards = new ArrayList<>();
         Connection connection = null;
@@ -137,7 +137,7 @@ public class DebitCardDAO extends AbstractDAO<DebitCard> implements IDebitCardDA
             while (resultSet.next()) {
                 debitCards.add(createFromResultSet(resultSet));
             }
-        } catch (SQLException | InterruptedException e) {
+        } catch (SQLException e) {
             LOGGER.error("Error getting all debit cards", e);
         } finally {
             if (connection != null) {

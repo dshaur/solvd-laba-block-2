@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.solvd.block2.mappers.TransactionMapper">
+
+    <resultMap id="transactionResultMap" type="com.solvd.block2.sql.models.Transaction" autoMapping="true">
+        <id property="transactionId" column="transaction_id"/>
+        <result property="transactionTypes" column="transaction_type_id"
+                javaType="com.solvd.block2.sql.models.TransactionType"
+                typeHandler="com.solvd.block2.mybatis.TransactionTypeHandler"/>
+        <result property="accountId" column="account_id"/>
+        <result property="amount" column="amount"/>
+        <result property="transactionDate" column="transaction_date" jdbcType="DATE" javaType="java.util.Date"/>
+        <result property="sourceAccountId" column="source_account_id"/>
+        <result property="destinationAccountId" column="destination_account_id"/>
+    </resultMap>
+
+
+    <select id="getTransactionById" resultMap="transactionResultMap" parameterType="int">
+        SELECT t.transaction_id, tt.transaction_type_id, tt.type_name, t.account_id, t.amount, t.transaction_date,
+        t.source_account_id, t.destination_account_id
+        FROM transactions t
+        LEFT JOIN transaction_type tt ON t.transaction_type_id = tt.transaction_type_id
+        WHERE t.transaction_id = #{transactionId}
+    </select>
+
+
+    <select id="getAllTransactions" resultMap="transactionResultMap">
+        SELECT t.transaction_id, tt.transaction_type_id, tt.type_name, t.account_id, t.amount, t.transaction_date,
+        t.source_account_id, t.destination_account_id
+        FROM transactions t
+        LEFT JOIN transaction_type tt ON t.transaction_type_id = tt.transaction_type_id
+    </select>
+
+
+    <select id="getTransactionsByTransactionTypeId" resultMap="transactionResultMap" parameterType="int">
+        SELECT t.transaction_id, tt.transaction_type_id, tt.type_name, t.account_id, t.amount, t.transaction_date,
+        t.source_account_id, t.destination_account_id
+        FROM transactions t
+        LEFT JOIN transaction_type tt ON t.transaction_type_id = tt.transaction_type_id
+        WHERE t.transaction_type_id = #{transactionTypeId}
+    </select>
+
+    <insert id="insertTransaction" parameterType="com.solvd.block2.sql.models.Transaction">
+        INSERT INTO transactions (transaction_id, transaction_type_id, account_id, amount, transaction_date,
+        source_account_id, destination_account_id)
+        VALUES (#{transactionId}, #{transactionTypes.typeId}, #{accountId}, #{amount}, #{transactionDate},
+        #{sourceAccountId}, #{destinationAccountId})
+    </insert>
+
+    <update id="updateTransaction" parameterType="com.solvd.block2.sql.models.Transaction">
+        UPDATE transactions
+        SET transaction_type_id = #{transactionTypes.typeId}, account_id = #{accountId}, amount = #{amount},
+        transaction_date = #{transactionDate}, source_account_id = #{sourceAccountId},
+        destination_account_id = #{destinationAccountId}
+        WHERE transaction_id = #{transactionId}
+    </update>
+
+    <delete id="deleteTransaction" parameterType="int">
+        DELETE FROM transactions WHERE transaction_id = #{transactionId}
+    </delete>
+
+</mapper>

@@ -18,6 +18,11 @@ public class Branch {
     @JsonManagedReference
     private List<BranchEmployee> branchEmployees;
 
+    public Branch() {
+        // No argument constructor
+    }
+
+
     public Branch(int branchId, String branchName, String location, List<BranchEmployee> branchEmployees) {
         this.branchId = branchId;
         this.branchName = branchName;

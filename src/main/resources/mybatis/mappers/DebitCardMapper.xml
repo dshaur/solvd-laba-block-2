@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.solvd.block2.mappers.DebitCardMapper">
+
+    <resultMap id="debitCardResultMap" type="com.solvd.block2.sql.models.DebitCard" autoMapping="false">
+        <id property="debitCardId" column="debit_card_id"/>
+        <result property="customerId" column="customer_id"/>
+        <result property="cardNumber" column="debit_card_number"/>
+        <result property="expirationDate" column="expiry_date" jdbcType="DATE" javaType="java.sql.Date"/>
+    </resultMap>
+
+    <select id="getDebitCardById" resultMap="debitCardResultMap" parameterType="int">
+        SELECT debit_card_id, customer_id, debit_card_number, expiry_date
+        FROM debit_cards
+        WHERE debit_card_id = #{debitCardId}
+    </select>
+
+    <select id="getDebitCardsByCustomerId" resultMap="debitCardResultMap" parameterType="int">
+        SELECT debit_card_id, customer_id, debit_card_number, expiry_date
+        FROM debit_cards
+        WHERE customer_id = #{customerId}
+    </select>
+
+    <insert id="insertDebitCard" parameterType="com.solvd.block2.sql.models.DebitCard">
+        INSERT INTO debit_cards (debit_card_id, customer_id, debit_card_number, expiry_date)
+        VALUES (#{debitCardId}, #{customerId}, #{cardNumber}, #{expirationDate})
+    </insert>
+
+    <update id="updateDebitCard" parameterType="com.solvd.block2.sql.models.DebitCard">
+        UPDATE debit_cards
+        SET customer_id = #{customerId}, debit_card_number = #{cardNumber}, expiry_date = #{expirationDate}
+        WHERE debit_card_id = #{debitCardId}
+    </update>
+
+    <delete id="deleteDebitCard" parameterType="int">
+        DELETE FROM debit_cards WHERE debit_card_id = #{debitCardId}
+    </delete>
+</mapper>
