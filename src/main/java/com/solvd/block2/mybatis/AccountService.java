@@ -3,31 +3,18 @@ package com.solvd.block2.mybatis;
 
 import com.solvd.block2.mappers.AccountMapper;
 import com.solvd.block2.sql.models.Account;
-import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
-import java.io.InputStream;
 import java.util.List;
 
 public class AccountService {
     private final SqlSessionFactory sqlSessionFactory;
 
     public AccountService() {
-        this.sqlSessionFactory = createSqlSessionFactory();
+        this.sqlSessionFactory = MyBatisSessionFactory.getSqlSessionFactory();
     }
 
-    // Create session factory
-    private SqlSessionFactory createSqlSessionFactory() {
-        String resource = "mybatis/mybatis_config.xml";
-        try (InputStream inputStream = Resources.getResourceAsStream(resource)) {
-            return new SqlSessionFactoryBuilder().build(inputStream);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Failed to create SqlSessionFactory.", e);
-        }
-    }
 
     public Account getAccountById(int id) {
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {

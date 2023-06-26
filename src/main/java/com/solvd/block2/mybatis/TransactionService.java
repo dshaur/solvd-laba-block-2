@@ -4,31 +4,16 @@ import com.solvd.block2.mappers.TransactionMapper;
 import com.solvd.block2.mappers.TransactionTypeMapper;
 import com.solvd.block2.sql.models.Transaction;
 import com.solvd.block2.sql.models.TransactionType;
-import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 public class TransactionService {
     private final SqlSessionFactory sqlSessionFactory;
 
     public TransactionService() {
-        this.sqlSessionFactory = createSqlSessionFactory();
-    }
-
-    // Create session factory
-    private SqlSessionFactory createSqlSessionFactory() {
-        String resource = "mybatis/mybatis_config.xml";
-        try (InputStream inputStream = Resources.getResourceAsStream(resource)) {
-            return new SqlSessionFactoryBuilder().build(inputStream);
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Failed to create SqlSessionFactory.", e);
-        }
+        this.sqlSessionFactory = MyBatisSessionFactory.getSqlSessionFactory();
     }
 
     // Service Methods for Transaction

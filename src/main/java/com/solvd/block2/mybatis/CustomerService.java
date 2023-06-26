@@ -8,31 +8,18 @@ import com.solvd.block2.sql.models.CreditCard;
 import com.solvd.block2.sql.models.Customer;
 import com.solvd.block2.sql.models.DebitCard;
 import com.solvd.block2.sql.models.Loan;
-import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
-import java.io.InputStream;
 import java.util.List;
 
 public class CustomerService {
     private final SqlSessionFactory sqlSessionFactory;
 
     public CustomerService() {
-        this.sqlSessionFactory = createSqlSessionFactory();
+        this.sqlSessionFactory = MyBatisSessionFactory.getSqlSessionFactory();
     }
 
-    // Create session factory
-    private SqlSessionFactory createSqlSessionFactory() {
-        String resource = "mybatis/mybatis_config.xml";
-        try (InputStream inputStream = Resources.getResourceAsStream(resource)) {
-            return new SqlSessionFactoryBuilder().build(inputStream);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Failed to create SqlSessionFactory.", e);
-        }
-    }
 
     // Service Methods for Customer
     public Customer getCustomerById(int id) {
