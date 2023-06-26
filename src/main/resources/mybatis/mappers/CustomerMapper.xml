@@ -41,6 +41,17 @@
             <result property="startDate" column="start_date" jdbcType="DATE" javaType="java.sql.Date"/>
             <result property="endDate" column="end_date" jdbcType="DATE" javaType="java.sql.Date"/>
         </collection>
+
+        <!-- Include the accounts property -->
+        <collection property="accounts" ofType="com.solvd.block2.sql.models.Account">
+            <id property="accountId" column="account_id"/>
+            <result property="accountType" column="account_type"/>
+            <result property="balance" column="balance"/>
+            <result property="openDate" column="open_date" jdbcType="DATE" javaType="java.sql.Date"/>
+            <result property="lastTransactionDate" column="last_transaction_date" jdbcType="DATE"
+                    javaType="java.sql.Date"/>
+            <result property="branchId" column="branch_id"/>
+        </collection>
     </resultMap>
 
     <select id="getCustomerById" resultMap="customerResultMap" parameterType="int">
@@ -48,11 +59,14 @@
         cc.credit_card_id, cc.customer_id, cc.credit_card_number, cc.expiry_date AS credit_expiry_date, cc.credit_limit,
         cc.outstanding_balance,
         dc.debit_card_id, dc.customer_id, dc.debit_card_number, dc.expiry_date AS debit_expiry_date,
-        l.loan_id, l.customer_id, l.loan_type, l.loan_amount, l.interest_rate, l.start_date, l.end_date
+        l.loan_id, l.customer_id, l.loan_type, l.loan_amount, l.interest_rate, l.start_date, l.end_date,
+        a.account_id, a.account_type, a.balance, a.open_date, a.last_transaction_date, a.branch_id
         FROM customers c
         LEFT JOIN credit_cards cc ON c.customer_ID = cc.customer_id
         LEFT JOIN debit_cards dc ON c.customer_ID = dc.customer_id
         LEFT JOIN loans l ON c.customer_ID = l.customer_id
+        LEFT JOIN account_holders ah ON c.customer_id = ah.customer_id
+        LEFT JOIN accounts a ON ah.account_id = a.account_id
         WHERE c.customer_ID = #{customerId}
     </select>
 
@@ -61,11 +75,14 @@
         cc.credit_card_id, cc.customer_id, cc.credit_card_number, cc.expiry_date AS credit_expiry_date, cc.credit_limit,
         cc.outstanding_balance,
         dc.debit_card_id, dc.customer_id, dc.debit_card_number, dc.expiry_date AS debit_expiry_date,
-        l.loan_id, l.customer_id, l.loan_type, l.loan_amount, l.interest_rate, l.start_date, l.end_date
+        l.loan_id, l.customer_id, l.loan_type, l.loan_amount, l.interest_rate, l.start_date, l.end_date,
+        a.account_id, a.account_type, a.balance, a.open_date, a.last_transaction_date, a.branch_id
         FROM customers c
         LEFT JOIN credit_cards cc ON c.customer_ID = cc.customer_id
         LEFT JOIN debit_cards dc ON c.customer_ID = dc.customer_id
         LEFT JOIN loans l ON c.customer_ID = l.customer_id
+        LEFT JOIN account_holders ah ON c.customer_id = ah.customer_id
+        LEFT JOIN accounts a ON ah.account_id = a.account_id
     </select>
 
     <insert id="insertCustomer" parameterType="com.solvd.block2.sql.models.Customer">

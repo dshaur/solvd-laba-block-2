@@ -1,13 +1,7 @@
 package com.solvd.block2.sql.services;
 
-import com.solvd.block2.sql.daos.CreditCardDAO;
-import com.solvd.block2.sql.daos.CustomerDAO;
-import com.solvd.block2.sql.daos.DebitCardDAO;
-import com.solvd.block2.sql.daos.LoanDAO;
-import com.solvd.block2.sql.models.CreditCard;
-import com.solvd.block2.sql.models.Customer;
-import com.solvd.block2.sql.models.DebitCard;
-import com.solvd.block2.sql.models.Loan;
+import com.solvd.block2.sql.daos.*;
+import com.solvd.block2.sql.models.*;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -17,6 +11,8 @@ public class CustomerService {
     private DebitCardDAO debitCardDAO;
     private CreditCardDAO creditCardDAO;
     private LoanDAO loanDAO;
+
+    private AccountDAO accountDAO;
 
     public CustomerService(CustomerDAO customerDAO, DebitCardDAO debitCardDAO, CreditCardDAO creditCardDAO, LoanDAO loanDAO) {
         this.customerDAO = customerDAO;
@@ -64,6 +60,19 @@ public class CustomerService {
     public void updateLoan(Loan loan) throws SQLException {
         loanDAO.update(loan);
     }
+
+    public List<Account> getAccountsByCustomerId(int customerId) throws SQLException {
+        return accountDAO.getByCustomerId(customerId);
+    }
+
+    public void updateAccount(Account account) throws SQLException {
+        accountDAO.update(account);
+    }
+
+    public List<Customer> getCustomersByAccountId(int accountId) throws SQLException {
+        return accountDAO.getCustomersByAccountId(accountId);
+    }
+
 }
 
 

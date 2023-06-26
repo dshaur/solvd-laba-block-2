@@ -1,16 +1,14 @@
 package com.solvd.block2.sql.daos;
 
 import com.solvd.block2.sql.interfaces.IBranchDAO;
+import com.solvd.block2.sql.models.Account;
 import com.solvd.block2.sql.models.Branch;
 import com.solvd.block2.sql.models.BranchEmployee;
 import com.solvd.block2.sql.utilities.DbUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +24,42 @@ public class BranchDAO extends AbstractDAO<Branch> implements IBranchDAO {
 
         List<BranchEmployee> branchEmployees = getBranchEmployeesByBranchId(branchId);
 
-        return new Branch(branchId, branchName, location, branchEmployees);
+        List<Account> accounts = getAccountsByBranchId(branchId);
+
+        return new Branch(branchId, branchName, location, branchEmployees, accounts);
+    }
+
+    private List<Account> getAccountsByBranchId(int branchId) throws SQLException {
+        List<Account> accounts = new ArrayList<>();
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = DbUtil.getConnection();
+            statement = connection.prepareStatement("SELECT * FROM accounts WHERE Branch_ID = ?");
+            statement.setInt(1, branchId);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                int accountId = resultSet.getInt("account_id");
+                String accountType = resultSet.getString("account_type");
+                double balance = resultSet.getDouble("balance");
+                java.sql.Date openDate = resultSet.getDate("open_date");
+                Date lastTransactionDate = resultSet.getDate("last_transaction_date");
+                branchId = resultSet.getInt("branch_id");
+
+                // Add other required account properties
+
+                Account account = new Account(accountId, accountType, balance, openDate, lastTransactionDate, branchId, null);
+                accounts.add(account);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbUtil.releaseConnection(connection);
+        }
+
+        return accounts;
     }
 
     @Override

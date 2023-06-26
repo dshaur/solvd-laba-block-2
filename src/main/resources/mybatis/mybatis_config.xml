@@ -24,5 +24,6 @@
         <mapper resource="mybatis/mappers/LoanMapper.xml"/>
         <mapper resource="mybatis/mappers/TransactionMapper.xml"/>
         <mapper resource="mybatis/mappers/TransactionTypeMapper.xml"/>
+        <mapper resource="mybatis/mappers/AccountMapper.xml"/>
     </mappers>
 </configuration>

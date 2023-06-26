@@ -15,7 +15,7 @@ public class MyBatisApp {
         BranchService branchService = new BranchService();
         CustomerService customerService = new CustomerService();
         TransactionService transactionService = new TransactionService();
-
+        AccountService accountService = new AccountService();
         // ************************ Test services ************************
 
         // ******** Branch methods ********
@@ -111,6 +111,16 @@ public class MyBatisApp {
         // Get all transaction types
         LOGGER.info("All Transaction Types: ");
         transactionService.getAllTransactionTypes().forEach(LOGGER::info);
+
+        // ********** Account methods **********
+
+        // Get account by account id
+        Account account = accountService.getAccountById(1);
+        LOGGER.info("Account from bankDB with id 1: " + account);
+
+        // Get all accounts
+        LOGGER.info("All Accounts: ");
+        accountService.getAllAccounts().forEach(LOGGER::info);
 
     }
 }
