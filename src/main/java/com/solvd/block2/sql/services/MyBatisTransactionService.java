@@ -1,7 +1,8 @@
-package com.solvd.block2.mybatis;
+package com.solvd.block2.sql.services;
 
 import com.solvd.block2.mappers.TransactionMapper;
 import com.solvd.block2.mappers.TransactionTypeMapper;
+import com.solvd.block2.mybatis.MyBatisSessionFactory;
 import com.solvd.block2.sql.models.Transaction;
 import com.solvd.block2.sql.models.TransactionType;
 import org.apache.ibatis.session.SqlSession;
@@ -9,10 +10,10 @@ import org.apache.ibatis.session.SqlSessionFactory;
 
 import java.util.List;
 
-public class TransactionService {
+public class MyBatisTransactionService implements ITransactionService {
     private final SqlSessionFactory sqlSessionFactory;
 
-    public TransactionService() {
+    public MyBatisTransactionService() {
         this.sqlSessionFactory = MyBatisSessionFactory.getSqlSessionFactory();
     }
 
@@ -38,10 +39,10 @@ public class TransactionService {
         }
     }
 
-    public void insertTransaction(Transaction transaction) {
+    public void createTransaction(Transaction transaction) {
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             TransactionMapper transactionMapper = sqlSession.getMapper(TransactionMapper.class);
-            transactionMapper.insertTransaction(transaction);
+            transactionMapper.createTransaction(transaction);
             sqlSession.commit();
         }
     }
@@ -54,10 +55,10 @@ public class TransactionService {
         }
     }
 
-    public void deleteTransaction(int id) {
+    public void deleteTransaction(Transaction transaction) {
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             TransactionMapper transactionMapper = sqlSession.getMapper(TransactionMapper.class);
-            transactionMapper.deleteTransaction(id);
+            transactionMapper.deleteTransaction(transaction);
             sqlSession.commit();
         }
     }
@@ -77,10 +78,10 @@ public class TransactionService {
         }
     }
 
-    public void insertTransactionType(TransactionType transactionType) {
+    public void createTransactionType(TransactionType transactionType) {
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             TransactionTypeMapper transactionTypeMapper = sqlSession.getMapper(TransactionTypeMapper.class);
-            transactionTypeMapper.insertTransactionType(transactionType);
+            transactionTypeMapper.createTransactionType(transactionType);
             sqlSession.commit();
         }
     }
@@ -93,10 +94,10 @@ public class TransactionService {
         }
     }
 
-    public void deleteTransactionType(int id) {
+    public void deleteTransactionType(TransactionType transactionType) {
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             TransactionTypeMapper transactionTypeMapper = sqlSession.getMapper(TransactionTypeMapper.class);
-            transactionTypeMapper.deleteTransactionType(id);
+            transactionTypeMapper.deleteTransactionType(transactionType);
             sqlSession.commit();
         }
     }

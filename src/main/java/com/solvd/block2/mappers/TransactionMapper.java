@@ -9,11 +9,11 @@ public interface TransactionMapper {
 
     List<Transaction> getAllTransactions();
 
-    void insertTransaction(Transaction transaction);
+    void createTransaction(Transaction transaction);
 
     void updateTransaction(Transaction transaction);
 
-    void deleteTransaction(int id);
-    
+    void deleteTransaction(Transaction transaction);
+
     List<Transaction> getTransactionsByTransactionTypeId(int transactionTypeId);
 }

@@ -70,6 +70,15 @@ public class Customer {
         this.accounts = accounts;
     }
 
+    public Customer(int customerId, String firstName, String lastName, String address, String phoneNumber, String email) {
+        this.customerId = customerId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+    }
+
 
     // Getters and setters
 

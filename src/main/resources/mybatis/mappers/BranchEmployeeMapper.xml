@@ -21,7 +21,7 @@
         SELECT * FROM branch_employees
     </select>
 
-    <insert id="insertBranchEmployee" parameterType="com.solvd.block2.sql.models.BranchEmployee">
+    <insert id="createBranchEmployee" parameterType="com.solvd.block2.sql.models.BranchEmployee">
         INSERT INTO branch_employees (employee_id, branch_id, first_name, last_name, position)
         VALUES (#{employeeId}, #{branchId}, #{firstName}, #{lastName}, #{position})
     </insert>

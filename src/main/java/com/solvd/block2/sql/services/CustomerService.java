@@ -6,19 +6,23 @@ import com.solvd.block2.sql.models.*;
 import java.sql.SQLException;
 import java.util.List;
 
-public class CustomerService {
+public class CustomerService implements ICustomerService {
     private CustomerDAO customerDAO;
     private DebitCardDAO debitCardDAO;
     private CreditCardDAO creditCardDAO;
     private LoanDAO loanDAO;
-
     private AccountDAO accountDAO;
 
-    public CustomerService(CustomerDAO customerDAO, DebitCardDAO debitCardDAO, CreditCardDAO creditCardDAO, LoanDAO loanDAO) {
+    public CustomerService() {
+        // No argument constructor
+    }
+
+    public CustomerService(CustomerDAO customerDAO, DebitCardDAO debitCardDAO, CreditCardDAO creditCardDAO, LoanDAO loanDAO, AccountDAO accountDAO) {
         this.customerDAO = customerDAO;
         this.debitCardDAO = debitCardDAO;
         this.creditCardDAO = creditCardDAO;
         this.loanDAO = loanDAO;
+        this.accountDAO = accountDAO;
     }
 
     public Customer getCustomerById(int customerId) throws SQLException {
@@ -26,6 +30,7 @@ public class CustomerService {
         customer.setDebitCards(debitCardDAO.getByCustomerId(customerId));
         customer.setCreditCards(creditCardDAO.getByCustomerId(customerId));
         customer.setLoans(loanDAO.getByCustomerId(customerId));
+        customer.setAccounts(accountDAO.getByCustomerId(customerId));
         return customer;
     }
 
@@ -57,21 +62,58 @@ public class CustomerService {
         return debitCardDAO.getByCustomerId(debitCardCustomerId);
     }
 
+    public void createCreditCard(CreditCard creditCard) throws SQLException {
+        creditCardDAO.create(creditCard);
+    }
+
+    public void createDebitCard(DebitCard debitCard) throws SQLException {
+        debitCardDAO.create(debitCard);
+    }
+
+    public void createLoan(Loan loan) throws SQLException {
+        loanDAO.create(loan);
+    }
+
+    public void updateCreditCard(CreditCard creditCard) throws SQLException {
+        creditCardDAO.update(creditCard);
+    }
+
+    public void updateDebitCard(DebitCard debitCard) throws SQLException {
+        debitCardDAO.update(debitCard);
+    }
+
     public void updateLoan(Loan loan) throws SQLException {
         loanDAO.update(loan);
+    }
+
+    public void deleteCreditCard(CreditCard creditCard) throws SQLException {
+        creditCardDAO.delete(creditCard);
+    }
+
+    public void deleteDebitCard(DebitCard debitCard) throws SQLException {
+        debitCardDAO.delete(debitCard);
+    }
+
+    public void deleteLoan(Loan loan) throws SQLException {
+        loanDAO.delete(loan);
     }
 
     public List<Account> getAccountsByCustomerId(int customerId) throws SQLException {
         return accountDAO.getByCustomerId(customerId);
     }
 
+    public void createAccount(Account account) throws SQLException {
+        accountDAO.create(account);
+    }
+
     public void updateAccount(Account account) throws SQLException {
         accountDAO.update(account);
     }
 
-    public List<Customer> getCustomersByAccountId(int accountId) throws SQLException {
-        return accountDAO.getCustomersByAccountId(accountId);
+    public void deleteAccount(Account account) throws SQLException {
+        accountDAO.delete(account);
     }
+
 
 }
 

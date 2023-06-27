@@ -85,7 +85,7 @@
         LEFT JOIN accounts a ON ah.account_id = a.account_id
     </select>
 
-    <insert id="insertCustomer" parameterType="com.solvd.block2.sql.models.Customer">
+    <insert id="createCustomer" parameterType="com.solvd.block2.sql.models.Customer">
         INSERT INTO customers (customer_ID, first_name, last_Name, address, phone_number, email)
         VALUES (#{customerId}, #{firstName}, #{lastName}, #{address}, #{phoneNumber}, #{email})
     </insert>

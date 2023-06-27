@@ -2,9 +2,11 @@ package com.solvd.block2.sql.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.sql.Date;
-import java.util.List;
 
 @XmlRootElement(name = "account")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -34,24 +36,19 @@ public class Account {
     @XmlElement(name = "branchId")
     private int branchId;
 
-    @JsonProperty("customers")
-    @XmlElementWrapper(name = "customers")
-    @XmlElement(name = "customer")
-    private List<Customer> customers;
-
 
     public Account() {
         // No-arg default constructor
     }
 
-    public Account(int accountId, String accountType, double balance, Date openDate, Date lastTransactionDate, int branchId, List<Customer> customers) {
+    public Account(int accountId, String accountType, double balance, Date openDate, Date lastTransactionDate, int branchId) {
         this.accountId = accountId;
         this.accountType = accountType;
         this.balance = balance;
         this.openDate = openDate;
         this.lastTransactionDate = lastTransactionDate;
         this.branchId = branchId;
-        this.customers = customers;
+
 
     }
 
@@ -105,14 +102,6 @@ public class Account {
         this.branchId = branchId;
     }
 
-    public List<Customer> getCustomers() {
-        return customers;
-    }
-
-    public void setCustomers(List<Customer> customers) {
-        this.customers = customers;
-    }
-
 
     @Override
     public String toString() {
@@ -123,7 +112,6 @@ public class Account {
                 ", openDate: '" + openDate + '\'' +
                 ", lastTransactionDate: '" + lastTransactionDate + '\'' +
                 ", branchId: " + branchId +
-                ", customers: " + customers +
                 '}';
     }
 

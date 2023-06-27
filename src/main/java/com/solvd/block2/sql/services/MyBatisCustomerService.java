@@ -1,22 +1,18 @@
-package com.solvd.block2.mybatis;
+package com.solvd.block2.sql.services;
 
-import com.solvd.block2.mappers.CreditCardMapper;
-import com.solvd.block2.mappers.CustomerMapper;
-import com.solvd.block2.mappers.DebitCardMapper;
-import com.solvd.block2.mappers.LoanMapper;
-import com.solvd.block2.sql.models.CreditCard;
-import com.solvd.block2.sql.models.Customer;
-import com.solvd.block2.sql.models.DebitCard;
-import com.solvd.block2.sql.models.Loan;
+import com.solvd.block2.mappers.*;
+import com.solvd.block2.mybatis.MyBatisSessionFactory;
+import com.solvd.block2.sql.models.*;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
+import java.sql.SQLException;
 import java.util.List;
 
-public class CustomerService {
+public class MyBatisCustomerService implements ICustomerService {
     private final SqlSessionFactory sqlSessionFactory;
 
-    public CustomerService() {
+    public MyBatisCustomerService() {
         this.sqlSessionFactory = MyBatisSessionFactory.getSqlSessionFactory();
     }
 
@@ -36,10 +32,10 @@ public class CustomerService {
         }
     }
 
-    public void insertCustomer(Customer customer) {
+    public void createCustomer(Customer customer) {
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             CustomerMapper customerMapper = sqlSession.getMapper(CustomerMapper.class);
-            customerMapper.insertCustomer(customer);
+            customerMapper.createCustomer(customer);
             sqlSession.commit();
         }
     }
@@ -52,13 +48,15 @@ public class CustomerService {
         }
     }
 
-    public void deleteCustomer(int id) {
+    @Override
+    public void deleteCustomer(Customer customer) throws SQLException {
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             CustomerMapper customerMapper = sqlSession.getMapper(CustomerMapper.class);
-            customerMapper.deleteCustomer(id);
+            customerMapper.deleteCustomer(customer);
             sqlSession.commit();
         }
     }
+
 
     // Service Methods for Credit Card
     public CreditCard getCreditCardById(int id) {
@@ -75,10 +73,10 @@ public class CustomerService {
         }
     }
 
-    public void insertCreditCard(CreditCard creditCard) {
+    public void createCreditCard(CreditCard creditCard) {
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             CreditCardMapper creditCardMapper = sqlSession.getMapper(CreditCardMapper.class);
-            creditCardMapper.insertCreditCard(creditCard);
+            creditCardMapper.createCreditCard(creditCard);
             sqlSession.commit();
         }
     }
@@ -90,15 +88,6 @@ public class CustomerService {
             sqlSession.commit();
         }
     }
-
-    public void deleteCreditCard(int id) {
-        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
-            CreditCardMapper creditCardMapper = sqlSession.getMapper(CreditCardMapper.class);
-            creditCardMapper.deleteCreditCard(id);
-            sqlSession.commit();
-        }
-    }
-
 
     // Service Methods for Debit Card
     public DebitCard getDebitCardById(int id) {
@@ -115,10 +104,10 @@ public class CustomerService {
         }
     }
 
-    public void insertDebitCard(DebitCard debitCard) {
+    public void createDebitCard(DebitCard debitCard) {
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             DebitCardMapper debitCardMapper = sqlSession.getMapper(DebitCardMapper.class);
-            debitCardMapper.insertDebitCard(debitCard);
+            debitCardMapper.createDebitCard(debitCard);
             sqlSession.commit();
         }
     }
@@ -130,15 +119,6 @@ public class CustomerService {
             sqlSession.commit();
         }
     }
-
-    public void deleteDebitCard(int id) {
-        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
-            DebitCardMapper debitCardMapper = sqlSession.getMapper(DebitCardMapper.class);
-            debitCardMapper.deleteDebitCard(id);
-            sqlSession.commit();
-        }
-    }
-
 
     // Service Methods for Loan
     public Loan getLoanById(int id) {
@@ -155,10 +135,10 @@ public class CustomerService {
         }
     }
 
-    public void insertLoan(Loan loan) {
+    public void createLoan(Loan loan) {
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             LoanMapper loanMapper = sqlSession.getMapper(LoanMapper.class);
-            loanMapper.insertLoan(loan);
+            loanMapper.createLoan(loan);
             sqlSession.commit();
         }
     }
@@ -171,13 +151,65 @@ public class CustomerService {
         }
     }
 
-    public void deleteLoan(int id) {
+    @Override
+    public void deleteCreditCard(CreditCard creditCard) throws SQLException {
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
-            LoanMapper loanMapper = sqlSession.getMapper(LoanMapper.class);
-            loanMapper.deleteLoan(id);
+            CreditCardMapper creditCardMapper = sqlSession.getMapper(CreditCardMapper.class);
+            creditCardMapper.deleteCreditCard(creditCard);
             sqlSession.commit();
         }
     }
+
+    @Override
+    public void deleteDebitCard(DebitCard debitCard) throws SQLException {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            DebitCardMapper debitCardMapper = sqlSession.getMapper(DebitCardMapper.class);
+            debitCardMapper.deleteDebitCard(debitCard);
+            sqlSession.commit();
+        }
+    }
+
+    @Override
+    public void deleteLoan(Loan loan) throws SQLException {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            LoanMapper loanMapper = sqlSession.getMapper(LoanMapper.class);
+            loanMapper.deleteLoan(loan);
+            sqlSession.commit();
+        }
+    }
+
+    @Override
+    public List<Account> getAccountsByCustomerId(int id) throws SQLException {
+        return null;
+    }
+
+    @Override
+    public void createAccount(Account account) throws SQLException {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            AccountMapper accountMapper = sqlSession.getMapper(AccountMapper.class);
+            accountMapper.createAccount(account);
+            sqlSession.commit();
+        }
+    }
+
+    @Override
+    public void updateAccount(Account account) throws SQLException {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            AccountMapper accountMapper = sqlSession.getMapper(AccountMapper.class);
+            accountMapper.updateAccount(account);
+            sqlSession.commit();
+        }
+    }
+
+    @Override
+    public void deleteAccount(Account account) throws SQLException {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            AccountMapper accountMapper = sqlSession.getMapper(AccountMapper.class);
+            accountMapper.deleteAccount(account);
+            sqlSession.commit();
+        }
+    }
+
 
 }
 

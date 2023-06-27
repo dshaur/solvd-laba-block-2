@@ -9,11 +9,13 @@ public interface BranchEmployeeMapper {
 
     List<BranchEmployee> getAllBranchEmployees();
 
-    void insertBranchEmployee(BranchEmployee branchEmployee);
+    void createBranchEmployee(BranchEmployee branchEmployee);
 
     void updateBranchEmployee(BranchEmployee branchEmployee);
 
-    void deleteBranchEmployee(int id);
+    void deleteBranchEmployee(BranchEmployee branchEmployee);
 
     List<BranchEmployee> getBranchEmployeesByBranchId(int branchId);
+
+
 }

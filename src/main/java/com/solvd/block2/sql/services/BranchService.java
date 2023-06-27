@@ -8,9 +8,13 @@ import com.solvd.block2.sql.models.BranchEmployee;
 import java.sql.SQLException;
 import java.util.List;
 
-public class BranchService {
+public class BranchService implements IBranchService {
     private BranchDAO branchDAO;
     private BranchEmployeeDAO branchEmployeeDAO;
+
+    public BranchService() {
+        // No argument constructor
+    }
 
     public BranchService(BranchDAO branchDAO, BranchEmployeeDAO branchEmployeeDAO) {
         this.branchDAO = branchDAO;
@@ -27,7 +31,7 @@ public class BranchService {
         return branchDAO.findAll();
     }
 
-    public void saveBranch(Branch branch) throws SQLException {
+    public void createBranch(Branch branch) throws SQLException {
         branchDAO.create(branch);
     }
 
@@ -51,18 +55,28 @@ public class BranchService {
         return branchEmployeeDAO.findByBranchId(branchId);
     }
 
-    public void saveBranchEmployee(BranchEmployee branchEmployee) throws SQLException {
+    @Override
+    public void createBranchEmployee(BranchEmployee branchEmployee) throws SQLException {
         branchEmployeeDAO.create(branchEmployee);
     }
 
+    @Override
     public void updateBranchEmployee(BranchEmployee branchEmployee) throws SQLException {
         branchEmployeeDAO.update(branchEmployee);
     }
 
+    @Override
     public void deleteBranchEmployee(BranchEmployee branchEmployee) throws SQLException {
         branchEmployeeDAO.delete(branchEmployee);
     }
 
+    public List<BranchEmployee> getAllBranchEmployees() throws SQLException {
+        return branchEmployeeDAO.findAll();
+    }
+
+    public BranchEmployee getBranchEmployeesById(int employeeId) throws SQLException {
+        return branchEmployeeDAO.findByEmployeeId(employeeId);
+    }
     // Add other methods as needed
 }
 

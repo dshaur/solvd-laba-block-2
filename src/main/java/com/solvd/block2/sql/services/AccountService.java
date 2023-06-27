@@ -2,36 +2,28 @@ package com.solvd.block2.sql.services;
 
 import com.solvd.block2.sql.daos.AccountDAO;
 import com.solvd.block2.sql.models.Account;
-import com.solvd.block2.sql.models.Customer;
 
 import java.sql.SQLException;
 import java.util.List;
 
-public class AccountService {
+public class AccountService implements IAccountService {
     private AccountDAO accountDAO;
-    private CustomerService customerService;
 
-    public AccountService(AccountDAO accountDAO, CustomerService customerService) {
+    public AccountService(AccountDAO accountDAO) {
         this.accountDAO = accountDAO;
-        this.customerService = customerService;
+    }
+
+    public AccountService() {
+        // No argument constructor
     }
 
     public Account getAccountById(int accountId) throws SQLException {
         Account account = accountDAO.getAccountById(accountId);
-        if (account != null) {
-            List<Customer> customers = customerService.getCustomersByAccountId(accountId);
-            account.setCustomers(customers);
-        }
         return account;
     }
 
     public List<Account> getAllAccounts() throws SQLException {
-        List<Account> accounts = accountDAO.getAllAccounts();
-        for (Account account : accounts) {
-            List<Customer> customers = customerService.getCustomersByAccountId(account.getAccountId());
-            account.setCustomers(customers);
-        }
-        return accounts;
+        return accountDAO.getAllAccounts();
     }
 
     public void createAccount(Account account) throws SQLException {
@@ -39,15 +31,11 @@ public class AccountService {
     }
 
     public void updateAccount(Account account) throws SQLException {
-        accountDAO.updateAccount(account);
+        accountDAO.update(account);
     }
 
     public void deleteAccount(Account account) throws SQLException {
-        accountDAO.deleteAccount(account.getAccountId());
-    }
-
-    public List<Customer> getCustomersByAccountId(int accountId) throws SQLException {
-        return accountDAO.getCustomersByAccountId(accountId);
+        accountDAO.delete(account);
     }
 
     public List<Account> getAccountsByCustomerId(int customerId) throws SQLException {

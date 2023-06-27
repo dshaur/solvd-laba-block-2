@@ -9,9 +9,11 @@ public interface IAccountDAO {
 
     Account getAccountById(int accountId) throws SQLException;
 
-    void updateAccount(Account account);
+    void create(Account account) throws SQLException;
 
-    void deleteAccount(int accountId);
+    void update(Account account) throws SQLException;
+
+    void delete(Account account) throws SQLException;
 
     List<Account> getAllAccounts() throws SQLException;
 

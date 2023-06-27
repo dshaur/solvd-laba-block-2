@@ -51,7 +51,7 @@
         LEFT JOIN accounts a ON b.branch_id = a.branch_id
     </select>
 
-    <insert id="insertBranch" parameterType="com.solvd.block2.sql.models.Branch">
+    <insert id="createBranch" parameterType="com.solvd.block2.sql.models.Branch">
         INSERT INTO branches (branch_id, branch_name, location)
         VALUES (#{branchId}, #{branchName}, #{location})
     </insert>

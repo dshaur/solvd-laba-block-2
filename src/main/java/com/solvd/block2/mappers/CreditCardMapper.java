@@ -11,10 +11,10 @@ public interface CreditCardMapper {
 
     List<CreditCard> getCreditCardsByCustomerId(int customerId);
 
-    void insertCreditCard(CreditCard creditCard);
+    void createCreditCard(CreditCard creditCard);
 
     void updateCreditCard(CreditCard creditCard);
 
-    void deleteCreditCard(int id);
+    void deleteCreditCard(CreditCard creditCard);
 }
 

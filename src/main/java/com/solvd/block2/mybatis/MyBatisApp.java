@@ -1,6 +1,10 @@
 package com.solvd.block2.mybatis;
 
 import com.solvd.block2.sql.models.*;
+import com.solvd.block2.sql.services.MyBatisAccountService;
+import com.solvd.block2.sql.services.MyBatisBranchService;
+import com.solvd.block2.sql.services.MyBatisCustomerService;
+import com.solvd.block2.sql.services.MyBatisTransactionService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -12,10 +16,10 @@ public class MyBatisApp {
 
         // ******** Create MyBatis services ********
 
-        BranchService branchService = new BranchService();
-        CustomerService customerService = new CustomerService();
-        TransactionService transactionService = new TransactionService();
-        AccountService accountService = new AccountService();
+        MyBatisBranchService branchService = new MyBatisBranchService();
+        MyBatisCustomerService customerService = new MyBatisCustomerService();
+        MyBatisTransactionService transactionService = new MyBatisTransactionService();
+        MyBatisAccountService accountService = new MyBatisAccountService();
         // ************************ Test services ************************
 
         // ******** Branch methods ********

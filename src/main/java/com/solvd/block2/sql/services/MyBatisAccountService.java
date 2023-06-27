@@ -1,17 +1,18 @@
-package com.solvd.block2.mybatis;
+package com.solvd.block2.sql.services;
 
 
 import com.solvd.block2.mappers.AccountMapper;
+import com.solvd.block2.mybatis.MyBatisSessionFactory;
 import com.solvd.block2.sql.models.Account;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
 import java.util.List;
 
-public class AccountService {
+public class MyBatisAccountService implements IAccountService {
     private final SqlSessionFactory sqlSessionFactory;
 
-    public AccountService() {
+    public MyBatisAccountService() {
         this.sqlSessionFactory = MyBatisSessionFactory.getSqlSessionFactory();
     }
 
@@ -30,10 +31,10 @@ public class AccountService {
         }
     }
 
-    public void insertAccount(Account account) {
+    public void createAccount(Account account) {
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             AccountMapper accountMapper = sqlSession.getMapper(AccountMapper.class);
-            accountMapper.insertAccount(account);
+            accountMapper.createAccount(account);
             sqlSession.commit();
         }
     }
@@ -46,10 +47,10 @@ public class AccountService {
         }
     }
 
-    public void deleteAccount(int id) {
+    public void deleteAccount(Account account) {
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             AccountMapper accountMapper = sqlSession.getMapper(AccountMapper.class);
-            accountMapper.deleteAccount(id);
+            accountMapper.deleteAccount(account);
             sqlSession.commit();
         }
     }

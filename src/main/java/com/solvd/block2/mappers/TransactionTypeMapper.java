@@ -9,10 +9,10 @@ public interface TransactionTypeMapper {
 
     List<TransactionType> getAllTransactionTypes();
 
-    void insertTransactionType(TransactionType transactionType);
+    void createTransactionType(TransactionType transactionType);
 
     void updateTransactionType(TransactionType transactionType);
 
-    void deleteTransactionType(int id);
-    
+    void deleteTransactionType(TransactionType transactionType);
+
 }

@@ -9,11 +9,11 @@ public interface BranchMapper {
 
     List<Branch> getAllBranches();
 
-    void insertBranch(Branch branch);
+    void createBranch(Branch branch);
 
     void updateBranch(Branch branch);
 
-    void deleteBranch(int id);
+    void deleteBranch(Branch branch);
 
     List<Branch> getBranchesByLocation(String location);
 }

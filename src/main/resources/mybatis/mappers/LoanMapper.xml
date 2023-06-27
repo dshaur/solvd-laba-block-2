@@ -27,7 +27,7 @@
         WHERE customer_id = #{customerId}
     </select>
 
-    <insert id="insertLoan" parameterType="com.solvd.block2.sql.models.Loan">
+    <insert id="createLoan" parameterType="com.solvd.block2.sql.models.Loan">
         INSERT INTO loans (loan_id, customer_id, loan_type, loan_amount, interest_rate, start_date, end_date)
         VALUES (#{loanId}, #{customerId}, #{loanType}, #{loanAmount}, #{interestRate}, #{startDate}, #{endDate})
     </insert>

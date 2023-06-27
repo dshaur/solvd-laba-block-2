@@ -9,11 +9,11 @@ public interface LoanMapper {
 
     List<Loan> getAllLoans();
 
-    void insertLoan(Loan loan);
+    void createLoan(Loan loan);
 
     void updateLoan(Loan loan);
 
-    void deleteLoan(int loanId);
+    void deleteLoan(Loan loan);
 
     List<Loan> getLoansByCustomerId(int customerId);
 }

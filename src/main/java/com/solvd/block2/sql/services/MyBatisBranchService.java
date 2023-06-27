@@ -1,18 +1,20 @@
-package com.solvd.block2.mybatis;
+package com.solvd.block2.sql.services;
 
 import com.solvd.block2.mappers.BranchEmployeeMapper;
 import com.solvd.block2.mappers.BranchMapper;
+import com.solvd.block2.mybatis.MyBatisSessionFactory;
 import com.solvd.block2.sql.models.Branch;
 import com.solvd.block2.sql.models.BranchEmployee;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
+import java.sql.SQLException;
 import java.util.List;
 
-public class BranchService {
+public class MyBatisBranchService implements IBranchService {
     private final SqlSessionFactory sqlSessionFactory;
 
-    public BranchService() {
+    public MyBatisBranchService() {
         this.sqlSessionFactory = MyBatisSessionFactory.getSqlSessionFactory();
     }
 
@@ -31,10 +33,18 @@ public class BranchService {
         }
     }
 
-    public void insertBranch(Branch branch) {
+    @Override
+    public BranchEmployee getBranchEmployeesById(int id) throws SQLException {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            BranchEmployeeMapper branchEmployeeMapper = sqlSession.getMapper(BranchEmployeeMapper.class);
+            return branchEmployeeMapper.getBranchEmployeeById(id);
+        }
+    }
+
+    public void createBranch(Branch branch) {
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             BranchMapper branchMapper = sqlSession.getMapper(BranchMapper.class);
-            branchMapper.insertBranch(branch);
+            branchMapper.createBranch(branch);
             sqlSession.commit();
         }
     }
@@ -47,13 +57,14 @@ public class BranchService {
         }
     }
 
-    public void deleteBranch(int id) {
+    public void deleteBranch(Branch branch) {
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             BranchMapper branchMapper = sqlSession.getMapper(BranchMapper.class);
-            branchMapper.deleteBranch(id);
+            branchMapper.deleteBranch(branch);
             sqlSession.commit();
         }
     }
+
 
     public List<Branch> getBranchesByLocation(String location) {
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
@@ -77,10 +88,11 @@ public class BranchService {
         }
     }
 
-    public void insertBranchEmployee(BranchEmployee branchEmployee) {
+
+    public void createBranchEmployee(BranchEmployee branchEmployee) {
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             BranchEmployeeMapper branchEmployeeMapper = sqlSession.getMapper(BranchEmployeeMapper.class);
-            branchEmployeeMapper.insertBranchEmployee(branchEmployee);
+            branchEmployeeMapper.createBranchEmployee(branchEmployee);
             sqlSession.commit();
         }
     }
@@ -93,10 +105,10 @@ public class BranchService {
         }
     }
 
-    public void deleteBranchEmployee(int id) {
+    public void deleteBranchEmployee(BranchEmployee branchEmployee) {
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             BranchEmployeeMapper branchEmployeeMapper = sqlSession.getMapper(BranchEmployeeMapper.class);
-            branchEmployeeMapper.deleteBranchEmployee(id);
+            branchEmployeeMapper.deleteBranchEmployee(branchEmployee);
             sqlSession.commit();
         }
     }

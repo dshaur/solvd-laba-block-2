@@ -29,7 +29,8 @@ public class Main {
         DebitCardDAO debitCardDAO = new DebitCardDAO();
         CreditCardDAO creditCardDAO = new CreditCardDAO();
         LoanDAO loanDAO = new LoanDAO();
-        CustomerService customerService = new CustomerService(customerDAO, debitCardDAO, creditCardDAO, loanDAO);
+        AccountDAO accountDAO = new AccountDAO();
+        CustomerService customerService = new CustomerService(customerDAO, debitCardDAO, creditCardDAO, loanDAO, accountDAO);
 
         /* ********************* Test display operations ********************* */
 

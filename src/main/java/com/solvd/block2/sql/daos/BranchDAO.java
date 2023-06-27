@@ -50,7 +50,7 @@ public class BranchDAO extends AbstractDAO<Branch> implements IBranchDAO {
 
                 // Add other required account properties
 
-                Account account = new Account(accountId, accountType, balance, openDate, lastTransactionDate, branchId, null);
+                Account account = new Account(accountId, accountType, balance, openDate, lastTransactionDate, branchId);
                 accounts.add(account);
             }
         } catch (SQLException e) {

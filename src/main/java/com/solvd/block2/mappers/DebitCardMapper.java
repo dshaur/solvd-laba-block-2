@@ -9,11 +9,11 @@ public interface DebitCardMapper {
 
     List<DebitCard> getAllDebitCards();
 
-    void insertDebitCard(DebitCard debitCard);
+    void createDebitCard(DebitCard debitCard);
 
     void updateDebitCard(DebitCard debitCard);
 
-    void deleteDebitCard(int debitCardId);
+    void deleteDebitCard(DebitCard debitCardId);
 
     List<DebitCard> getDebitCardsByCustomerId(int customerId);
 }

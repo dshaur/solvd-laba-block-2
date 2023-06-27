@@ -9,10 +9,12 @@ public interface CustomerMapper {
 
     List<Customer> getAllCustomers();
 
-    void insertCustomer(Customer customer);
+    void createCustomer(Customer customer);
 
     void updateCustomer(Customer customer);
 
-    void deleteCustomer(int customerId);
+    void deleteCustomer(Customer customer);
+
+    List<Customer> getCustomersByAccountId(int accountId);
 }
 

@@ -26,7 +26,7 @@
         WHERE customer_id = #{customerId}
     </select>
 
-    <insert id="insertCreditCard" parameterType="com.solvd.block2.sql.models.CreditCard">
+    <insert id="createCreditCard" parameterType="com.solvd.block2.sql.models.CreditCard">
         INSERT INTO credit_cards (credit_card_id, customer_id, credit_card_number, expiry_date, credit_limit,
         outstanding_balance)
         VALUES (#{creditCardId}, #{customerId}, #{creditCardNumber}, #{expiryDate}, #{creditLimit},

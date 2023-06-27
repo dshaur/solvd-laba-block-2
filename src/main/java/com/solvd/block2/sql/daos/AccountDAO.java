@@ -2,7 +2,6 @@ package com.solvd.block2.sql.daos;
 
 import com.solvd.block2.sql.interfaces.IAccountDAO;
 import com.solvd.block2.sql.models.Account;
-import com.solvd.block2.sql.models.Customer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,13 +16,6 @@ public class AccountDAO extends AbstractDAO<Account> implements IAccountDAO {
 
     private static final Logger LOGGER = LogManager.getLogger(AccountDAO.class);
 
-    private CustomerDAO customerDAO;
-
-    public AccountDAO() {
-        this.customerDAO = customerDAO;
-    }
-
-
     @Override
     protected Account createFromResultSet(ResultSet resultSet) throws SQLException {
         int accountId = resultSet.getInt("Account_ID");
@@ -34,9 +26,7 @@ public class AccountDAO extends AbstractDAO<Account> implements IAccountDAO {
         int branchId = resultSet.getInt("Branch_ID");
 
 
-        List<Customer> customers = getCustomersByAccountId(accountId);
-
-        return new Account(accountId, accountType, balance, openDate, lastTransactionDate, branchId, customers);
+        return new Account(accountId, accountType, balance, openDate, lastTransactionDate, branchId);
     }
 
     @Override
@@ -110,19 +100,9 @@ public class AccountDAO extends AbstractDAO<Account> implements IAccountDAO {
                 releaseConnection(connection);
             }
         }
-
         return null;
     }
 
-    @Override
-    public void updateAccount(Account account) {
-
-    }
-
-    @Override
-    public void deleteAccount(int accountId) {
-
-    }
 
     @Override
     public List<Account> getAllAccounts() throws SQLException {
@@ -151,15 +131,18 @@ public class AccountDAO extends AbstractDAO<Account> implements IAccountDAO {
     public List<Account> getByCustomerId(int customerId) throws SQLException {
         LOGGER.info("Getting accounts for customer with ID: {}", customerId);
         List<Account> accounts = new ArrayList<>();
+        String query = "SELECT a.* FROM accounts a " +
+                "INNER JOIN account_holders ah ON a.account_id = ah.account_id " +
+                "WHERE ah.customer_id = ?";
         Connection connection = null;
 
         try {
             connection = getConnection();
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM customer_accounts WHERE Customer_ID = ?");
+            PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, customerId);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                int accountId = resultSet.getInt("Account_ID");
+                int accountId = resultSet.getInt("account_id");
                 Account account = getAccountById(accountId);
                 if (account != null) {
                     accounts.add(account);
@@ -176,33 +159,6 @@ public class AccountDAO extends AbstractDAO<Account> implements IAccountDAO {
         return accounts;
     }
 
-    public List<Customer> getCustomersByAccountId(int accountId) throws SQLException {
-        LOGGER.info("Getting customers for account with ID: {}", accountId);
-        List<Customer> customers = new ArrayList<>();
-        Connection connection = null;
-
-        try {
-            connection = getConnection();
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM customer_accounts WHERE Account_ID = ?");
-            statement.setInt(1, accountId);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                int customerId = resultSet.getInt("Customer_ID");
-                Customer customer = customerDAO.getById(customerId);
-                if (customer != null) {
-                    customers.add(customer);
-                }
-            }
-        } catch (SQLException e) {
-            LOGGER.error("Error getting customers for account with ID: {}", accountId, e);
-        } finally {
-            if (connection != null) {
-                releaseConnection(connection);
-            }
-        }
-
-        return customers;
-    }
 
     @Override
     public List<Account> getAccountsByBranchId(int branchId) throws SQLException {

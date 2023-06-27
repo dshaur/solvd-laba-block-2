@@ -14,7 +14,7 @@ public interface AccountMapper {
 
     void updateAccount(Account account);
 
-    void deleteAccount(int accountId);
+    void deleteAccount(Account account);
 
     List<Customer> getCustomersByAccountId(int accountId);
 
@@ -22,6 +22,6 @@ public interface AccountMapper {
 
     List<Account> getAccountsByBranchId(int branchId);
 
-    void insertAccount(Account account);
+
 }
 
