@@ -20,7 +20,7 @@ public class ServiceFactoryRunner {
 
     public static void main(String[] args) {
         // Choose the type of service you want to create
-        String serviceType = "mybatis"; // or "mybatis"
+        String serviceType = "myBatis"; // or "mybatis"
 
         // Create the corresponding service using the ServiceFactory
         ICustomerService customerService = ServiceFactory.createCustomerService(serviceType);

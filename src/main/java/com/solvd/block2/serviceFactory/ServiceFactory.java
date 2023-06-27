@@ -8,7 +8,6 @@ public class ServiceFactory {
     public static IAccountService createAccountService(String type) {
         switch (type.toLowerCase()) {
             case "dao":
-                CustomerDAO customerDAO = new CustomerDAO();
                 return new AccountService(new AccountDAO());
             case "mybatis":
                 return new MyBatisAccountService();
@@ -33,7 +32,6 @@ public class ServiceFactory {
     public static ICustomerService createCustomerService(String type) {
         switch (type.toLowerCase()) {
             case "dao":
-                CustomerDAO customerDAO = new CustomerDAO();
                 return new CustomerService(new CustomerDAO(), new DebitCardDAO(), new CreditCardDAO(),
                         new LoanDAO(), new AccountDAO());
             case "mybatis":
