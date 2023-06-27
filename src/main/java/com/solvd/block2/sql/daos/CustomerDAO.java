@@ -1,10 +1,7 @@
 package com.solvd.block2.sql.daos;
 
 import com.solvd.block2.sql.interfaces.ICustomerDAO;
-import com.solvd.block2.sql.models.CreditCard;
-import com.solvd.block2.sql.models.Customer;
-import com.solvd.block2.sql.models.DebitCard;
-import com.solvd.block2.sql.models.Loan;
+import com.solvd.block2.sql.models.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -26,10 +23,13 @@ public class CustomerDAO extends AbstractDAO<Customer> implements ICustomerDAO {
     private DebitCardDAO debitCardDAO;
     private LoanDAO loanDAO;
 
+    private AccountDAO accountDAO;
+
     public CustomerDAO() {
         creditCardDAO = new CreditCardDAO();
         debitCardDAO = new DebitCardDAO();
         loanDAO = new LoanDAO();
+        accountDAO = new AccountDAO();
     }
 
     @Override
@@ -44,9 +44,11 @@ public class CustomerDAO extends AbstractDAO<Customer> implements ICustomerDAO {
         List<CreditCard> creditCards = getCreditCardsByCustomerId(customerId);
         List<DebitCard> debitCards = getDebitCardsByCustomerId(customerId);
         List<Loan> loans = getLoansByCustomerId(customerId);
+        List<Account> accounts = getAccountsByCustomerId(customerId);
 
-        return new Customer(customerId, firstName, lastName, address, phoneNumber, email, creditCards, debitCards, loans);
+        return new Customer(customerId, firstName, lastName, address, phoneNumber, email, creditCards, debitCards, loans, accounts);
     }
+
 
     @Override
     protected void setCreateStatementParameters(PreparedStatement statement, Customer customer) throws SQLException {
@@ -98,20 +100,24 @@ public class CustomerDAO extends AbstractDAO<Customer> implements ICustomerDAO {
         return "DELETE FROM customers WHERE Customer_ID = ?";
     }
 
-    private List<CreditCard> getCreditCardsByCustomerId(int customerId) {
+    private List<CreditCard> getCreditCardsByCustomerId(int customerId) throws SQLException {
         return creditCardDAO.getByCustomerId(customerId);
     }
 
-    private List<DebitCard> getDebitCardsByCustomerId(int customerId) {
+    private List<DebitCard> getDebitCardsByCustomerId(int customerId) throws SQLException {
         return debitCardDAO.getByCustomerId(customerId);
     }
 
-    private List<Loan> getLoansByCustomerId(int customerId) {
+    private List<Loan> getLoansByCustomerId(int customerId) throws SQLException {
         return loanDAO.getByCustomerId(customerId);
     }
 
+    private List<Account> getAccountsByCustomerId(int customerId) throws SQLException {
+        return accountDAO.getByCustomerId(customerId);
+    }
+
     @Override
-    public Customer getById(int customerId) {
+    public Customer getById(int customerId) throws SQLException {
         LOGGER.info("Getting customer with ID: {}", customerId);
         Connection connection = null;
 
@@ -123,7 +129,7 @@ public class CustomerDAO extends AbstractDAO<Customer> implements ICustomerDAO {
             if (resultSet.next()) {
                 return createFromResultSet(resultSet);
             }
-        } catch (SQLException | InterruptedException e) {
+        } catch (SQLException e) {
             LOGGER.error("Error getting customer with ID: {}", customerId, e);
         } finally {
             if (connection != null) {
@@ -135,7 +141,7 @@ public class CustomerDAO extends AbstractDAO<Customer> implements ICustomerDAO {
     }
 
     @Override
-    public List<Customer> getAll() {
+    public List<Customer> getAll() throws SQLException {
         LOGGER.info("Getting all customers");
         List<Customer> customers = new ArrayList<>();
         Connection connection = null;
@@ -147,7 +153,7 @@ public class CustomerDAO extends AbstractDAO<Customer> implements ICustomerDAO {
             while (resultSet.next()) {
                 customers.add(createFromResultSet(resultSet));
             }
-        } catch (SQLException | InterruptedException e) {
+        } catch (SQLException e) {
             LOGGER.error("Error getting all customers", e);
         } finally {
             if (connection != null) {
@@ -156,6 +162,8 @@ public class CustomerDAO extends AbstractDAO<Customer> implements ICustomerDAO {
         }
         return customers;
     }
+
+
 }
 
 

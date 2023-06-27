@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.solvd.block2.mappers.TransactionTypeMapper">
+
+    <resultMap id="transactionTypeResultMap" type="com.solvd.block2.sql.models.TransactionType" autoMapping="false">
+        <id property="typeId" column="transaction_type_id"/>
+        <result property="typeName" column="type_name"/>
+    </resultMap>
+
+    <select id="getTransactionTypeById" resultMap="transactionTypeResultMap" parameterType="int">
+        SELECT transaction_type_id, type_name
+        FROM transaction_type
+        WHERE transaction_type_id = #{typeId}
+    </select>
+
+    <select id="getAllTransactionTypes" resultMap="transactionTypeResultMap">
+        SELECT transaction_type_id, type_name
+        FROM transaction_type
+    </select>
+
+    <insert id="createTransactionType" parameterType="com.solvd.block2.sql.models.TransactionType">
+        INSERT INTO transaction_type (transaction_type_id, type_name)
+        VALUES (#{typeId}, #{typeName})
+    </insert>
+
+    <update id="updateTransactionType" parameterType="com.solvd.block2.sql.models.TransactionType">
+        UPDATE transaction_type
+        SET type_name = #{typeName}
+        WHERE transaction_type_id = #{typeId}
+    </update>
+
+    <delete id="deleteTransactionType" parameterType="int">
+        DELETE FROM transaction_type WHERE transaction_type_id = #{typeId}
+    </delete>
+
+</mapper>

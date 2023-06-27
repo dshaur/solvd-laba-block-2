@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.solvd.block2.mappers.CreditCardMapper">
+
+    <resultMap id="creditCardResultMap" type="com.solvd.block2.sql.models.CreditCard" autoMapping="false">
+        <id property="creditCardId" column="credit_card_id"/>
+        <result property="customerId" column="customer_id"/>
+        <result property="creditCardNumber" column="credit_card_number"/>
+        <result property="expiryDate" column="expiry_date" jdbcType="DATE" javaType="java.sql.Date"/>
+        <result property="creditLimit" column="credit_limit"/>
+        <result property="outstandingBalance" column="outstanding_balance"/>
+    </resultMap>
+
+    <select id="getCreditCardById" resultMap="creditCardResultMap" parameterType="int">
+        SELECT credit_card_id, customer_id, credit_card_number, expiry_date, credit_limit, outstanding_balance
+        FROM credit_cards
+        WHERE credit_card_id = #{creditCardId}
+    </select>
+
+    <select id="getCreditCardsByCustomerId" resultMap="creditCardResultMap" parameterType="int">
+        SELECT credit_card_id, customer_id, credit_card_number, expiry_date, credit_limit, outstanding_balance
+        FROM credit_cards
+        WHERE customer_id = #{customerId}
+    </select>
+
+    <insert id="createCreditCard" parameterType="com.solvd.block2.sql.models.CreditCard">
+        INSERT INTO credit_cards (credit_card_id, customer_id, credit_card_number, expiry_date, credit_limit,
+        outstanding_balance)
+        VALUES (#{creditCardId}, #{customerId}, #{creditCardNumber}, #{expiryDate}, #{creditLimit},
+        #{outstandingBalance})
+    </insert>
+
+    <update id="updateCreditCard" parameterType="com.solvd.block2.sql.models.CreditCard">
+        UPDATE credit_cards
+        SET customer_id = #{customerId}, credit_card_number = #{creditCardNumber},
+        expiry_date = #{expiryDate}, credit_limit = #{creditLimit}, outstanding_balance = #{outstandingBalance}
+        WHERE credit_card_id = #{creditCardId}
+    </update>
+
+    <delete id="deleteCreditCard" parameterType="int">
+        DELETE FROM credit_cards WHERE credit_card_id = #{creditCardId}
+    </delete>
+</mapper>

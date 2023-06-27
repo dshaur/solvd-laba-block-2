@@ -48,11 +48,16 @@ public class Customer {
     @XmlElement(name = "loan")
     private List<Loan> loans;
 
+    @JsonProperty("accounts")
+    @XmlElementWrapper(name = "accounts")
+    @XmlElement(name = "account")
+    private List<Account> accounts;
+
     public Customer() {
         // No-arg default constructor
     }
 
-    public Customer(int customerId, String firstName, String lastName, String address, String phoneNumber, String email, List<CreditCard> creditCards, List<DebitCard> debitCards, List<Loan> loans) {
+    public Customer(int customerId, String firstName, String lastName, String address, String phoneNumber, String email, List<CreditCard> creditCards, List<DebitCard> debitCards, List<Loan> loans, List<Account> accounts) {
         this.customerId = customerId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -62,7 +67,18 @@ public class Customer {
         this.creditCards = creditCards;
         this.debitCards = debitCards;
         this.loans = loans;
+        this.accounts = accounts;
     }
+
+    public Customer(int customerId, String firstName, String lastName, String address, String phoneNumber, String email) {
+        this.customerId = customerId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+    }
+
 
     // Getters and setters
 
@@ -134,6 +150,18 @@ public class Customer {
         return loans;
     }
 
+    public void setLoans(List<Loan> loans) {
+        this.loans = loans;
+    }
+
+    public List<Account> getAccounts() {
+        return accounts;
+    }
+
+    public void setAccounts(List<Account> accounts) {
+        this.accounts = accounts;
+    }
+
     public void addCreditCard(CreditCard creditCard) {
         creditCards.add(creditCard);
     }
@@ -146,8 +174,8 @@ public class Customer {
         loans.add(loan);
     }
 
-    public void setLoans(List<Loan> loans) {
-        this.loans = loans;
+    public void addAccount(Account account) {
+        accounts.add(account);
     }
 
     @Override
@@ -162,7 +190,7 @@ public class Customer {
                 ", creditCards: " + creditCards +
                 ", debitCards: " + debitCards +
                 ", loans: " + loans +
+                ", accounts: " + accounts +
                 '}';
     }
 }
-

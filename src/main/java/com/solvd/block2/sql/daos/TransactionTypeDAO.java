@@ -68,7 +68,7 @@ public class TransactionTypeDAO extends AbstractDAO<TransactionType> implements 
     }
 
     @Override
-    public TransactionType findByTransactionId(int transactionId) {
+    public TransactionType findByTransactionId(int transactionId) throws SQLException {
         TransactionType transactionType = null;
         String query = "SELECT tt.transaction_type_id, tt.type_name " +
                 "FROM transaction_type tt " +
@@ -88,7 +88,7 @@ public class TransactionTypeDAO extends AbstractDAO<TransactionType> implements 
                     transactionType = new TransactionType(typeId, typeName);
                 }
             }
-        } catch (SQLException | InterruptedException e) {
+        } catch (SQLException e) {
             LOGGER.error("Error retrieving transaction type by transaction ID: " + transactionId, e);
         } finally {
             if (connection != null) {

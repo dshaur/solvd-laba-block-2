@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.solvd.block2.mappers.AccountMapper">
+
+    <resultMap id="accountResultMap" type="com.solvd.block2.sql.models.Account" autoMapping="false">
+        <id property="accountId" column="account_ID"/>
+        <result property="accountType" column="account_type"/>
+        <result property="balance" column="balance"/>
+        <result property="openDate" column="open_date" jdbcType="DATE" javaType="java.sql.Date"/>
+        <result property="lastTransactionDate" column="last_transaction_date" jdbcType="DATE" javaType="java.sql.Date"/>
+        <result property="branchId" column="branch_id"/>
+        
+    </resultMap>
+
+    <select id="getAccountById" resultMap="accountResultMap" parameterType="int">
+        SELECT a.account_id, a.account_type, a.balance, a.open_date, a.last_transaction_date,
+        a.branch_id,
+        c.customer_id, c.first_name, c.last_name, c.address, c.phone_number, c.email
+        FROM accounts a
+        LEFT JOIN account_holders ah ON a.account_ID = ah.account_id
+        LEFT JOIN customers c ON ah.customer_id = c.customer_ID
+        WHERE a.account_ID = #{accountId}
+    </select>
+
+    <select id="getAllAccounts" resultMap="accountResultMap">
+        SELECT a.account_ID, a.account_type, a.balance, a.open_date, a.last_transaction_date,
+        a.branch_id,
+        c.customer_ID, c.first_name, c.last_name, c.address, c.phone_number, c.email
+        FROM accounts a
+        LEFT JOIN account_holders ah ON a.account_ID = ah.account_id
+        LEFT JOIN customers c ON ah.customer_id = c.customer_ID
+    </select>
+
+    <insert id="createAccount" parameterType="com.solvd.block2.sql.models.Account">
+        INSERT INTO accounts (account_ID, account_type, balance, open_date, last_transaction_date, branch_id)
+        VALUES (#{accountId}, #{accountType}, #{balance}, #{openDate}, #{lastTransactionDate}, #{branchId})
+    </insert>
+
+    <update id="updateAccount" parameterType="com.solvd.block2.sql.models.Account">
+        UPDATE accounts
+        SET account_type = #{accountType}, balance = #{balance}, open_date = #{openDate},
+        last_transaction_date = #{lastTransactionDate}, branch_id = #{branchId}
+        WHERE account_ID = #{accountId}
+    </update>
+
+    <delete id="deleteAccount" parameterType="int">
+        DELETE FROM accounts WHERE account_ID = #{accountId}
+    </delete>
+
+</mapper>

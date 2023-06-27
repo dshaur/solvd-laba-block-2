@@ -76,7 +76,7 @@ public class BranchEmployeeDAO extends AbstractDAO<BranchEmployee> implements IB
         return "DELETE FROM branch_employees WHERE employee_id = ?";
     }
 
-    public List<BranchEmployee> findByBranchId(int branchId) {
+    public List<BranchEmployee> findByBranchId(int branchId) throws SQLException {
         List<BranchEmployee> branchEmployees = new ArrayList<>();
         Connection connection = null;
 
@@ -89,7 +89,7 @@ public class BranchEmployeeDAO extends AbstractDAO<BranchEmployee> implements IB
                 BranchEmployee branchEmployee = createFromResultSet(resultSet);
                 branchEmployees.add(branchEmployee);
             }
-        } catch (SQLException | InterruptedException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             if (connection != null) {
@@ -100,6 +100,29 @@ public class BranchEmployeeDAO extends AbstractDAO<BranchEmployee> implements IB
         return branchEmployees;
     }
 
+    public BranchEmployee findByEmployeeId(int employeeId) throws SQLException {
+        Connection connection = null;
+        BranchEmployee branchEmployee = null;
+
+        try {
+            connection = DbUtil.getConnection();
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM branch_employees WHERE employee_id = ?");
+            statement.setInt(1, employeeId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                branchEmployee = createFromResultSet(resultSet);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                DbUtil.releaseConnection(connection);
+            }
+        }
+
+        return branchEmployee;
+    }
+    
 
     // Add other specific methods related to the 'branch_employees' table if needed
 }

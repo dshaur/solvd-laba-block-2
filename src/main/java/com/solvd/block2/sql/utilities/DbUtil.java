@@ -3,104 +3,80 @@ package com.solvd.block2.sql.utilities;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class DbUtil {
-    private static final int MAX_CONNECTIONS = 10; // Maximum number of connections in the pool
-    private static final String PROPERTIES_FILE = "db.properties"; // File name for the JDBC properties
-    private static BlockingQueue<Connection> connectionPool;
-    private static final Logger LOGGER = LogManager.getLogger(DbUtil.class);
+    private static final Logger LOGGER = LogManager.getLogger(DbUtil.class.getName());
+    private static final int MAX_POOL_SIZE = 10;
+    private static final BlockingQueue<Connection> connectionPool = new LinkedBlockingQueue<>(MAX_POOL_SIZE);
+    private static final Properties properties = new Properties();
 
-    private static void initializeConnectionPool() {
-        Properties properties = loadProperties();
-
-        if (properties != null) {
-            String dbUrl = properties.getProperty("jdbc.url");
-            String dbUser = properties.getProperty("jdbc.username");
-            String dbPassword = properties.getProperty("jdbc.password");
-
-            connectionPool = new ArrayBlockingQueue<>(MAX_CONNECTIONS);
-
-            try {
-                Connection connection = createConnection(dbUrl, dbUser, dbPassword);
-                if (connection != null) {
-                    connectionPool.offer(connection);
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private static Connection createConnection(String dbUrl, String dbUser, String dbPassword) throws SQLException {
-        return DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-    }
-
-    private static Properties loadProperties() {
-        Properties properties = new Properties();
-        try (InputStream inputStream = DbUtil.class.getClassLoader().getResourceAsStream(PROPERTIES_FILE)) {
-            if (inputStream != null) {
-                properties.load(inputStream);
-                return properties;
-            } else {
-                throw new IOException("File not found: " + PROPERTIES_FILE);
-            }
+    static {
+        try (InputStream input = new FileInputStream("src/main/resources/db.properties")) {
+            properties.load(input);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Failed to load db.properties file.", e);
         }
-        return null;
     }
 
-    /*
-    This code establishes a connection to a database using a connection pool. If the connection pool is not initialized,
-    it initializes it. Then, it tries to get a connection from the connection pool.
-    If there are no connections available and the maximum number of connections has not been reached,
-    it creates a new connection using properties loaded from a file and adds it to the connection pool.
-    If there are still no connections available, the code waits for a connection to become available.
-    */
-    public static Connection getConnection() throws InterruptedException, SQLException {
-        if (connectionPool == null) {
-            initializeConnectionPool();
-        }
 
+    private static Connection createConnection() throws SQLException {
+        return DriverManager.getConnection(
+                properties.getProperty("jdbc.url"),
+                properties.getProperty("jdbc.username"),
+                properties.getProperty("jdbc.password")
+        );
+    }
+
+    public static Connection getConnection() throws SQLException {
         Connection connection = connectionPool.poll();
-        if (connection == null && connectionPool.size() < MAX_CONNECTIONS) {
-            Properties properties = loadProperties();
-            if (properties != null) {
-                String dbUrl = properties.getProperty("jdbc.url");
-                String dbUser = properties.getProperty("jdbc.username");
-                String dbPassword = properties.getProperty("jdbc.password");
-                connection = createConnection(dbUrl, dbUser, dbPassword);
-                if (connection != null) {
-                    connectionPool.offer(connection);
+        if (connection == null) {
+            if (connectionPool.size() < MAX_POOL_SIZE) {
+                connection = createConnection();
+                LOGGER.info("Added connection: " + Thread.currentThread().getName());
+            } else {
+                try {
+                    connection = connectionPool.take();
+                    LOGGER.info("Client connected: " + Thread.currentThread().getName() +
+                            " [Available connections: " + connectionPool.size() + "]");
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    throw new SQLException("Failed to obtain a database connection.", e);
                 }
             }
-        }
-
-        if (connection == null) {
-            LOGGER.info("Waiting for a connection...");
-            connection = connectionPool.take();
+        } else {
+            LOGGER.info("Client connected: " + Thread.currentThread().getName() +
+                    " [Available connections: " + connectionPool.size() + "]");
         }
         return connection;
     }
 
-    public static void releaseConnection(Connection connection) {
-        try {
-            if (connection != null && !connection.isClosed()) {
-                connectionPool.offer(connection);
+    public static void releaseConnection(Connection connection) throws SQLException {
+        if (connection != null && !connection.isClosed() && connectionPool.size() < MAX_POOL_SIZE) {
+            connectionPool.offer(connection);
+            LOGGER.info("Client exhausted: " + Thread.currentThread().getName() +
+                    " [Available connections: " + connectionPool.size() + "]");
+        } else {
+            try {
+                connection.close();
+                LOGGER.info("Closed excess connection: " + Thread.currentThread().getName() +
+                        " [Available connections: " + connectionPool.size() + "]");
+            } catch (SQLException e) {
+                LOGGER.error("Failed to close the excess database connection.", e);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 }
+
+
 
 
 

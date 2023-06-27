@@ -3,10 +3,14 @@ package com.solvd.block2.sql.models;
 public class BranchEmployee {
 
     private int employeeId;
+    private int branchId;
     private String firstName;
     private String lastName;
-    private int branchId;
     private String position;
+
+    public BranchEmployee() {
+        // No argument constructor
+    }
 
     public BranchEmployee(int employeeId, String firstName, String lastName, int branchId, String position) {
         this.employeeId = employeeId;
@@ -58,7 +62,7 @@ public class BranchEmployee {
 
     @Override
     public String toString() {
-        return "Employee ID: " + employeeId + ", First Name: " + firstName + ", Last Name: " + lastName
-                + ", Branch ID: " + branchId + ", Position: " + position;
+        return "Employee ID: " + employeeId + ", Branch ID: " + branchId + ", First Name: " + firstName + ", Last Name: " + lastName
+                + ", Position: " + position;
     }
 }

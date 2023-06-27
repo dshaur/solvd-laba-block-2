@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.solvd.block2.mappers.BranchMapper">
+
+    <!-- Define the result map -->
+    <resultMap id="branchResultMap" type="com.solvd.block2.sql.models.Branch" autoMapping="false">
+        <id property="branchId" column="branch_id"/>
+        <result property="branchName" column="branch_name"/>
+        <result property="location" column="location"/>
+
+        <!-- Include the branchEmployees property -->
+        <collection property="branchEmployees" ofType="com.solvd.block2.sql.models.BranchEmployee">
+            <id property="employeeId" column="employee_id"/>
+            <result property="branchId" column="branch_id"/>
+            <result property="firstName" column="first_name"/>
+            <result property="lastName" column="last_name"/>
+            <result property="position" column="position"/>
+        </collection>
+
+        <!-- Include the accounts property -->
+        <collection property="accounts" ofType="com.solvd.block2.sql.models.Account">
+            <id property="accountId" column="account_id"/>
+            <result property="accountType" column="account_type"/>
+            <result property="balance" column="balance"/>
+            <result property="openDate" column="open_date"/>
+            <result property="lastTransactionDate" column="last_transaction_date"/>
+            <result property="branchId" column="branch_id"/>
+        </collection>
+    </resultMap>
+
+    <select id="getBranchById" resultMap="branchResultMap" parameterType="int">
+        SELECT b.branch_id, b.branch_name, b.location,
+        be.employee_id, be.first_name, be.last_name, be.position,
+        a.account_id, a.account_type, a.balance, a.open_date, a.last_transaction_date, a.branch_id
+        FROM branches b
+        LEFT JOIN branch_employees be ON b.branch_id = be.branch_id
+        LEFT JOIN accounts a ON a.branch_id = b.branch_id
+        WHERE b.branch_id = #{branchId}
+    </select>
+
+
+    <select id="getAllBranches" resultMap="branchResultMap">
+        SELECT b.branch_id, b.branch_name, b.location,
+        be.employee_id, be.first_name, be.last_name, be.position,
+        a.account_id, a.account_type, a.balance, a.open_date, a.last_transaction_date, a.branch_id
+        FROM branches b
+        LEFT JOIN branch_employees be ON b.branch_id = be.branch_id
+        LEFT JOIN accounts a ON b.branch_id = a.branch_id
+    </select>
+
+    <insert id="createBranch" parameterType="com.solvd.block2.sql.models.Branch">
+        INSERT INTO branches (branch_id, branch_name, location)
+        VALUES (#{branchId}, #{branchName}, #{location})
+    </insert>
+
+    <update id="updateBranch" parameterType="com.solvd.block2.sql.models.Branch">
+        UPDATE branches
+        SET branch_name = #{branchName}, location = #{location}
+        WHERE branch_id = #{branchId}
+    </update>
+
+    <delete id="deleteBranch" parameterType="int">
+        DELETE FROM branches WHERE branch_id = #{branchId}
+    </delete>
+
+    <select id="getBranchesByLocation" resultMap="branchResultMap" parameterType="String">
+        SELECT b.branch_id, b.branch_name, b.location,
+        be.employee_id, be.first_name, be.last_name, be.position,
+        a.account_id, a.account_type, a.balance, a.open_date, a.last_transaction_date, a.branch_id
+        FROM branches b
+        LEFT JOIN branch_employees be ON b.branch_id = be.branch_id
+        LEFT JOIN accounts a ON b.branch_id = a.branch_id
+        WHERE b.location = #{location}
+    </select>
+</mapper>

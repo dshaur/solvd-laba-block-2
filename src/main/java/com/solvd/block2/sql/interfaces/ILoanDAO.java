@@ -2,20 +2,21 @@ package com.solvd.block2.sql.interfaces;
 
 import com.solvd.block2.sql.models.Loan;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public interface ILoanDAO extends GenDAO<Loan> {
-    Loan getById(int loanId);
+    Loan getById(int loanId) throws SQLException;
 
-    List<Loan> getByCustomerId(int customerId);
+    List<Loan> getByCustomerId(int customerId) throws SQLException;
 
-    List<Loan> getAll();
+    List<Loan> getAll() throws SQLException;
 
-    void create(Loan loan);
+    void create(Loan loan) throws SQLException;
 
-    void update(Loan loan);
+    void update(Loan loan) throws SQLException;
 
-    void delete(Loan loan);
+    void delete(Loan loan) throws SQLException;
 }
 
 

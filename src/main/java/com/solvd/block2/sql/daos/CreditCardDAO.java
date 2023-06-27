@@ -84,7 +84,7 @@ public class CreditCardDAO extends AbstractDAO<CreditCard> implements ICreditCar
     }
 
     @Override
-    public CreditCard getById(int creditCardId) {
+    public CreditCard getById(int creditCardId) throws SQLException {
         LOGGER.info("Getting credit card with ID: {}", creditCardId);
         Connection connection = null;
 
@@ -96,7 +96,7 @@ public class CreditCardDAO extends AbstractDAO<CreditCard> implements ICreditCar
             if (resultSet.next()) {
                 return createFromResultSet(resultSet);
             }
-        } catch (SQLException | InterruptedException e) {
+        } catch (SQLException e) {
             LOGGER.error("Error getting credit card with ID: {}", creditCardId, e);
         } finally {
             if (connection != null) {
@@ -108,7 +108,7 @@ public class CreditCardDAO extends AbstractDAO<CreditCard> implements ICreditCar
     }
 
     @Override
-    public List<CreditCard> getByCustomerId(int customerId) {
+    public List<CreditCard> getByCustomerId(int customerId) throws SQLException {
         LOGGER.info("Getting credit cards for customer with ID: {}", customerId);
         List<CreditCard> creditCards = new ArrayList<>();
         Connection connection = null;
@@ -121,7 +121,7 @@ public class CreditCardDAO extends AbstractDAO<CreditCard> implements ICreditCar
             while (resultSet.next()) {
                 creditCards.add(createFromResultSet(resultSet));
             }
-        } catch (SQLException | InterruptedException e) {
+        } catch (SQLException e) {
             LOGGER.error("Error getting credit cards for customer with ID: {}", customerId, e);
         } finally {
             if (connection != null) {
@@ -132,7 +132,7 @@ public class CreditCardDAO extends AbstractDAO<CreditCard> implements ICreditCar
     }
 
     @Override
-    public List<CreditCard> getAll() {
+    public List<CreditCard> getAll() throws SQLException {
         LOGGER.info("Getting all credit cards");
         List<CreditCard> creditCards = new ArrayList<>();
         Connection connection = null;
@@ -144,7 +144,7 @@ public class CreditCardDAO extends AbstractDAO<CreditCard> implements ICreditCar
             while (resultSet.next()) {
                 creditCards.add(createFromResultSet(resultSet));
             }
-        } catch (SQLException | InterruptedException e) {
+        } catch (SQLException e) {
             LOGGER.error("Error getting all credit cards", e);
         } finally {
             if (connection != null) {

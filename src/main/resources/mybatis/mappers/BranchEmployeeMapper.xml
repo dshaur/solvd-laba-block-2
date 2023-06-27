@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.solvd.block2.mappers.BranchEmployeeMapper">
+
+    <resultMap id="branchEmployeeResultMap" type="com.solvd.block2.sql.models.BranchEmployee" autoMapping="false">
+        <id property="employeeId" column="employee_id"/>
+        <result property="branchId" column="branch_id"/>
+        <result property="firstName" column="first_name"/>
+        <result property="lastName" column="last_name"/>
+        <result property="position" column="position"/>
+    </resultMap>
+
+    <select id="getBranchEmployeeById" resultMap="branchEmployeeResultMap" parameterType="int">
+        SELECT * FROM branch_employees WHERE employee_id = #{employeeId}
+    </select>
+
+    <select id="getAllBranchEmployees" resultMap="branchEmployeeResultMap">
+        SELECT * FROM branch_employees
+    </select>
+
+    <insert id="createBranchEmployee" parameterType="com.solvd.block2.sql.models.BranchEmployee">
+        INSERT INTO branch_employees (employee_id, branch_id, first_name, last_name, position)
+        VALUES (#{employeeId}, #{branchId}, #{firstName}, #{lastName}, #{position})
+    </insert>
+
+    <update id="updateBranchEmployee" parameterType="com.solvd.block2.sql.models.BranchEmployee">
+        UPDATE branch_employees
+        SET branch_id = #{branchId}, first_name = #{firstName}, last_name = #{lastName}, position = #{position}
+        WHERE employee_id = #{employeeId}
+    </update>
+
+    <delete id="deleteBranchEmployee" parameterType="int">
+        DELETE FROM branch_employees WHERE employee_id = #{id}
+    </delete>
+
+    <select id="getBranchEmployeesByBranchId" resultMap="branchEmployeeResultMap" parameterType="int">
+        SELECT * FROM branch_employees WHERE branch_id = #{branchId}
+    </select>
+
+</mapper>
