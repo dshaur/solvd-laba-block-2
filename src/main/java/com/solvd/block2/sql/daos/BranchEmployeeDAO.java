@@ -63,7 +63,7 @@ public class BranchEmployeeDAO extends AbstractDAO<BranchEmployee> implements IB
 
     @Override
     protected String getCreateQuery() {
-        return "INSERT INTO branch_employees (employee_id, first_name, last_name, branch_id, position) VALUES (?, ?, ?, ?, ?)";
+        return "INSERT INTO branch_employees (first_name, last_name, branch_id, position) VALUES (?, ?, ?, ?)";
     }
 
     @Override
@@ -122,7 +122,7 @@ public class BranchEmployeeDAO extends AbstractDAO<BranchEmployee> implements IB
 
         return branchEmployee;
     }
-    
+
 
     // Add other specific methods related to the 'branch_employees' table if needed
 }

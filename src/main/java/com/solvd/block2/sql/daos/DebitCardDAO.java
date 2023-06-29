@@ -63,7 +63,7 @@ public class DebitCardDAO extends AbstractDAO<DebitCard> implements IDebitCardDA
 
     @Override
     protected String getCreateQuery() {
-        return "INSERT INTO debit_cards (Debit_Card_ID, Customer_ID, Debit_Card_Number, Expiry_Date) VALUES (?, ?, ?, ?)";
+        return "INSERT INTO debit_cards (Customer_ID, Debit_Card_Number, Expiry_Date) VALUES (?, ?, ?)";
     }
 
     @Override

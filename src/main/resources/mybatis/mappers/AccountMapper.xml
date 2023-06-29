@@ -12,7 +12,7 @@
         <result property="openDate" column="open_date" jdbcType="DATE" javaType="java.sql.Date"/>
         <result property="lastTransactionDate" column="last_transaction_date" jdbcType="DATE" javaType="java.sql.Date"/>
         <result property="branchId" column="branch_id"/>
-        
+
     </resultMap>
 
     <select id="getAccountById" resultMap="accountResultMap" parameterType="int">
@@ -35,8 +35,8 @@
     </select>
 
     <insert id="createAccount" parameterType="com.solvd.block2.sql.models.Account">
-        INSERT INTO accounts (account_ID, account_type, balance, open_date, last_transaction_date, branch_id)
-        VALUES (#{accountId}, #{accountType}, #{balance}, #{openDate}, #{lastTransactionDate}, #{branchId})
+        INSERT INTO accounts (account_type, balance, open_date, last_transaction_date, branch_id)
+        VALUES (#{accountType}, #{balance}, #{openDate}, #{lastTransactionDate}, #{branchId})
     </insert>
 
     <update id="updateAccount" parameterType="com.solvd.block2.sql.models.Account">

@@ -87,7 +87,7 @@ public class CustomerDAO extends AbstractDAO<Customer> implements ICustomerDAO {
 
     @Override
     protected String getCreateQuery() {
-        return "INSERT INTO customers (Customer_ID, First_Name, Last_Name, Address, Phone_Number, Email) VALUES (?, ?, ?, ?, ?, ?)";
+        return "INSERT INTO customers (First_Name, Last_Name, Address, Phone_Number, Email) VALUES (?, ?, ?, ?, ?)";
     }
 
     @Override

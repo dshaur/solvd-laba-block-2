@@ -52,8 +52,8 @@
     </select>
 
     <insert id="createBranch" parameterType="com.solvd.block2.sql.models.Branch">
-        INSERT INTO branches (branch_id, branch_name, location)
-        VALUES (#{branchId}, #{branchName}, #{location})
+        INSERT INTO branches (branch_name, location)
+        VALUES (#{branchName}, #{location})
     </insert>
 
     <update id="updateBranch" parameterType="com.solvd.block2.sql.models.Branch">

@@ -1,4 +1,4 @@
-package com.solvd.block2.serviceFactory;
+package com.solvd.block2.service_factory;
 
 import com.solvd.block2.sql.daos.*;
 import com.solvd.block2.sql.services.*;
