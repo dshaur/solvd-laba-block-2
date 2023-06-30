@@ -5,11 +5,14 @@ import com.solvd.block2.sql.services.*;
 
 public class ServiceFactory {
 
+    private static final String daoService = "dao";
+    private static final String mybatisService = "mybatis";
+
     public static IAccountService createAccountService(String type) {
         switch (type.toLowerCase()) {
-            case "dao":
+            case daoService:
                 return new AccountService(new AccountDAO());
-            case "mybatis":
+            case mybatisService:
                 return new MyBatisAccountService();
             default:
                 return null;
@@ -19,9 +22,9 @@ public class ServiceFactory {
 
     public static IBranchService createBranchService(String type) {
         switch (type.toLowerCase()) {
-            case "dao":
+            case daoService:
                 return new BranchService(new BranchDAO(), new BranchEmployeeDAO());
-            case "mybatis":
+            case mybatisService:
                 return new MyBatisBranchService();
             default:
                 return null;
@@ -31,10 +34,10 @@ public class ServiceFactory {
 
     public static ICustomerService createCustomerService(String type) {
         switch (type.toLowerCase()) {
-            case "dao":
+            case daoService:
                 return new CustomerService(new CustomerDAO(), new DebitCardDAO(), new CreditCardDAO(),
                         new LoanDAO(), new AccountDAO());
-            case "mybatis":
+            case mybatisService:
                 return new MyBatisCustomerService();
             default:
                 return null;
@@ -43,9 +46,9 @@ public class ServiceFactory {
 
     public static ITransactionService createTransactionService(String type) {
         switch (type.toLowerCase()) {
-            case "dao":
+            case daoService:
                 return new TransactionService(new TransactionDAO(), new TransactionTypeDAO());
-            case "mybatis":
+            case mybatisService:
                 return new MyBatisTransactionService();
             default:
                 return null;

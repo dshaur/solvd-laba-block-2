@@ -24,9 +24,9 @@ public class BankBusinessRunner {
     public void runCreditCheck() {
 
         // Create a potential customer with their basic information
-        Customer customer = new Customer("Juan", "Riquelme", "901 La Boca St", "9990001111", "jr10@gmail.com");
+        Customer customer = new Customer("Juan", "Domingo", "2236 Newberry Rd", "1235487889", "jdomingo45@gmail.com");
         // Provide the potential customer's credit score
-        int creditScore = 803;
+        int creditScore = 763;
 
         // Create observers
         CustomerObserver customerLogger = new CustomerLogger();
