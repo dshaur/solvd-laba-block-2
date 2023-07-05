@@ -12,7 +12,7 @@ import java.sql.SQLException;
 public class BankBusinessRunner {
 
     private static final Logger LOGGER = LogManager.getLogger(BankBusinessRunner.class);
-    private static ICustomerService customerService = ServiceFactory.createCustomerService("mybatis");
+    private static ICustomerService customerService = ServiceFactory.createCustomerService();
     CreditChecker creditChecker = new CreditChecker(customerService);
 
     public static void main(String[] args) throws SQLException {
@@ -24,9 +24,9 @@ public class BankBusinessRunner {
     public void runCreditCheck() {
 
         // Create a potential customer with their basic information
-        Customer customer = new Customer("Juan", "Domingo", "2236 Newberry Rd", "1235487889", "jdomingo45@gmail.com");
+        Customer customer = new Customer("Memphis", "Depay", "598 Hull Rd", "4587985511", "mdepay@gmail.com");
         // Provide the potential customer's credit score
-        int creditScore = 763;
+        int creditScore = 778;
 
         // Create observers
         CustomerObserver customerLogger = new CustomerLogger();

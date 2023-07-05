@@ -5,14 +5,15 @@ import com.solvd.block2.sql.services.*;
 
 public class ServiceFactory {
 
-    private static final String daoService = "dao";
-    private static final String mybatisService = "mybatis";
+    private static final String DAO_SERVICE = "dao";
+    private static final String MYBATIS_SERVICE = "mybatis";
 
-    public static IAccountService createAccountService(String type) {
-        switch (type.toLowerCase()) {
-            case daoService:
+    public static IAccountService createAccountService() {
+        String serviceType = System.getProperty("service.type");
+        switch (serviceType.toLowerCase()) {
+            case DAO_SERVICE:
                 return new AccountService(new AccountDAO());
-            case mybatisService:
+            case MYBATIS_SERVICE:
                 return new MyBatisAccountService();
             default:
                 return null;
@@ -20,11 +21,12 @@ public class ServiceFactory {
     }
 
 
-    public static IBranchService createBranchService(String type) {
-        switch (type.toLowerCase()) {
-            case daoService:
+    public static IBranchService createBranchService() {
+        String serviceType = System.getProperty("service.type");
+        switch (serviceType.toLowerCase()) {
+            case DAO_SERVICE:
                 return new BranchService(new BranchDAO(), new BranchEmployeeDAO());
-            case mybatisService:
+            case MYBATIS_SERVICE:
                 return new MyBatisBranchService();
             default:
                 return null;
@@ -32,23 +34,25 @@ public class ServiceFactory {
 
     }
 
-    public static ICustomerService createCustomerService(String type) {
-        switch (type.toLowerCase()) {
-            case daoService:
+    public static ICustomerService createCustomerService() {
+        String serviceType = System.getProperty("service.type");
+        switch (serviceType.toLowerCase()) {
+            case DAO_SERVICE:
                 return new CustomerService(new CustomerDAO(), new DebitCardDAO(), new CreditCardDAO(),
                         new LoanDAO(), new AccountDAO());
-            case mybatisService:
+            case MYBATIS_SERVICE:
                 return new MyBatisCustomerService();
             default:
                 return null;
         }
     }
 
-    public static ITransactionService createTransactionService(String type) {
-        switch (type.toLowerCase()) {
-            case daoService:
+    public static ITransactionService createTransactionService() {
+        String serviceType = System.getProperty("service.type");
+        switch (serviceType.toLowerCase()) {
+            case DAO_SERVICE:
                 return new TransactionService(new TransactionDAO(), new TransactionTypeDAO());
-            case mybatisService:
+            case MYBATIS_SERVICE:
                 return new MyBatisTransactionService();
             default:
                 return null;

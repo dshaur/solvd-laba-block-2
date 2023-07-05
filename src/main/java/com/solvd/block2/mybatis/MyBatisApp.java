@@ -20,6 +20,7 @@ public class MyBatisApp {
         MyBatisCustomerService customerService = new MyBatisCustomerService();
         MyBatisTransactionService transactionService = new MyBatisTransactionService();
         MyBatisAccountService accountService = new MyBatisAccountService();
+
         // ************************ Test services ************************
 
         // ******** Branch methods ********
