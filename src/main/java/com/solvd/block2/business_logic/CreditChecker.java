@@ -86,7 +86,7 @@ public class CreditChecker {
         if (creditScore >= 700) {
             LOGGER.info("Credit approved for an account!");
 
-            // Register the customer in the database and get the id
+            // Register the customer and get the id
             int lastAddedCustomerId = insertCustomerAndGetId(customer);
             customer.setCustomerId(lastAddedCustomerId);
             notifyCustomerObservers(customer);
