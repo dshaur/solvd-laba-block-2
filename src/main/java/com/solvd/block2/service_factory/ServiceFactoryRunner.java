@@ -1,4 +1,4 @@
-package com.solvd.block2.serviceFactory;
+package com.solvd.block2.service_factory;
 
 import com.solvd.block2.sql.models.Account;
 import com.solvd.block2.sql.models.Branch;
@@ -19,14 +19,19 @@ public class ServiceFactoryRunner {
     private static final Logger LOGGER = LogManager.getLogger(ServiceFactoryRunner.class);
 
     public static void main(String[] args) {
-        // Choose the type of service you want to create
-        String serviceType = "myBatis"; // or "mybatis"
+
+        // Set the system property "service.type" to choose the service type
+        // This can also be accomplished in the command line with the following argument: java -Dservice.type=mybatis
+        // One can also set an environment variable with the desired service type before running the application
+        // Another alternative is to use the IDE to set the service type at run time
+
+        System.setProperty("service.type", "mybatis"); // Change "mybatis" to "dao" for a different service type
 
         // Create the corresponding service using the ServiceFactory
-        ICustomerService customerService = ServiceFactory.createCustomerService(serviceType);
-        IBranchService branchService = ServiceFactory.createBranchService(serviceType);
-        IAccountService accountService = ServiceFactory.createAccountService(serviceType);
-        ITransactionService transactionService = ServiceFactory.createTransactionService(serviceType);
+        ICustomerService customerService = ServiceFactory.createCustomerService();
+        IBranchService branchService = ServiceFactory.createBranchService();
+        IAccountService accountService = ServiceFactory.createAccountService();
+        ITransactionService transactionService = ServiceFactory.createTransactionService();
 
         try {
             // Test the customer service

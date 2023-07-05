@@ -86,8 +86,8 @@
     </select>
 
     <insert id="createCustomer" parameterType="com.solvd.block2.sql.models.Customer">
-        INSERT INTO customers (customer_ID, first_name, last_Name, address, phone_number, email)
-        VALUES (#{customerId}, #{firstName}, #{lastName}, #{address}, #{phoneNumber}, #{email})
+        INSERT INTO customers (first_name, last_Name, address, phone_number, email)
+        VALUES (#{firstName}, #{lastName}, #{address}, #{phoneNumber}, #{email})
     </insert>
 
     <update id="updateCustomer" parameterType="com.solvd.block2.sql.models.Customer">

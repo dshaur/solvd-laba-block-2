@@ -22,8 +22,8 @@
     </select>
 
     <insert id="createTransactionType" parameterType="com.solvd.block2.sql.models.TransactionType">
-        INSERT INTO transaction_type (transaction_type_id, type_name)
-        VALUES (#{typeId}, #{typeName})
+        INSERT INTO transaction_type (type_name)
+        VALUES (#{typeName})
     </insert>
 
     <update id="updateTransactionType" parameterType="com.solvd.block2.sql.models.TransactionType">

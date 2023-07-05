@@ -44,9 +44,9 @@
     </select>
 
     <insert id="createTransaction" parameterType="com.solvd.block2.sql.models.Transaction">
-        INSERT INTO transactions (transaction_id, transaction_type_id, account_id, amount, transaction_date,
+        INSERT INTO transactions (transaction_type_id, account_id, amount, transaction_date,
         source_account_id, destination_account_id)
-        VALUES (#{transactionId}, #{transactionTypes.typeId}, #{accountId}, #{amount}, #{transactionDate},
+        VALUES (#{transactionTypes.typeId}, #{accountId}, #{amount}, #{transactionDate},
         #{sourceAccountId}, #{destinationAccountId})
     </insert>
 

@@ -27,9 +27,9 @@
     </select>
 
     <insert id="createCreditCard" parameterType="com.solvd.block2.sql.models.CreditCard">
-        INSERT INTO credit_cards (credit_card_id, customer_id, credit_card_number, expiry_date, credit_limit,
+        INSERT INTO credit_cards (customer_id, credit_card_number, expiry_date, credit_limit,
         outstanding_balance)
-        VALUES (#{creditCardId}, #{customerId}, #{creditCardNumber}, #{expiryDate}, #{creditLimit},
+        VALUES (#{customerId}, #{creditCardNumber}, #{expiryDate}, #{creditLimit},
         #{outstandingBalance})
     </insert>
 

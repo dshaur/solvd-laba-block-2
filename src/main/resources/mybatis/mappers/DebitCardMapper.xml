@@ -25,8 +25,8 @@
     </select>
 
     <insert id="createDebitCard" parameterType="com.solvd.block2.sql.models.DebitCard">
-        INSERT INTO debit_cards (debit_card_id, customer_id, debit_card_number, expiry_date)
-        VALUES (#{debitCardId}, #{customerId}, #{cardNumber}, #{expirationDate})
+        INSERT INTO debit_cards (customer_id, debit_card_number, expiry_date)
+        VALUES (#{customerId}, #{cardNumber}, #{expirationDate})
     </insert>
 
     <update id="updateDebitCard" parameterType="com.solvd.block2.sql.models.DebitCard">

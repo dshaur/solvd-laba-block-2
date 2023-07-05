@@ -40,6 +40,7 @@ public class CustomerService implements ICustomerService {
 
     public void createCustomer(Customer customer) throws SQLException {
         customerDAO.create(customer);
+       
     }
 
     public void updateCustomer(Customer customer) throws SQLException {

@@ -66,7 +66,7 @@ public class AccountDAO extends AbstractDAO<Account> implements IAccountDAO {
 
     @Override
     protected String getCreateQuery() {
-        return "INSERT INTO accounts (Account_ID, Account_Type, Balance, Open_Date, Last_Transaction_Date, Branch_ID) VALUES (?, ?, ?, ?, ?, ?)";
+        return "INSERT INTO accounts (Account_Type, Balance, Open_Date, Last_Transaction_Date, Branch_ID) VALUES (?, ?, ?, ?, ?)";
     }
 
     @Override

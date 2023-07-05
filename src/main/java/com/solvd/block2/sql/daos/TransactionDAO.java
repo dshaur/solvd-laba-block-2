@@ -73,7 +73,7 @@ public class TransactionDAO extends AbstractDAO<Transaction> implements ITransac
 
     @Override
     protected String getCreateQuery() {
-        return "INSERT INTO transactions (transaction_id, account_id, amount, transaction_date, source_account_id, destination_account_id) VALUES (?, ?, ?, ?, ?, ?)";
+        return "INSERT INTO transactions (account_id, amount, transaction_date, source_account_id, destination_account_id) VALUES (?, ?, ?, ?, ?)";
     }
 
     @Override

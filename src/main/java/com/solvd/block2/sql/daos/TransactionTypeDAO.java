@@ -54,7 +54,7 @@ public class TransactionTypeDAO extends AbstractDAO<TransactionType> implements 
 
     @Override
     protected String getCreateQuery() {
-        return "INSERT INTO transaction_type (Type_ID, Type_Name) VALUES (?, ?)";
+        return "INSERT INTO transaction_type (Type_Name) VALUES (?)";
     }
 
     @Override

@@ -93,7 +93,7 @@ public class BranchDAO extends AbstractDAO<Branch> implements IBranchDAO {
 
     @Override
     protected String getCreateQuery() {
-        return "INSERT INTO branches (Branch_ID, Branch_Name, Location) VALUES (?, ?, ?)";
+        return "INSERT INTO branches (Branch_Name, Location) VALUES (?, ?)";
     }
 
     @Override
